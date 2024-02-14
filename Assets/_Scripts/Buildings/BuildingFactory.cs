@@ -10,7 +10,7 @@ namespace _Scripts.Buildings
         {
             var data = Object.Instantiate(buildingData);
             
-            var buildingGameObject = GameObject.Instantiate(buildingPrefab, targetNode.GetWorldPosition(), Quaternion.identity);
+            var buildingGameObject = GameObject.Instantiate(buildingPrefab, targetNode.WorldPosition, Quaternion.identity);
             //buildingGameObject.Initialise();
 
             return buildingGameObject;

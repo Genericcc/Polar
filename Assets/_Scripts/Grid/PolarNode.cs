@@ -12,8 +12,8 @@ namespace _Scripts.Grid
 {
     public class PolarNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
-        private PolarGridPosition _polarGridPosition;
-        private PolarGridSystem _polarGridSystem;
+        public PolarGridPosition PolarGridPosition { get; private set; }
+        public Vector3 WorldPosition { get; private set; }
         
         [SerializeField]
         private TextMeshPro textMeshPro;
@@ -28,7 +28,7 @@ namespace _Scripts.Grid
         private Material[] highlightMaterials;
 
         private SignalBus _signalBus;
-        private Vector3 _worldPosition;
+        private PolarGridSystem _polarGridSystem;
 
         [Inject]
         public void Construct(SignalBus signalBus)
@@ -39,9 +39,9 @@ namespace _Scripts.Grid
         public void Initialise(PolarGridSystem polarGridSystem, PolarGridPosition polarGridPosition)
         {
             _polarGridSystem = polarGridSystem;
-            _polarGridPosition = polarGridPosition;
+            PolarGridPosition = polarGridPosition;
 
-            _worldPosition = _polarGridSystem.GetWorldPosition(_polarGridPosition);
+            WorldPosition = _polarGridSystem.GetWorldPosition(PolarGridPosition);
         }
 
         private void Start()
@@ -49,14 +49,9 @@ namespace _Scripts.Grid
             //textMeshPro.text = _polarNode?.ToString();
         }
 
-        public Vector3 GetWorldPosition()
-        {
-            return _worldPosition;
-        }
-
         public override string ToString()
         {
-            return _polarGridPosition.ToString();
+            return PolarGridPosition.ToString();
         }
         
         public void OnPointerEnter(PointerEventData eventData)

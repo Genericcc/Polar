@@ -8,42 +8,21 @@ namespace _Scripts.Managers
 {
     public class GridManager : MonoBehaviour
     {
-        public static GridManager Instance { get; private set; }
-        
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Vector2 cellSize = new (5, 5);
         [SerializeField] private float densityFactor = 0f;
         
-        [InspectorButton("CreateGrid")]
-        public bool createGrid;
-        
-        [InspectorButton("ClearGrid")]
-        public bool clearGrid;
-        
-        [SerializeField]
-        public PolarGirdRingsSettings polarGirdRingsSettings;
-
-        private PolarGridSystem _polarGridSystem;
-        
-        
         private PolarNodeFactory _polarNodeFactory;
+        private PolarGirdRingsSettings _polarGirdRingsSettings;
+        
+        public PolarGridSystem PolarGridSystem;
         
         [Inject]
-        public void Construct(PolarNodeFactory polarNodeFactory)
+        public void Construct(PolarNodeFactory polarNodeFactory, PolarGirdRingsSettings polarGirdRingsSettings)
         {
             _polarNodeFactory = polarNodeFactory;
-        }
-        
-        private void Awake()
-        {
-            if (Instance != null)
-            {
-                Debug.LogError("There's more than one LevelGrid! " + transform + " - " + Instance);
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-
+            _polarGirdRingsSettings = polarGirdRingsSettings;
+            
             CreateGrid();
         }
 
@@ -51,13 +30,12 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGridSystem = new PolarGridSystem(this, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
-            //_polarGridSystem.CreateDebugObjects(gridDebugObjectPrefab);
+            PolarGridSystem = new PolarGridSystem(_polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
         }
 
         private void ClearGrid()
         {
-            if (_polarGridSystem != null)
+            if (PolarGridSystem != null)
             {
                 for (var i = transform.childCount - 1; i >= 0; i--)
                 {

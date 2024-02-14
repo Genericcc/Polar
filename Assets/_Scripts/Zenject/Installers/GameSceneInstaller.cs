@@ -26,6 +26,12 @@ namespace _Scripts.Zenject.Installers
             Container.BindFactory<PolarGridSystem, PolarGridPosition, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             
+            
+            Container.Bind<PolarGirdRingsSettings>()
+                     .FromNewScriptableObjectResource("Settings/PolarGridRingsSettings")
+                     .AsSingle()
+                     .NonLazy();
+            
             RegisterAndBindSignals();
         }
 
