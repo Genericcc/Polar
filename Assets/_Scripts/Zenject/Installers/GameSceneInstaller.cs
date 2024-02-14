@@ -1,8 +1,8 @@
-﻿using _Scripts.Grid;
+﻿using _Scripts.Buildings;
+using _Scripts.Buildings.BuildingsData;
+using _Scripts.Grid;
 using _Scripts.Managers;
 using _Scripts.Zenject.Signals;
-
-using UnityEngine;
 
 using Zenject;
 
@@ -14,17 +14,28 @@ namespace _Scripts.Zenject.Installers
         {
             SignalBusInstaller.Install(Container);
 
+            Container.Bind<PolarGridManager>()
+                     .FromComponentInHierarchy()
+                     .AsSingle()
+                     .NonLazy();
+
             Container.Bind<BuildingsManager>()
                      .FromNewComponentOnNewGameObject()
                      .AsSingle()
                      .NonLazy();
             
+            
+            Container.BindFactory<PolarGridSystem, PolarGridPosition, PolarNode, PolarNodeFactory>()
+                     .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
                      .FromResource("Prefabs/World/PolarNodePrefab")
                      .WhenInjectedInto<CustomPolarNodeFactory>();
             
-            Container.BindFactory<PolarGridSystem, PolarGridPosition, PolarNode, PolarNodeFactory>()
-                     .FromFactory<CustomPolarNodeFactory>();
+            Container.BindFactory<PolarNode, BuildingData, Building, BuildingFactory>()
+                     .FromFactory<CustomBuildingFactory>();
+            Container.Bind<Building>()
+                     .FromResource("Prefabs/World/HouseBuildingPrefab")
+                     .WhenInjectedInto<CustomBuildingFactory>();
             
             
             Container.Bind<PolarGirdRingsSettings>()
@@ -39,7 +50,7 @@ namespace _Scripts.Zenject.Installers
         {
             Container.DeclareSignal<BuildNewBuildingSignal>().OptionalSubscriber();
             Container.BindSignal<BuildNewBuildingSignal>()
-                     .ToMethod<BuildingsManager>(x => x.OnBuildingBuiltSignal)
+                     .ToMethod<BuildingsManager>(x => x.OnBuildNewBuildingSignal)
                      .FromResolveAll();
         }
     }

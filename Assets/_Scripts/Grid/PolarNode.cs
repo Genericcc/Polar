@@ -1,5 +1,6 @@
 using System;
 
+using _Scripts.Buildings;
 using _Scripts.Zenject.Signals;
 
 using TMPro;
@@ -68,6 +69,12 @@ namespace _Scripts.Grid
         public void OnPointerClick(PointerEventData eventData)
         {
             _signalBus.Fire(new BuildNewBuildingSignal(null, this));
+        }
+
+        public void PlaceBuilding(Building building)
+        {
+            building.transform.position = WorldPosition;
+            building.transform.rotation = transform.rotation;
         }
     }
 }

@@ -1,19 +1,33 @@
 ﻿using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
-using UnityEngine;
+
+using Zenject;
 
 namespace _Scripts.Buildings
 {
-    public class BuildingFactory
+    public class BuildingFactory : PlaceholderFactory<PolarNode, BuildingData, Building>
     {
-        public Building CreateBuilding(PolarNode targetNode, BuildingData buildingData, Building buildingPrefab)
-        {
-            var data = Object.Instantiate(buildingData);
-            
-            var buildingGameObject = GameObject.Instantiate(buildingPrefab, targetNode.WorldPosition, Quaternion.identity);
-            //buildingGameObject.Initialise();
+    }
 
-            return buildingGameObject;
+    public class CustomBuildingFactory : IFactory<PolarNode, BuildingData, Building>
+    {
+        private readonly DiContainer _container;
+        private readonly Building _buildingPrefab;
+
+        public CustomBuildingFactory(DiContainer container,
+            Building buildingPrefab)
+        {
+            _container = container;
+            _buildingPrefab = buildingPrefab;
+        }
+
+        public Building Create(PolarNode polarNode, BuildingData buildingData)
+        {
+            var result = _container.InstantiatePrefabForComponent<Building>(_buildingPrefab);
+
+            result.Initialise(polarNode, buildingData);
+            
+            return result;
         }
     }
 }

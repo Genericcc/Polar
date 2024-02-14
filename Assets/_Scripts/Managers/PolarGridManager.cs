@@ -6,7 +6,7 @@ using Zenject;
 
 namespace _Scripts.Managers
 {
-    public class GridManager : MonoBehaviour
+    public class PolarGridManager : MonoBehaviour
     {
         [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Vector2 cellSize = new (5, 5);
