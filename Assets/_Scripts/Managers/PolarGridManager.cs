@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+
+using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
 using UnityEngine;
 
@@ -14,8 +17,8 @@ namespace _Scripts.Managers
         
         private PolarNodeFactory _polarNodeFactory;
         private PolarGirdRingsSettings _polarGirdRingsSettings;
-        
-        public PolarGridSystem PolarGridSystem;
+
+        private PolarGridSystem _polarGridSystem;
         
         [Inject]
         public void Construct(PolarNodeFactory polarNodeFactory, PolarGirdRingsSettings polarGirdRingsSettings)
@@ -30,12 +33,12 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            PolarGridSystem = new PolarGridSystem(_polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
+            _polarGridSystem = new PolarGridSystem(_polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
         }
 
         private void ClearGrid()
         {
-            if (PolarGridSystem != null)
+            if (_polarGridSystem != null)
             {
                 for (var i = transform.childCount - 1; i >= 0; i--)
                 {
@@ -44,6 +47,32 @@ namespace _Scripts.Managers
             }
         }
 
+        public List<PolarNode> GetNeighbours(PolarNode startingNode, BuildingNodesOccupationType spaceOccupationType)
+        {
+            var neighbours = new List<PolarNode>();
+            
+            switch (spaceOccupationType)
+            {
+                case BuildingNodesOccupationType.Space2X2:
+                    neighbours = _polarGridSystem.GetNodesForBuilding(startingNode, 2, 2);
+                    break;
+
+                case BuildingNodesOccupationType.Space2X3:
+                    break;
+
+                case BuildingNodesOccupationType.Space3X2:
+                    break;
+
+                case BuildingNodesOccupationType.Space3X3:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(spaceOccupationType), spaceOccupationType, null);
+            }
+
+            return neighbours;
+        }
+        
         // public void AddUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
         // {
         //     PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);

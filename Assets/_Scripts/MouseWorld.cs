@@ -17,8 +17,8 @@ namespace _Scripts
 
         public static Vector3 GetPosition()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, instance.mousePlaneLayerMask);
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Physics.Raycast(ray, out var raycastHit, float.MaxValue, instance.mousePlaneLayerMask);
             return raycastHit.point;
         }
 

@@ -26,17 +26,20 @@ namespace _Scripts.Managers
             _buildingFactory = buildingFactory;
         }
 
-        public void OnBuildNewBuildingSignal(BuildNewBuildingSignal buildNewBuildingSignal)
+        public void OnBuildNewBuildingSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
         {
-            ConstructBuilding(buildNewBuildingSignal.PolarNode, buildNewBuildingSignal.BuildingData);
+            ConstructBuilding(requestBuildingPlacementSignal.PolarNodes, requestBuildingPlacementSignal.BuildingData);
         }
 
-        private void ConstructBuilding(PolarNode polarNode, BuildingData buildingData)
+        private void ConstructBuilding(List<PolarNode> polarNodes, BuildingData buildingData)
         {
-            var newBuilding = _buildingFactory.Create(polarNode, buildingData);
+            var newBuilding = _buildingFactory.Create(polarNodes, buildingData);
             _buildings.Add(newBuilding);
 
-            Debug.Log($"Building built");
+            foreach (var polarNode in polarNodes)
+            {
+                polarNode.SetBuilding(newBuilding);
+            }
         }
     }
 }

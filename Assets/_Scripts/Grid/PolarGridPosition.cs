@@ -6,14 +6,14 @@ namespace _Scripts.Grid
     public struct PolarGridPosition : IEquatable<PolarGridPosition>
     {
         public int Ring;
-        public int R;
+        public int D;
         public float Fi;
         public int H;
 
-        public PolarGridPosition(int ring, int r, float fi, int h)
+        public PolarGridPosition(int ring, int d, float fi, int h)
         {
             Ring = ring;
-            R = r;
+            D = d;
             Fi = fi;
             H = h;
         }
@@ -22,7 +22,7 @@ namespace _Scripts.Grid
         {
             return obj is PolarGridPosition position &&
                    Ring == position.Ring &&
-                   R == position.R &&
+                   D == position.D &&
                    Mathf.Abs(Fi - position.Fi) < 0.01 &&
                    H == position.H;
         }
@@ -34,20 +34,29 @@ namespace _Scripts.Grid
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Ring, R, Fi, H);
+            return HashCode.Combine(Ring, D, Fi, H);
         }
 
         public override string ToString()
         {
-            return $"ring:{Ring}; r:{R}; fi:{Fi}; h:{H}";
+            return $"ring:{Ring}; r:{D}; fi:{Fi}; h:{H}";
         }
 
         public static bool operator ==(PolarGridPosition a, PolarGridPosition b)
         {
             return a.Ring == b.Ring &&
-                   a.R == b.R &&
+                   a.D == b.D &&
                    Mathf.Abs(a.Fi - b.Fi) < 0.01 &&
                    a.H == b.H;
+        }
+
+        public static PolarGridPosition operator +(PolarGridPosition a, PolarGridPosition b)
+        {
+            return new PolarGridPosition(
+                a.Ring + b.Ring, 
+                a.D + b.D, 
+                a.Fi + b.Fi, 
+                a.H + b.H);
         }
 
         public static bool operator !=(PolarGridPosition a, PolarGridPosition b)

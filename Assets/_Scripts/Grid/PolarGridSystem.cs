@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace _Scripts.Grid
                 {
                     var polarGridPosition = new PolarGridPosition(0, 0, 0, height);
                     
-                    var node = polarNodeFactory.Create(this, polarGridPosition);
+                    var node = polarNodeFactory.Create(this, polarGridPosition, thisRingSetting);
                     GridNodes.Add(node);
                     
                     continue;
@@ -50,7 +51,7 @@ namespace _Scripts.Grid
                     {
                         var polarGridPosition = new PolarGridPosition(ring, fieldIndex, fi, height);
                         
-                        var node = polarNodeFactory.Create(this, polarGridPosition);
+                        var node = polarNodeFactory.Create(this, polarGridPosition, thisRingSetting);
                         GridNodes.Add(node);
                     }
                 }
@@ -61,9 +62,9 @@ namespace _Scripts.Grid
         {
             var previousFieldsCount = GetSumOfPreviousFields(polarGridPosition);
 
-            var x = (polarGridPosition.R + previousFieldsCount) * Mathf.Cos(polarGridPosition.Fi * Mathf.Deg2Rad);
+            var x = (polarGridPosition.D + previousFieldsCount) * Mathf.Cos(polarGridPosition.Fi * Mathf.Deg2Rad);
             var y = polarGridPosition.H;
-            var z = (polarGridPosition.R + previousFieldsCount) * Mathf.Sin(polarGridPosition.Fi * Mathf.Deg2Rad);
+            var z = (polarGridPosition.D + previousFieldsCount) * Mathf.Sin(polarGridPosition.Fi * Mathf.Deg2Rad);
 
             return new Vector3(x * (_cellSize.x - _densityFactor), y, z * (_cellSize.y - _densityFactor));
         }
@@ -97,39 +98,69 @@ namespace _Scripts.Grid
         //     return new PolarGridPosition(r, fi, h);
         // }
 
-        public void CreateDebugObjects(Transform debugPrefab)
+        public List<PolarNode> GetNodesForBuilding(PolarNode startingNode, int side, int depth)
         {
-            // foreach (var node in _gridNodes)
-            // {
-            //     PolarNode polarNode;
-            //
-            //     if (_polarNodeFactory == null)
-            //     {
-            //         var debugTransform = Object.Instantiate(
-            //         debugPrefab,
-            //         GetWorldPosition(node.PolarGridPosition),
-            //         Quaternion.identity);
-            //
-            //         polarNode = debugTransform.GetComponent<PolarNode>();
-            //     }
-            //     else
-            //     {
-            //         polarNode = _polarNodeFactory.Create(this, new PolarGridPosition());
-            //     }
-            //
-            //     var gridObjectTransform = polarNode.transform;
-            //     gridObjectTransform.position = GetWorldPosition(node.PolarGridPosition);
-            //     
-            //     var position = gridObjectTransform.position;
-            //     polarNode.transform.rotation = Quaternion.LookRotation(position - new Vector3(0, position.y, 0));
-            //     
-            //     polarNode.transform.SetParent(_gridManager.transform);
-            //
-            //     _gridNodes.Add(polarNode);
-            //}
+            var nodesForBuilding = new List<PolarNode>() ;
+            var startingPolarPosition = startingNode.PolarGridPosition;
+            
+            var thisRingFi = _polarGirdRingsSettings.ringSettingsList[startingPolarPosition.Ring].fi;
+
+            for (var d = 0; d < depth; d++)
+            {
+                for (var s = 1; s <= side; s++)
+                {
+                    
+                    //TUTAJ ZJEBANE BO OD RAZU DODAJE
+                    var position = startingPolarPosition + new PolarGridPosition(0, d, s * thisRingFi, 0);
+                    
+                    var neighbour = GetPolarNode(position);
+                    if (neighbour == null)
+                    {
+                        Debug.Log("No next node found");
+                    }
+
+                    nodesForBuilding.Add(neighbour);
+                }
+            }
+
+            return nodesForBuilding;
+        }
+        
+        public PolarGridPosition GetNextFiPosition(PolarGridPosition startingPolarPosition)
+        {
+            var thisRingSetting = _polarGirdRingsSettings.ringSettingsList[startingPolarPosition.Ring];
+            
+            var nextFi = startingPolarPosition.Fi + thisRingSetting.fi;
+            
+            //TU FIX
+            if (nextFi > 360)
+            {
+                nextFi = 0;
+            }
+            
+            var neighbourPosition = new PolarGridPosition(
+                startingPolarPosition.Ring,
+                startingPolarPosition.D,
+                nextFi,
+                startingPolarPosition.H);
+            
+            return neighbourPosition;
+        }
+        
+        public PolarGridPosition GetNextDepthPosition(PolarGridPosition startingPolarPosition)
+        {
+            var nextD = startingPolarPosition.D + 1;
+
+            var neighbourPosition = new PolarGridPosition(
+                startingPolarPosition.Ring,
+                nextD,
+                startingPolarPosition.Fi,
+                startingPolarPosition.H);
+
+            return neighbourPosition;
         }
 
-        public PolarNode GetGridObject(PolarGridPosition polarGridPosition)
+        public PolarNode GetPolarNode(PolarGridPosition polarGridPosition)
         {
             return GridNodes.FirstOrDefault(x => x.PolarGridPosition == polarGridPosition);
         }

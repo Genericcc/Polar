@@ -1,15 +1,17 @@
-﻿using _Scripts.Buildings.BuildingsData;
+﻿using System.Collections.Generic;
+
+using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
 
 using Zenject;
 
 namespace _Scripts.Buildings
 {
-    public class BuildingFactory : PlaceholderFactory<PolarNode, BuildingData, Building>
+    public class BuildingFactory : PlaceholderFactory<List<PolarNode>, BuildingData, Building>
     {
     }
 
-    public class CustomBuildingFactory : IFactory<PolarNode, BuildingData, Building>
+    public class CustomBuildingFactory : IFactory<List<PolarNode>, BuildingData, Building>
     {
         private readonly DiContainer _container;
         private readonly Building _buildingPrefab;
@@ -21,11 +23,11 @@ namespace _Scripts.Buildings
             _buildingPrefab = buildingPrefab;
         }
 
-        public Building Create(PolarNode polarNode, BuildingData buildingData)
+        public Building Create(List<PolarNode> polarNodes, BuildingData buildingData)
         {
             var result = _container.InstantiatePrefabForComponent<Building>(_buildingPrefab);
 
-            result.Initialise(polarNode, buildingData);
+            result.Initialise(polarNodes, buildingData);
             
             return result;
         }

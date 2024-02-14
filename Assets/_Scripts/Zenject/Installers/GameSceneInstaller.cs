@@ -1,4 +1,6 @@
-﻿using _Scripts.Buildings;
+﻿using System.Collections.Generic;
+
+using _Scripts.Buildings;
 using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
 using _Scripts.Managers;
@@ -25,13 +27,13 @@ namespace _Scripts.Zenject.Installers
                      .NonLazy();
             
             
-            Container.BindFactory<PolarGridSystem, PolarGridPosition, PolarNode, PolarNodeFactory>()
+            Container.BindFactory<PolarGridSystem, PolarGridPosition, RingSettings, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
                      .FromResource("Prefabs/World/PolarNodePrefab")
                      .WhenInjectedInto<CustomPolarNodeFactory>();
             
-            Container.BindFactory<PolarNode, BuildingData, Building, BuildingFactory>()
+            Container.BindFactory<List<PolarNode>, BuildingData, Building, BuildingFactory>()
                      .FromFactory<CustomBuildingFactory>();
             Container.Bind<Building>()
                      .FromResource("Prefabs/World/HouseBuildingPrefab")
@@ -48,8 +50,8 @@ namespace _Scripts.Zenject.Installers
 
         private void RegisterAndBindSignals()
         {
-            Container.DeclareSignal<BuildNewBuildingSignal>().OptionalSubscriber();
-            Container.BindSignal<BuildNewBuildingSignal>()
+            Container.DeclareSignal<RequestBuildingPlacementSignal>().OptionalSubscriber();
+            Container.BindSignal<RequestBuildingPlacementSignal>()
                      .ToMethod<BuildingsManager>(x => x.OnBuildNewBuildingSignal)
                      .FromResolveAll();
         }

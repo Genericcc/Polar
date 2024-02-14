@@ -4,11 +4,11 @@ using Zenject;
 
 namespace _Scripts.Grid
 {
-    public class PolarNodeFactory : PlaceholderFactory<PolarGridSystem, PolarGridPosition, PolarNode>
+    public class PolarNodeFactory : PlaceholderFactory<PolarGridSystem, PolarGridPosition, RingSettings, PolarNode>
     {
     }
 
-    public class CustomPolarNodeFactory : IFactory<PolarGridSystem, PolarGridPosition, PolarNode>
+    public class CustomPolarNodeFactory : IFactory<PolarGridSystem, PolarGridPosition, RingSettings, PolarNode>
     {
         private readonly DiContainer _container;
         private readonly PolarNode _prefab;
@@ -19,19 +19,21 @@ namespace _Scripts.Grid
             _prefab = prefab;
         }
         
-        public PolarNode Create(PolarGridSystem polarGridSystem, PolarGridPosition polarGridPosition)
+        public PolarNode Create(PolarGridSystem polarGridSystem, 
+            PolarGridPosition polarGridPosition, 
+            RingSettings ringSettings)
         {
-            var result = _container.InstantiatePrefabForComponent<PolarNode>(_prefab);
+            var node = _container.InstantiatePrefabForComponent<PolarNode>(_prefab);
             
             var newPosition = polarGridSystem.GetWorldPosition(polarGridPosition);
             var newRotation = Quaternion.LookRotation(newPosition - new Vector3(0, newPosition.y, 0));
 
-            result.transform.position = newPosition;
-            result.transform.rotation = newRotation;
+            node.transform.position = newPosition;
+            node.transform.rotation = newRotation;
             
-            result.Initialise(polarGridSystem, polarGridPosition);
+            node.Initialise(polarGridSystem, polarGridPosition, ringSettings);
             
-            return result;
+            return node;
         }
     }
 }
