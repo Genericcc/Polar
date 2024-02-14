@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
-namespace _Scripts.Buildings
+using _Scripts.GameResources;
+
+using UnityEngine;
+
+namespace _Scripts.Buildings.BuildingsData
 {
     public abstract class BuildingData : ScriptableObject
     {
-        
+        public List<ResourceAmount> resourceCost;
+
+        public string Name;
     }
 }

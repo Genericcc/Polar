@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿using _Scripts.Buildings.BuildingsData;
+
+using UnityEngine;
 
 namespace _Scripts.Buildings
 {
-    public class Building : MonoBehaviour
+    public abstract class Building : MonoBehaviour
     {
-        //BuildingData
+        public BuildingData buildingData;
+
+        public string Name => buildingData.ToString();
+        
+        public abstract void OnBuild();
     }
 }

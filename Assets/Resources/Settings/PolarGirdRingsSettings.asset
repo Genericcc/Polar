@@ -13,9 +13,16 @@ MonoBehaviour:
   m_Name: PolarGirdRingsSettings
   m_EditorClassIdentifier: 
   ringSettingsList:
-  - maxFields: 1
+  - depth: 1
+    fi: 60
     height: 2
-  - maxFields: 2
+  - depth: 2
+    fi: 30
     height: 2
-  - maxFields: 3
+  - depth: 3
+    fi: 15
     height: 1
+  - depth: 5
+    fi: 8
+    height: 0
+  segmentsInGame: 6

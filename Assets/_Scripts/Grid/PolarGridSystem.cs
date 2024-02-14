@@ -5,6 +5,8 @@ using _Scripts.Managers;
 
 using UnityEngine;
 
+using Zenject;
+
 namespace _Scripts.Grid
 {
     public class PolarGridSystem
@@ -12,21 +14,22 @@ namespace _Scripts.Grid
         private (float x, float y) _cellSize;
         
         private List<PolarNode> _gridNodes;
-        private List<PolarGridDebugObject> _debugObjectList;
         
         private readonly GridManager _gridManager;
         private readonly float _densityFactor;
+        
+        private PolarNodeFactory _polarNodeFactory;
 
-        public PolarGridSystem(
-            GridManager gridManager, (float, float) cellSize, float densityFactor)
+        public PolarGridSystem(GridManager gridManager, (float, float) cellSize, float densityFactor, 
+            PolarNodeFactory polarNodeFactory)
         {
             _gridManager = gridManager;
+            _polarNodeFactory = polarNodeFactory;
 
             _densityFactor = densityFactor;
             _cellSize = cellSize;
 
             _gridNodes = new List <PolarNode>();
-            _debugObjectList = new List<PolarGridDebugObject>();
 
             for (var ring = 0; ring < _gridManager.polarGirdRingsSettings.ringSettingsList.Count; ring++)
             {
@@ -38,8 +41,8 @@ namespace _Scripts.Grid
                 if (ring == 0)
                 {
                     var polarGridPosition = new PolarGridPosition(0, 0, 0, height);
-                    var node = new PolarNode(this, ring, polarGridPosition);
-
+                    
+                    var node = _polarNodeFactory.Create(this, polarGridPosition);
                     _gridNodes.Add(node);
                     
                     continue;
@@ -50,8 +53,8 @@ namespace _Scripts.Grid
                     for (var fi = 360 - segmentsInGame * 60f; fi < 360; fi += thisRingSetting.fi)
                     {
                         var polarGridPosition = new PolarGridPosition(ring, fieldIndex, fi, height);
-                        var node = new PolarNode(this, ring, polarGridPosition);
-
+                        
+                        var node = _polarNodeFactory.Create(this, polarGridPosition);
                         _gridNodes.Add(node);
                     }
                 }
@@ -100,29 +103,39 @@ namespace _Scripts.Grid
 
         public void CreateDebugObjects(Transform debugPrefab)
         {
-            foreach (var node in _gridNodes)
-            {
-                var debugTransform = Object.Instantiate(
-                    debugPrefab,
-                    GetWorldPosition(node.PolarGridPosition),
-                    Quaternion.identity);
-                
-                var polarGridDebugObject = debugTransform.GetComponent<PolarGridDebugObject>();
-                
-                polarGridDebugObject.AssignPolarNode(node);
-                polarGridDebugObject.transform.SetParent(_gridManager.transform);
-
-                var position = polarGridDebugObject.transform.position;
-                polarGridDebugObject.transform.rotation =
-                    Quaternion.LookRotation(position - new Vector3(0, position.y, 0));
-
-                _debugObjectList.Add(polarGridDebugObject);
-            }
+            // foreach (var node in _gridNodes)
+            // {
+            //     PolarNode polarNode;
+            //
+            //     if (_polarNodeFactory == null)
+            //     {
+            //         var debugTransform = Object.Instantiate(
+            //         debugPrefab,
+            //         GetWorldPosition(node.PolarGridPosition),
+            //         Quaternion.identity);
+            //
+            //         polarNode = debugTransform.GetComponent<PolarNode>();
+            //     }
+            //     else
+            //     {
+            //         polarNode = _polarNodeFactory.Create(this, new PolarGridPosition());
+            //     }
+            //
+            //     var gridObjectTransform = polarNode.transform;
+            //     gridObjectTransform.position = GetWorldPosition(node.PolarGridPosition);
+            //     
+            //     var position = gridObjectTransform.position;
+            //     polarNode.transform.rotation = Quaternion.LookRotation(position - new Vector3(0, position.y, 0));
+            //     
+            //     polarNode.transform.SetParent(_gridManager.transform);
+            //
+            //     _gridNodes.Add(polarNode);
+            //}
         }
 
-        public PolarNode GetGridObject(PolarGridPosition polarGridPosition)
-        {
-            return _gridNodes.FirstOrDefault(x => x.PolarGridPosition == polarGridPosition);
-        }
+        // public PolarNode GetGridObject(PolarGridPosition polarGridPosition)
+        // {
+        //     return _gridNodes.FirstOrDefault(x => x.PolarGridPosition == polarGridPosition);
+        // }
     }
 }

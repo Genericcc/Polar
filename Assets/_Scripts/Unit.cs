@@ -21,7 +21,7 @@ namespace _Scripts
         private void Start()
         {
             //polarGridPosition = GridManager.Instance.GetGridPosition(transform.position);
-            GridManager.Instance.AddUnitAtGridPosition(polarGridPosition, this);
+            //GridManager.Instance.AddUnitAtGridPosition(polarGridPosition, this);
         }
 
         private void Update()
@@ -48,7 +48,7 @@ namespace _Scripts
             if (newPolarGridPosition != polarGridPosition)
             {
                 // Unit changed Grid Position
-                GridManager.Instance.UnitMovedGridPosition(this, polarGridPosition, newPolarGridPosition);
+                //GridManager.Instance.UnitMovedGridPosition(this, polarGridPosition, newPolarGridPosition);
                 polarGridPosition = newPolarGridPosition;
             }
         }

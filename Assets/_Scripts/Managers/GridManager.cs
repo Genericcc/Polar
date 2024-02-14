@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using _Scripts.Grid;
 using UnityEngine;
 
+using Zenject;
+
 namespace _Scripts.Managers
 {
     public class GridManager : MonoBehaviour
@@ -23,6 +25,15 @@ namespace _Scripts.Managers
 
         private PolarGridSystem _polarGridSystem;
         
+        
+        private PolarNodeFactory _polarNodeFactory;
+        
+        [Inject]
+        public void Construct(PolarNodeFactory polarNodeFactory)
+        {
+            _polarNodeFactory = polarNodeFactory;
+        }
+        
         private void Awake()
         {
             if (Instance != null)
@@ -40,8 +51,8 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGridSystem = new PolarGridSystem(this, (cellSize.x, cellSize.y), densityFactor);
-            _polarGridSystem.CreateDebugObjects(gridDebugObjectPrefab);
+            _polarGridSystem = new PolarGridSystem(this, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
+            //_polarGridSystem.CreateDebugObjects(gridDebugObjectPrefab);
         }
 
         private void ClearGrid()
@@ -55,29 +66,29 @@ namespace _Scripts.Managers
             }
         }
 
-        public void AddUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
-        {
-            PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
-        }
-
-        public List<Unit> GetUnitListAtGridPosition(PolarGridPosition polarGridPosition)
-        {
-            PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
-
-            return null;
-        }
-
-        public void RemoveUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
-        {
-            PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
-        }
-
-        public void UnitMovedGridPosition(Unit unit, PolarGridPosition fromPolarGridPosition, PolarGridPosition toPolarGridPosition)
-        {
-            RemoveUnitAtGridPosition(fromPolarGridPosition, unit);
-
-            AddUnitAtGridPosition(toPolarGridPosition, unit);
-        }
+        // public void AddUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
+        // {
+        //     PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
+        // }
+        //
+        // public List<Unit> GetUnitListAtGridPosition(PolarGridPosition polarGridPosition)
+        // {
+        //     PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
+        //
+        //     return null;
+        // }
+        //
+        // public void RemoveUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
+        // {
+        //     PolarNode polarNode = _polarGridSystem.GetGridObject(polarGridPosition);
+        // }
+        //
+        // public void UnitMovedGridPosition(Unit unit, PolarGridPosition fromPolarGridPosition, PolarGridPosition toPolarGridPosition)
+        // {
+        //     RemoveUnitAtGridPosition(fromPolarGridPosition, unit);
+        //
+        //     AddUnitAtGridPosition(toPolarGridPosition, unit);
+        // }
 
         //public PolarGridPosition GetGridPosition(Vector3 worldPosition) => _polarGridSystem.GetPolarPosition(worldPosition);
 
