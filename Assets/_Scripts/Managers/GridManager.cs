@@ -9,10 +9,8 @@ namespace _Scripts.Managers
         public static GridManager Instance { get; private set; }
         
         [SerializeField] private Transform gridDebugObjectPrefab;
-        [SerializeField] private int maxHeight = 5;
-        [SerializeField] private int segmentsInGame = 4;
         [SerializeField] private Vector2 cellSize = new (5, 5);
-        [SerializeField] private int fi = 30;
+        [SerializeField] private float densityFactor = 0f;
         
         [InspectorButton("CreateGrid")]
         public bool createGrid;
@@ -42,7 +40,7 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGridSystem = new PolarGridSystem(this, (cellSize.x, cellSize.y), fi, maxHeight, segmentsInGame);
+            _polarGridSystem = new PolarGridSystem(this, (cellSize.x, cellSize.y), densityFactor);
             _polarGridSystem.CreateDebugObjects(gridDebugObjectPrefab);
         }
 

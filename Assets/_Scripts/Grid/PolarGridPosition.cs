@@ -39,7 +39,7 @@ namespace _Scripts.Grid
 
         public override string ToString()
         {
-            return $"ring: {Ring}; r: {R}; fi: {Fi}; h: {H}";
+            return $"ring:{Ring}; r:{R}; fi:{Fi}; h:{H}";
         }
 
         public static bool operator ==(PolarGridPosition a, PolarGridPosition b)

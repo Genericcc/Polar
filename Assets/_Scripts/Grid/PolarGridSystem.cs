@@ -9,52 +9,48 @@ namespace _Scripts.Grid
 {
     public class PolarGridSystem
     {
-        private int _maxHeight;
-        private int _segmentsOutOfSix;
-        
-        private float _fi;
         private (float x, float y) _cellSize;
         
         private List<PolarNode> _gridNodes;
         private List<PolarGridDebugObject> _debugObjectList;
         
         private readonly GridManager _gridManager;
+        private readonly float _densityFactor;
 
         public PolarGridSystem(
-            GridManager gridManager, (float, float) cellSize, float fiConst, int maxHeight, int segmentsOutOfSix)
+            GridManager gridManager, (float, float) cellSize, float densityFactor)
         {
             _gridManager = gridManager;
-            
-            _maxHeight = maxHeight;
-            _segmentsOutOfSix = segmentsOutOfSix;
-            
-            _fi = fiConst;
+
+            _densityFactor = densityFactor;
             _cellSize = cellSize;
 
             _gridNodes = new List <PolarNode>();
             _debugObjectList = new List<PolarGridDebugObject>();
 
-            for (var r = 0; r < _gridManager.polarGirdRingsSettings.ringSettingsList.Count; r++)
+            for (var ring = 0; ring < _gridManager.polarGirdRingsSettings.ringSettingsList.Count; ring++)
             {
-                var thisRingSetting = _gridManager.polarGirdRingsSettings.ringSettingsList[r];
+                var thisRingSetting = _gridManager.polarGirdRingsSettings.ringSettingsList[ring];
                 var height = thisRingSetting.height;
+                var segmentsInGame = _gridManager.polarGirdRingsSettings.segmentsInGame;
                 
-                if (r == 0)
+                //centreNode
+                if (ring == 0)
                 {
-                    var polarGridPosition = new PolarGridPosition(r, 0, 0, height);
-                    var node = new PolarNode(this, r, polarGridPosition);
+                    var polarGridPosition = new PolarGridPosition(0, 0, 0, height);
+                    var node = new PolarNode(this, ring, polarGridPosition);
 
                     _gridNodes.Add(node);
                     
                     continue;
                 }
 
-                for (var fieldIndex = 0; fieldIndex < thisRingSetting.maxFields; fieldIndex++)
+                for (var fieldIndex = 0; fieldIndex < thisRingSetting.depth; fieldIndex++)
                 {
-                    for (var fi = 360 - _segmentsOutOfSix * 60f; fi < 360; fi += _fi)
+                    for (var fi = 360 - segmentsInGame * 60f; fi < 360; fi += thisRingSetting.fi)
                     {
-                        var polarGridPosition = new PolarGridPosition(r, fieldIndex, fi, height);
-                        var node = new PolarNode(this, r, polarGridPosition);
+                        var polarGridPosition = new PolarGridPosition(ring, fieldIndex, fi, height);
+                        var node = new PolarNode(this, ring, polarGridPosition);
 
                         _gridNodes.Add(node);
                     }
@@ -70,7 +66,7 @@ namespace _Scripts.Grid
             var y = polarGridPosition.H;
             var z = (polarGridPosition.R + previousFieldsCount) * Mathf.Sin(polarGridPosition.Fi * Mathf.Deg2Rad);
 
-            return new Vector3(x * _cellSize.x, y, z * _cellSize.y);
+            return new Vector3(x * (_cellSize.x - _densityFactor), y, z * (_cellSize.y - _densityFactor));
         }
 
         private int GetSumOfPreviousFields(PolarGridPosition polarGridPosition)
@@ -86,7 +82,7 @@ namespace _Scripts.Grid
             {
                 if (r <= polarGridPosition.Ring)
                 {
-                    fields += _gridManager.polarGirdRingsSettings.ringSettingsList[r - 1].maxFields;
+                    fields += _gridManager.polarGirdRingsSettings.ringSettingsList[r - 1].depth;
                 }
             }
             

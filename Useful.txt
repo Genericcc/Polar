@@ -1,0 +1,15 @@
+skróty:
+
+alt + up/down- na przesuwanie całych linijek
+
+ctrl + x - bez zaznaczania wycina całą linię
+
+ctrl + tab + up/down - do poruszania się po otwartych zakładkach
+
+ctrl + shift + v - historia ostatnich wycięć
+
+ctrl + mouse - jak F12
+
+shift + alt + up/down - edytowanie tych samych znaków w pionie (np enumy)
+
+ctrl + shift  + Z - cofnięcie cofnięcia

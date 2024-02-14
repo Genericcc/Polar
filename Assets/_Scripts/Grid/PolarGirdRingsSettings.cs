@@ -11,12 +11,15 @@ namespace _Scripts.Grid
     {
         [SerializeField]
         public List<RingSettings> ringSettingsList;
+
+        public int segmentsInGame;
     }
 
     [Serializable]
     public struct RingSettings
     {
-        public int maxFields;
+        public int depth;
+        public int fi;
         public int height;
     }
 }
