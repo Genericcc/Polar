@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using _Scripts.Extensions;
 using _Scripts.Managers;
 
 using UnityEngine;
@@ -168,6 +169,11 @@ namespace _Scripts.Grid
         public PolarNode GetPolarNode(PolarGridPosition polarGridPosition)
         {
             return GridNodes.FirstOrDefault(x => x.PolarGridPosition == polarGridPosition);
+        }
+
+        public PolarNode GetRandom()
+        {
+            return GridNodes.GetRandom();
         }
     }
 }

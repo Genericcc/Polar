@@ -6,6 +6,8 @@ using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
 using _Scripts.Zenject.Signals;
 
+using com.cyborgAssets.inspectorButtonPro;
+
 using UnityEngine;
 
 using Zenject;
@@ -18,7 +20,7 @@ namespace _Scripts.Managers
         private PolarGridManager _polarGridManager;
         private BuildingFactory _buildingFactory;
 
-        private List<Building> _buildings = new List<Building>();
+        public List<Building> buildings;
         
         [Inject]
         public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, BuildingFactory buildingFactory)
@@ -26,6 +28,8 @@ namespace _Scripts.Managers
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
             _buildingFactory = buildingFactory;
+            
+            buildings = new List<Building>();
         }
 
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
@@ -59,11 +63,22 @@ namespace _Scripts.Managers
         private void ConstructBuilding(List<PolarNode> buildingNodes, BuildingData buildingData)
         {
             var newBuilding = _buildingFactory.Create(buildingNodes, buildingData);
-            _buildings.Add(newBuilding);
+            buildings.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
             {
                 polarNode.SetBuilding(newBuilding);
+            }
+            
+            newBuilding.OnBuild();
+        }
+
+        [ProButton]
+        public void TestPlaceBuildings(int numberOfBuildings, BuildingData buildingData)
+        {
+            for (var i = 0; i < numberOfBuildings; i++)
+            {
+                _signalBus.Fire(new RequestBuildingPlacementSignal(buildingData, _polarGridManager.GetRandomNode()));
             }
         }
     }

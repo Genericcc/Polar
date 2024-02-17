@@ -1,8 +1,4 @@
-﻿using _Scripts.Zenject.Signals;
-
-using UnityEngine;
-
-using Zenject;
+﻿using Zenject;
 
 namespace _Scripts.Buildings
 {
@@ -18,7 +14,10 @@ namespace _Scripts.Buildings
         
         public override void OnBuild()
         {
-            //_signalBus.Fire(new BuildingBuiltSignal(this));
+        }
+
+        public override void OnDemolish()
+        {
         }
     }
 }

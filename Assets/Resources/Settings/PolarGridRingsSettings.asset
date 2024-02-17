@@ -15,14 +15,17 @@ MonoBehaviour:
   ringSettingsList:
   - depth: 1
     fi: 60
-    height: 2
+    height: 3
   - depth: 2
-    fi: 30
-    height: 2
+    fi: 45
+    height: 3
   - depth: 3
     fi: 15
-    height: 1
+    height: 2
   - depth: 5
     fi: 8
+    height: 1
+  - depth: 8
+    fi: 5
     height: 0
   segmentsInGame: 6

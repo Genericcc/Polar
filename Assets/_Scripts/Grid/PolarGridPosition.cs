@@ -55,6 +55,7 @@ namespace _Scripts.Grid
             return new PolarGridPosition(
                 a.Ring + b.Ring, 
                 a.D + b.D, 
+                //TODO może zaokrąglać? żeby nie było problemu z floating point number
                 a.Fi + b.Fi, 
                 a.H + b.H);
         }

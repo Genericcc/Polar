@@ -109,5 +109,9 @@ namespace _Scripts.Managers
 
         //public PolarGridPosition GetGridPosition(Vector3 worldPosition) => _polarGridSystem.GetPolarPosition(worldPosition);
 
+        public PolarNode GetRandomNode()
+        {
+            return _polarGridSystem.GetRandom();
+        }
     }
 }

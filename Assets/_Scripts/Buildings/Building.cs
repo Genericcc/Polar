@@ -14,7 +14,6 @@ namespace _Scripts.Buildings
         public List<PolarNode> polarNodes;
 
         public string Name => buildingData.ToString();
-        public abstract void OnBuild();
         
         public void Initialise(List<PolarNode> newPolarNodes, BuildingData newBuildingData)
         {
@@ -58,5 +57,7 @@ namespace _Scripts.Buildings
             return newPos;
         }
 
+        public abstract void OnBuild();
+        public abstract void OnDemolish();
     }
 }
