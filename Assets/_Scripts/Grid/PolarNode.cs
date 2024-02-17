@@ -1,7 +1,4 @@
-using System;
-
 using _Scripts.Buildings;
-using _Scripts.Buildings.BuildingsData;
 using _Scripts.Managers;
 using _Scripts.Zenject.Signals;
 
@@ -15,11 +12,17 @@ namespace _Scripts.Grid
 {
     public class PolarNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
+        [SerializeField]
         public PolarGridPosition PolarGridPosition { get; private set; }
+        
+        [SerializeField]
         public Vector3 WorldPosition { get; private set; }
+        
+        [SerializeField]
         public Building Building { get; private set; }
 
-        private RingSettings _parentRingSettings;
+        [SerializeField]
+        public RingSettings ParentRingSettings { get; private set; }
         
         [SerializeField]
         private TextMeshPro textMeshPro;
@@ -33,6 +36,8 @@ namespace _Scripts.Grid
         [SerializeField]
         private Material[] highlightMaterials;
 
+        public bool IsFree => Building == null;
+
         private SignalBus _signalBus;
         private PolarGridSystem _polarGridSystem;
         private PolarGridManager _polarGridManager;
@@ -42,22 +47,21 @@ namespace _Scripts.Grid
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
+            
+            //Chujowo ustawiane
+            transform.SetParent(polarGridManager.transform);
         }
 
-        public void Initialise(
-            PolarGridSystem polarGridSystem, PolarGridPosition polarGridPosition, RingSettings ringSettings)
+        public void Initialise(PolarGridSystem polarGridSystem, PolarGridPosition polarGridPosition, RingSettings ringSettings)
         {
             _polarGridSystem = polarGridSystem;
-            _parentRingSettings = ringSettings;
+            ParentRingSettings = ringSettings;
             
             PolarGridPosition = polarGridPosition;
 
-            WorldPosition = _polarGridSystem.GetWorldPosition(PolarGridPosition);
-        }
-
-        private void Start()
-        {
-            //textMeshPro.text = _polarNode?.ToString();
+            WorldPosition = _polarGridSystem.PolarToWorld(PolarGridPosition);
+            
+            textMeshPro.text = ToString();
         }
 
         public void SetBuilding(Building building)
@@ -68,11 +72,6 @@ namespace _Scripts.Grid
         public void ClearBuilding()
         {
             Building = null;
-        }
-
-        public bool HasBuilding()
-        {
-            return Building != null;
         }
 
         public override string ToString()
@@ -90,13 +89,10 @@ namespace _Scripts.Grid
             meshRenderer.materials = defaultMaterial;
         }
         
-        //Test, potem usunąć
+        //Test, potem robić z BuildingManagera?
         public void OnPointerClick(PointerEventData eventData)
         {
-            //zmienić na buildingData
-            var nodesToBuildOn = _polarGridManager.GetNeighbours(this, BuildingNodesOccupationType.Space2X2);
-            
-            _signalBus.Fire(new RequestBuildingPlacementSignal(null, nodesToBuildOn));
+            _signalBus.Fire(new RequestBuildingPlacementSignal(null, this));
         }
 
         // public PolarGridPosition GetHorizontalNeighbourPosition(bool isToTheRight)

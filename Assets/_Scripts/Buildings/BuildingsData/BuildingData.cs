@@ -10,15 +10,14 @@ namespace _Scripts.Buildings.BuildingsData
     {
         public List<ResourceAmount> resourceCost;
         
-        public BuildingNodesOccupationType buildingNodesOccupationType;
+        public BuildingSizeType buildingSizeType;
     }
 
-    public enum BuildingNodesOccupationType
+    public enum BuildingSizeType
     {
-        Space2X2,
-        Space2X3,
-        Space3X2,
-        Space3X3,
-        
+        Size2X2,
+        Size2X3,
+        Size3X2,
+        Size3X3,
     }
 }

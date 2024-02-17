@@ -25,7 +25,7 @@ namespace _Scripts.Grid
         {
             var node = _container.InstantiatePrefabForComponent<PolarNode>(_prefab);
             
-            var newPosition = polarGridSystem.GetWorldPosition(polarGridPosition);
+            var newPosition = polarGridSystem.PolarToWorld(polarGridPosition);
             var newRotation = Quaternion.LookRotation(newPosition - new Vector3(0, newPosition.y, 0));
 
             node.transform.position = newPosition;

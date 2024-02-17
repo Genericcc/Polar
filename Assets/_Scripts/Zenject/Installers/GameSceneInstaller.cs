@@ -52,7 +52,7 @@ namespace _Scripts.Zenject.Installers
         {
             Container.DeclareSignal<RequestBuildingPlacementSignal>().OptionalSubscriber();
             Container.BindSignal<RequestBuildingPlacementSignal>()
-                     .ToMethod<BuildingsManager>(x => x.OnBuildNewBuildingSignal)
+                     .ToMethod<BuildingsManager>(x => x.OnRequestBuildingPlacementSignal)
                      .FromResolveAll();
         }
     }

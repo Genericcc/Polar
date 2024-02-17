@@ -47,30 +47,40 @@ namespace _Scripts.Managers
             }
         }
 
-        public List<PolarNode> GetNeighbours(PolarNode startingNode, BuildingNodesOccupationType spaceOccupationType)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="originNode"></param>
+        /// <param name="spaceOccupationType"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public bool TryGetNodesForBuilding(PolarNode originNode, BuildingSizeType spaceOccupationType, out List<PolarNode> nodes)
         {
-            var neighbours = new List<PolarNode>();
-            
-            switch (spaceOccupationType)
+            nodes = new List<PolarNode>();
+
+            var checkShifts = spaceOccupationType switch
             {
-                case BuildingNodesOccupationType.Space2X2:
-                    neighbours = _polarGridSystem.GetNodesForBuilding(startingNode, 2, 2);
-                    break;
+                BuildingSizeType.Size2X2 => (2, 2),
+                BuildingSizeType.Size2X3 => (2, 3),
+                BuildingSizeType.Size3X2 => (3, 2),
+                BuildingSizeType.Size3X3 => (3, 3),
+                _ => (69, 69)
+            };
 
-                case BuildingNodesOccupationType.Space2X3:
-                    break;
-
-                case BuildingNodesOccupationType.Space3X2:
-                    break;
-
-                case BuildingNodesOccupationType.Space3X3:
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(spaceOccupationType), spaceOccupationType, null);
+            if (_polarGridSystem.TryGetNodesForBuilding(originNode, checkShifts, out var results))
+            {
+                nodes = results;
+                return true;
             }
-
-            return neighbours;
+            else
+            {
+                return false;
+            }
+        }
+        
+        public Vector3 PolarToWorld(PolarGridPosition polarGridPosition)
+        {
+            return _polarGridSystem.PolarToWorld(polarGridPosition);
         }
         
         // public void AddUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)

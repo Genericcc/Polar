@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+
 using _Scripts.Buildings;
 using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
@@ -26,17 +28,40 @@ namespace _Scripts.Managers
             _buildingFactory = buildingFactory;
         }
 
-        public void OnBuildNewBuildingSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
+        public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
         {
-            ConstructBuilding(requestBuildingPlacementSignal.PolarNodes, requestBuildingPlacementSignal.BuildingData);
+            var originBuildNode = requestBuildingPlacementSignal.OriginBuildNode;
+            var buildingSize = BuildingSizeType.Size2X2; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
+
+            if (!_polarGridManager.TryGetNodesForBuilding(originBuildNode, buildingSize, out var nodesToBuildOn))
+            {
+                return;
+            }
+
+            if (!CanBuildOnNodes(nodesToBuildOn))
+            {
+                return;
+            }
+            
+            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.BuildingData);
         }
 
-        private void ConstructBuilding(List<PolarNode> polarNodes, BuildingData buildingData)
+        private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
         {
-            var newBuilding = _buildingFactory.Create(polarNodes, buildingData);
+            if (buildingNodes.All(x => x.IsFree))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void ConstructBuilding(List<PolarNode> buildingNodes, BuildingData buildingData)
+        {
+            var newBuilding = _buildingFactory.Create(buildingNodes, buildingData);
             _buildings.Add(newBuilding);
 
-            foreach (var polarNode in polarNodes)
+            foreach (var polarNode in buildingNodes)
             {
                 polarNode.SetBuilding(newBuilding);
             }

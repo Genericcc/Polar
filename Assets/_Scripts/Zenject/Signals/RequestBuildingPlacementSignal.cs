@@ -8,12 +8,12 @@ namespace _Scripts.Zenject.Signals
     public class RequestBuildingPlacementSignal
     {
         public readonly BuildingData BuildingData;
-        public readonly List<PolarNode> PolarNodes;
+        public readonly PolarNode OriginBuildNode;
 
-        public RequestBuildingPlacementSignal(BuildingData buildingData, List<PolarNode> polarNodes)
+        public RequestBuildingPlacementSignal(BuildingData buildingData, PolarNode originBuildNode)
         {
             BuildingData = buildingData;
-            PolarNodes = polarNodes;
+            OriginBuildNode = originBuildNode;
         }
     }
 }
