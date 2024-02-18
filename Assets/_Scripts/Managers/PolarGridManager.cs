@@ -46,14 +46,7 @@ namespace _Scripts.Managers
                 }
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="originNode"></param>
-        /// <param name="spaceOccupationType"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        
         public bool TryGetNodesForBuilding(PolarNode originNode, BuildingSizeType spaceOccupationType, out List<PolarNode> nodes)
         {
             nodes = new List<PolarNode>();

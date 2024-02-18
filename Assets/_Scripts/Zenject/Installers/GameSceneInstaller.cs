@@ -30,13 +30,13 @@ namespace _Scripts.Zenject.Installers
             Container.BindFactory<PolarGridSystem, PolarGridPosition, RingSettings, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
-                     .FromResource("Prefabs/World/PolarNodePrefab")
+                     .FromResource("Prefabs/Worlds/PolarGrids/PolarNodePrefab")
                      .WhenInjectedInto<CustomPolarNodeFactory>();
             
             Container.BindFactory<List<PolarNode>, BuildingData, Building, BuildingFactory>()
                      .FromFactory<CustomBuildingFactory>();
             Container.Bind<Building>()
-                     .FromResource("Prefabs/World/HouseBuildingPrefab")
+                     .FromResource("Prefabs/Worlds/Buildings/HouseBuildingPrefab")
                      .WhenInjectedInto<CustomBuildingFactory>();
             
             

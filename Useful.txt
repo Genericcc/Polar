@@ -13,3 +13,5 @@ ctrl + mouse - jak F12
 shift + alt + up/down - edytowanie tych samych znaków w pionie (np enumy)
 
 ctrl + shift  + Z - cofnięcie cofnięcia
+
+alt + enter - poprawienie nawiasów
