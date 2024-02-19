@@ -22,7 +22,7 @@ namespace _Scripts.Zenject.Installers
                      .NonLazy();
 
             Container.Bind<BuildingsManager>()
-                     .FromNewComponentOnNewGameObject()
+                     .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
             
