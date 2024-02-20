@@ -25,7 +25,10 @@ MonoBehaviour:
   - depth: 5
     fi: 8
     height: 1
-  - depth: 8
+  - depth: 15
     fi: 5
     height: 0
+  - depth: 20
+    fi: 4
+    height: -1
   segmentsInGame: 6

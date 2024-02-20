@@ -11,7 +11,6 @@ namespace _Scripts.Managers
 {
     public class PolarGridManager : MonoBehaviour
     {
-        [SerializeField] private Transform gridDebugObjectPrefab;
         [SerializeField] private Vector2 cellSize = new (5, 5);
         [SerializeField] private float densityFactor = 0f;
         

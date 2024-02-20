@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,6 +8,9 @@ using _Scripts.Grid;
 using _Scripts.Zenject.Signals;
 
 using com.cyborgAssets.inspectorButtonPro;
+
+using Unity.Entities;
+using Unity.Mathematics;
 
 using UnityEngine;
 
@@ -21,7 +25,15 @@ namespace _Scripts.Managers
         private BuildingFactory _buildingFactory;
 
         public List<Building> buildings;
-        
+
+        public BuildingData testBuildingData;
+
+        private Entity Entity;
+        private World World;
+        private bool wasRun;
+
+        public int numberOfBuildings;
+
         [Inject]
         public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, BuildingFactory buildingFactory)
         {
@@ -30,6 +42,32 @@ namespace _Scripts.Managers
             _buildingFactory = buildingFactory;
             
             buildings = new List<Building>();
+            
+            World = World.DefaultGameObjectInjectionWorld;
+            
+            if(World.IsCreated && !World.EntityManager.Exists(Entity))
+            {
+                Entity = World.EntityManager.CreateEntity(typeof(BuildingManagerTag));
+
+                World.EntityManager.AddBuffer<BuildingPositionBuffer>(Entity);
+            }
+        }
+
+        private void Start()
+        {
+            TestPlaceBuildings(numberOfBuildings, testBuildingData);
+        }
+
+        private void LateUpdate()
+        {
+            if (wasRun)
+            {
+                return;
+            }
+
+            wasRun = true;
+            
+            World.EntityManager.AddComponent<SomethingBuiltTag>(Entity);
         }
 
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
@@ -71,6 +109,12 @@ namespace _Scripts.Managers
             }
             
             newBuilding.OnBuild();
+            
+            //DOTS testing
+            World.EntityManager.GetBuffer<BuildingPositionBuffer>(Entity).Add(new BuildingPositionBuffer
+            {
+                Value = newBuilding.transform.position, 
+            });
         }
 
         [ProButton]
@@ -81,5 +125,18 @@ namespace _Scripts.Managers
                 _signalBus.Fire(new RequestBuildingPlacementSignal(buildingData, _polarGridManager.GetRandomNode()));
             }
         }
+    }
+    
+    public struct BuildingPositionBuffer : IBufferElementData
+    {
+        public float3 Value;
+    }
+    
+    public struct BuildingManagerTag : IComponentData
+    {
+    }
+    
+    public struct SomethingBuiltTag : IComponentData
+    {
     }
 }
