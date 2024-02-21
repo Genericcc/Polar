@@ -11,19 +11,27 @@ namespace _Scripts.Managers
 {
     public class PolarGridManager : MonoBehaviour
     {
-        [SerializeField] private Vector2 cellSize = new (5, 5);
+        [SerializeField] private (int x, int y) cellSize = new (5, 5);
         [SerializeField] private float densityFactor = 0f;
         
         private PolarNodeFactory _polarNodeFactory;
-        private PolarGirdRingsSettings _polarGirdRingsSettings;
+        
+        [SerializeField]
+        private PolarGirdRingsSettings polarGirdRingsSettings;
 
-        private PolarGridSystem _polarGridSystem;
+        private PolarGrid _polarGrid;
+
+        public bool Initalised { get; set; }
         
         [Inject]
-        public void Construct(PolarNodeFactory polarNodeFactory, PolarGirdRingsSettings polarGirdRingsSettings)
+        public void Construct(PolarNodeFactory polarNodeFactory, PolarGirdRingsSettings injectedPolarGirdRingsSettings)
         {
             _polarNodeFactory = polarNodeFactory;
-            _polarGirdRingsSettings = polarGirdRingsSettings;
+
+            if (polarGirdRingsSettings == null)
+            {
+                polarGirdRingsSettings = injectedPolarGirdRingsSettings;
+            }
             
             CreateGrid();
         }
@@ -32,12 +40,15 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGridSystem = new PolarGridSystem(_polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor, _polarNodeFactory);
+            _polarGrid = new PolarGrid(polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor);
+            _polarGrid.Populate(_polarNodeFactory);
+
+            Initalised = true;
         }
 
         private void ClearGrid()
         {
-            if (_polarGridSystem != null)
+            if (_polarGrid != null)
             {
                 for (var i = transform.childCount - 1; i >= 0; i--)
                 {
@@ -59,7 +70,7 @@ namespace _Scripts.Managers
                 _ => (69, 69)
             };
 
-            if (_polarGridSystem.TryGetNodesForBuilding(originNode, checkShifts, out var results))
+            if (_polarGrid.TryGetNodesForBuilding(originNode, checkShifts, out var results))
             {
                 nodes = results;
                 return true;
@@ -70,9 +81,19 @@ namespace _Scripts.Managers
             }
         }
         
-        public Vector3 PolarToWorld(PolarGridPosition polarGridPosition)
+        public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition)
         {
-            return _polarGridSystem.PolarToWorld(polarGridPosition);
+            return _polarGrid.GetWorldFromPolar(polarGridPosition);
+        }
+
+        public PolarGridPosition GetWorldToPolar(Vector3 worldPosition)
+        {
+            return _polarGrid.GetPolarFromWorld(worldPosition);
+        }
+
+        public PolarNode GetRandomNode()
+        {
+            return _polarGrid.GetRandom();
         }
         
         // public void AddUnitAtGridPosition(PolarGridPosition polarGridPosition, Unit unit)
@@ -100,10 +121,5 @@ namespace _Scripts.Managers
         // }
 
         //public PolarGridPosition GetGridPosition(Vector3 worldPosition) => _polarGridSystem.GetPolarPosition(worldPosition);
-
-        public PolarNode GetRandomNode()
-        {
-            return _polarGridSystem.GetRandom();
-        }
     }
 }

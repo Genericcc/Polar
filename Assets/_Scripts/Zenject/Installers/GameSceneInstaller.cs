@@ -27,7 +27,7 @@ namespace _Scripts.Zenject.Installers
                      .NonLazy();
             
             
-            Container.BindFactory<PolarGridSystem, PolarGridPosition, RingSettings, PolarNode, PolarNodeFactory>()
+            Container.BindFactory<PolarGridPosition, Ring, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
                      .FromResource("Prefabs/Worlds/PolarGrids/PolarNodePrefab")

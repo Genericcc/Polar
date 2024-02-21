@@ -67,7 +67,10 @@ namespace _Scripts.Managers
 
             wasRun = true;
             
-            World.EntityManager.AddComponent<SomethingBuiltTag>(Entity);
+            if (buildings.Any())
+            {
+                World.EntityManager.AddComponent<SomethingBuiltTag>(Entity);
+            }
         }
 
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)

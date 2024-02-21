@@ -44,13 +44,13 @@ namespace _Scripts
             }
 
 
-            var newPolarGridPosition = new PolarGridPosition(0, 0, 0, 0);//GridManager.Instance.GetGridPosition(transform.position);
-            if (newPolarGridPosition != polarGridPosition)
-            {
-                // Unit changed Grid Position
-                //GridManager.Instance.UnitMovedGridPosition(this, polarGridPosition, newPolarGridPosition);
-                polarGridPosition = newPolarGridPosition;
-            }
+            // var newPolarGridPosition = new PolarGridPosition(0, 0, 0, 0);//GridManager.Instance.GetGridPosition(transform.position);
+            // if (newPolarGridPosition != polarGridPosition)
+            // {
+            //     // Unit changed Grid Position
+            //     //GridManager.Instance.UnitMovedGridPosition(this, polarGridPosition, newPolarGridPosition);
+            //     polarGridPosition = newPolarGridPosition;
+            // }
         }
 
         public void Move(Vector3 targetPosition)

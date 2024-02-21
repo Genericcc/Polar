@@ -14,16 +14,29 @@ namespace _Scripts.Grid
     {
         [SerializeField]
         public PolarGridPosition PolarGridPosition { get; private set; }
+
+        [SerializeField]
+        public Ring ParentRing { get; set; }
         
         [SerializeField]
-        public Vector3 WorldPosition { get; private set; }
-        
+        public Vector3 WorldPosition
+        {
+            get
+            {
+                var value = _polarGridManager.GetWorldFromPolar(PolarGridPosition);
+                WorldPosition = value;
+                return value;
+            }
+
+            set
+            {
+                WorldPosition = value;
+            }
+        }
+
         [SerializeField]
         public Building Building { get; private set; }
 
-        [SerializeField]
-        public RingSettings ParentRingSettings { get; private set; }
-        
         [SerializeField]
         private TextMeshPro textMeshPro;
         
@@ -39,7 +52,6 @@ namespace _Scripts.Grid
         public bool IsFree => Building == null;
 
         private SignalBus _signalBus;
-        private PolarGridSystem _polarGridSystem;
         private PolarGridManager _polarGridManager;
 
         [Inject]
@@ -47,21 +59,26 @@ namespace _Scripts.Grid
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
+
+            textMeshPro.text = ToString();
             
             //Chujowo ustawiane
             transform.SetParent(polarGridManager.transform);
         }
 
-        public void Initialise(PolarGridSystem polarGridSystem, PolarGridPosition polarGridPosition, RingSettings ringSettings)
+        public void Initialise(PolarGridPosition polarGridPosition, Ring ring)
         {
-            _polarGridSystem = polarGridSystem;
-            ParentRingSettings = ringSettings;
-            
+            ParentRing = ring;
             PolarGridPosition = polarGridPosition;
+        }
 
-            WorldPosition = _polarGridSystem.PolarToWorld(PolarGridPosition);
-            
-            textMeshPro.text = ToString();
+        public void Set()
+        {
+            var newPosition = _polarGridManager.GetWorldFromPolar(PolarGridPosition);
+            var newRotation = Quaternion.LookRotation(newPosition - new Vector3(0, newPosition.y, 0));
+
+            transform.position = newPosition;
+            transform.rotation = newRotation;
         }
 
         public void SetBuilding(Building building)
