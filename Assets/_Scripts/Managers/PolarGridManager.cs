@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 
 using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
+
 using UnityEngine;
 
 using Zenject;
@@ -11,8 +11,12 @@ namespace _Scripts.Managers
 {
     public class PolarGridManager : MonoBehaviour
     {
-        [SerializeField] private (int x, int y) cellSize = new (5, 5);
-        [SerializeField] private float densityFactor = 0f;
+        [SerializeField]
+        [Range(0.1f, 5f)]
+        private float columnHeight;
+
+        [InspectorButton("CreateGrid")]
+        public bool rebuild;
         
         private PolarNodeFactory _polarNodeFactory;
         
@@ -40,7 +44,7 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGrid = new PolarGrid(polarGirdRingsSettings, (cellSize.x, cellSize.y), densityFactor);
+            _polarGrid = new PolarGrid(polarGirdRingsSettings, columnHeight);
             _polarGrid.Populate(_polarNodeFactory);
 
             Initalised = true;
@@ -86,7 +90,7 @@ namespace _Scripts.Managers
             return _polarGrid.GetWorldFromPolar(polarGridPosition);
         }
 
-        public PolarGridPosition GetWorldToPolar(Vector3 worldPosition)
+        public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition)
         {
             return _polarGrid.GetPolarFromWorld(worldPosition);
         }

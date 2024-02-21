@@ -5,12 +5,14 @@ namespace _Scripts.Grid
 {
     public struct PolarGridPosition : IEquatable<PolarGridPosition>
     {
+        public int ParentRingIndex;
         public int D;
         public int Fi;
         public int H;
 
-        public PolarGridPosition(int d, int fi, int h)
+        public PolarGridPosition(int parentRingIndex, int d, int fi, int h)
         {
+            ParentRingIndex = parentRingIndex;
             D = d;
             Fi = fi;
             H = h;
@@ -19,6 +21,7 @@ namespace _Scripts.Grid
         public override bool Equals(object obj)
         {
             return obj is PolarGridPosition position &&
+                   ParentRingIndex == position.ParentRingIndex &&
                    D == position.D &&
                    Fi == position.Fi &&
                    H == position.H;
@@ -31,17 +34,18 @@ namespace _Scripts.Grid
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(D, Fi, H);
+            return HashCode.Combine(ParentRingIndex, D, Fi, H);
         }
 
         public override string ToString()
         {
-            return $"r:{D}; fi:{Fi}; h:{H}";
+            return $"R:{ParentRingIndex}; d:{D}; fi:{Fi}; h:{H}";
         }
 
         public static bool operator ==(PolarGridPosition a, PolarGridPosition b)
         {
-            return a.D == b.D &&
+            return a.ParentRingIndex == b.ParentRingIndex &&
+                   a.D == b.D &&
                    a.Fi == b.Fi &&
                    a.H == b.H;
         }
@@ -49,6 +53,7 @@ namespace _Scripts.Grid
         public static PolarGridPosition operator +(PolarGridPosition a, PolarGridPosition b)
         {
             return new PolarGridPosition(
+                a.ParentRingIndex + b.ParentRingIndex, 
                 a.D + b.D, 
                 a.Fi + b.Fi, 
                 a.H + b.H);

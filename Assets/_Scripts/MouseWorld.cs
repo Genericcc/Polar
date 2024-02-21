@@ -36,10 +36,10 @@ namespace _Scripts
             
             mouseMarker.position = GetPosition();
             
-            // var worldPos = GetPosition();
-            // var polarPos = polarGridManager.GetWorldToPolar(worldPos);
-            //
-            // Debug.Log(polarPos);
+            var worldPos = GetPosition();
+            var polarPos = polarGridManager.GetPolarFromWorld(worldPos);
+            
+            Debug.Log(polarPos);
         }
 
         public static Vector3 GetPosition()

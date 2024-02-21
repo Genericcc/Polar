@@ -59,9 +59,6 @@ namespace _Scripts.Grid
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
-
-            textMeshPro.text = ToString();
-            
             //Chujowo ustawiane
             transform.SetParent(polarGridManager.transform);
         }
@@ -76,6 +73,8 @@ namespace _Scripts.Grid
         {
             var newPosition = _polarGridManager.GetWorldFromPolar(PolarGridPosition);
             var newRotation = Quaternion.LookRotation(newPosition - new Vector3(0, newPosition.y, 0));
+
+            textMeshPro.text = ToString();
 
             transform.position = newPosition;
             transform.rotation = newRotation;
