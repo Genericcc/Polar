@@ -15,12 +15,11 @@ namespace _Scripts._Game.Structures.StructuresData
         public StructureSizeType structureSizeType;
     }
 
-    [Serializable]
     public enum StructureType
     {
         House,
         Road,
-        Wall
+        Wall,
     }
 
     [Serializable]

@@ -81,6 +81,11 @@ namespace _Scripts._Game.Managers
 
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
         {
+            if (currentSelectedStructureData == null)
+            {
+                return;
+            }
+            
             var originBuildNode = requestBuildingPlacementSignal.OriginBuildNode;
             var buildingSize = currentSelectedStructureData.structureSizeType; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
 
@@ -135,10 +140,9 @@ namespace _Scripts._Game.Managers
             }
         }
 
-        public void Select(StructureType structureType)
+        public void SelectStructureToBuild(StructureData structureData)
         {
-            var selectedStructure = _structureDictionary.Get(structureType);
-            
+            currentSelectedStructureData = structureData;
         }
     }
     

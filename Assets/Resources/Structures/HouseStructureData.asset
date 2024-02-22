@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2cf22e9e390740398add3c35d4fe2d37, type: 3}
-  m_Name: HouseBuildingData
+  m_Name: HouseStructureData
   m_EditorClassIdentifier: 
   workers: 0
