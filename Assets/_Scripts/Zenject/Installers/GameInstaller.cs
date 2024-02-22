@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
+using _Scripts._Game.Grid;
+using _Scripts._Game.Managers;
+using _Scripts._Game.Structures;
+using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Data.Dictionaries;
-using _Scripts.Grid;
-using _Scripts.Managers;
-using _Scripts.Structures;
-using _Scripts.Structures.StructuresData;
 using _Scripts.Zenject.Signals;
 
 using Zenject;
@@ -51,7 +51,7 @@ namespace _Scripts.Zenject.Installers
                      .WhenInjectedInto<CustomStructureFactory>();
 
             Container.Bind<StructureDictionary>()
-                     .FromNewScriptableObjectResource("Settings/StructureDictionary")
+                     .FromNewScriptableObjectResource("Dictionaries/StructureDictionary")
                      .AsSingle()
                      .NonLazy();
 

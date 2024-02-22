@@ -1,6 +1,6 @@
 using System;
 
-using _Scripts.Managers;
+using _Scripts._Game.Managers;
 
 using UnityEngine;
 

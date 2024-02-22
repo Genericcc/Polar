@@ -6,7 +6,6 @@ namespace _Scripts.Zenject.Installers
     {
         public override void InstallBindings()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

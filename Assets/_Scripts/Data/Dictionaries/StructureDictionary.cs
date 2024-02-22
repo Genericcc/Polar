@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using _Scripts.Structures.StructuresData;
+using _Scripts._Game.Structures.StructuresData;
 
 using UnityEngine;
 

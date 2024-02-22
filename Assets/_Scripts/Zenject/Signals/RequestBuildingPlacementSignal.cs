@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-using _Scripts.Grid;
-using _Scripts.Structures.StructuresData;
+using _Scripts._Game.Grid;
+using _Scripts._Game.Structures.StructuresData;
 
 namespace _Scripts.Zenject.Signals
 {
