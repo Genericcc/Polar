@@ -65,8 +65,11 @@ namespace _Scripts._Game.Managers
         {
             nodes = new List<PolarNode>();
 
-            var checkShifts = spaceOccupationType switch
+            (int, int) searchRange = spaceOccupationType switch
             {
+                StructureSizeType.Size1X1 => (1, 1),
+                StructureSizeType.Size1X2 => (1, 2),
+                StructureSizeType.Size2X1 => (2, 1),
                 StructureSizeType.Size2X2 => (2, 2),
                 StructureSizeType.Size2X3 => (2, 3),
                 StructureSizeType.Size3X2 => (3, 2),
@@ -74,7 +77,7 @@ namespace _Scripts._Game.Managers
                 _ => (69, 69)
             };
 
-            if (_polarGrid.TryGetNodesForBuilding(originNode, checkShifts, out var results))
+            if (_polarGrid.TryGetNodesForBuilding(originNode, searchRange, out var results))
             {
                 nodes = results;
                 return true;

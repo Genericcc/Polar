@@ -26,6 +26,9 @@ namespace _Scripts._Game.Structures.StructuresData
     [Serializable]
     public enum StructureSizeType
     {
+        Size1X1,
+        Size1X2,
+        Size2X1,
         Size2X2,
         Size2X3,
         Size3X2,

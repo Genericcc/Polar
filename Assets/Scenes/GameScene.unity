@@ -306,7 +306,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29687124, y: -0.15052918, z: 0.04745015, w: 0.9417839}
+  m_LocalRotation: {x: 0.29687124, y: -0.15052915, z: 0.047450136, w: 0.9417839}
   m_LocalPosition: {x: 6.1370497, y: 7, z: -7.541789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -660,8 +660,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b91c0a015b54174fb51d5c40ec6dc30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: {x: 2, y: 2}
-  densityFactor: 0.5
+  columnHeight: 2
+  rebuild: 0
+  polarGridRingsSettings: {fileID: 0}
 --- !u!4 &740475727
 Transform:
   m_ObjectHideFlags: 0
@@ -743,7 +744,7 @@ PrefabInstance:
     - target: {fileID: 5217124458428289660, guid: 408d3011e160e894a8204808c2e03e41,
         type: 3}
       propertyPath: m_Name
-      value: BuildingsManager
+      value: StructureManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -994,7 +995,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285166486}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.29687124, y: -0.15052918, z: 0.04745015, w: 0.9417839}
+  m_LocalRotation: {x: 0.29687124, y: -0.15052915, z: 0.047450136, w: 0.9417839}
   m_LocalPosition: {x: 6.1370497, y: 7, z: -7.541789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1052,6 +1053,9 @@ MonoBehaviour:
   mousePlaneLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  follow: 0
+  mouseMarker: {fileID: 0}
+  polarGridManager: {fileID: 0}
 --- !u!4 &1551957941
 Transform:
   m_ObjectHideFlags: 0
@@ -1195,7 +1199,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1879260620}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fe55cb9b4e74e59bdb5823b175a5cd1, type: 3}
+  m_Script: {fileID: 11500000, guid: 879e3b5907b9fba44a3554aab689b5d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1940850546

@@ -34,7 +34,7 @@ namespace _Scripts._Game.Managers
         public StructureData testStructureData;
         
         [SerializeField]
-        private StructureData selectedStructureData;
+        private StructureData currentSelectedStructureData;
 
         private StructureDictionary _structureDictionary;
 
@@ -82,7 +82,7 @@ namespace _Scripts._Game.Managers
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
         {
             var originBuildNode = requestBuildingPlacementSignal.OriginBuildNode;
-            var buildingSize = StructureSizeType.Size2X2; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
+            var buildingSize = currentSelectedStructureData.structureSizeType; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
 
             if (!_polarGridManager.TryGetNodesForBuilding(originBuildNode, buildingSize, out var nodesToBuildOn))
             {
