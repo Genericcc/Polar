@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace _Scripts.Grid
 {
-    [CreateAssetMenu(menuName = "Create PolarGirdRingsSettings", fileName = "PolarGirdRingsSettings", order = 0)]
+    [CreateAssetMenu(menuName = "Create PolarGridRingsSettings", fileName = "PolarGridRingsSettings", order = 0)]
     [Serializable]
-    public class PolarGirdRingsSettings : ScriptableObject, ISerializationCallbackReceiver
+    public class PolarGridRingsSettings : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField]
         public List<RingSettings> ringSettingsList;

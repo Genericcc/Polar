@@ -13,7 +13,7 @@ namespace _Scripts.Grid
         public List<Ring> Rings;
         public Dictionary<Ring, (float minBound, float maxBound)> RingsBounds;
 
-        private readonly PolarGirdRingsSettings _polarGirdRingsSettings;
+        private readonly PolarGridRingsSettings _polarGridRingsSettings;
         private readonly float _columnHeight;
 
         private const int FullCircle = 360;
@@ -21,13 +21,13 @@ namespace _Scripts.Grid
         //TODO wyczyścić / refaktor 
         //TODO obrócić spawn nodów o 90 stopni żeby pasował do myszki, albo obczić czemu polar z myszki jest obrócony o 90 stopni
         // Rings można zredukować?
-        public PolarGrid(PolarGirdRingsSettings polarGirdRingsSettings, float columnHeight)
+        public PolarGrid(PolarGridRingsSettings polarGridRingsSettings, float columnHeight)
         {
             GridNodes = new List <PolarNode>();
             Rings = new List<Ring>();
             RingsBounds = new Dictionary<Ring, (float, float)>();
             
-            _polarGirdRingsSettings = polarGirdRingsSettings;
+            _polarGridRingsSettings = polarGridRingsSettings;
 
             _columnHeight = columnHeight;
         }
@@ -37,12 +37,12 @@ namespace _Scripts.Grid
             var startDistanceToWorldOrigin = 0f;
             var endDistanceToWorldOrigin = 0f;
 
-            for (var ringIndex = 0; ringIndex < _polarGirdRingsSettings.ringSettingsList.Count; ringIndex++)
+            for (var ringIndex = 0; ringIndex < _polarGridRingsSettings.ringSettingsList.Count; ringIndex++)
             {
                 var ringFactory = new RingFactory();
                 var ring = ringFactory.Create(
                     ringIndex,
-                    _polarGirdRingsSettings.ringSettingsList[ringIndex],
+                    _polarGridRingsSettings.ringSettingsList[ringIndex],
                     endDistanceToWorldOrigin,
                     polarNodeFactory);
                 
@@ -81,11 +81,11 @@ namespace _Scripts.Grid
                 return 0;
             }
             
-            for (var r = 1; r < _polarGirdRingsSettings.ringSettingsList.Count; r++)
+            for (var r = 1; r < _polarGridRingsSettings.ringSettingsList.Count; r++)
             {
                 if (r <= ringIndex)
                 {
-                    fields += _polarGirdRingsSettings.ringSettingsList[r - 1].depth;
+                    fields += _polarGridRingsSettings.ringSettingsList[r - 1].depth;
                 }
             }
             

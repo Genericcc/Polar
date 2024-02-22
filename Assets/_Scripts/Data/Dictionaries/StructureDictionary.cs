@@ -1,6 +1,21 @@
-﻿namespace _Scripts.Data.Dictionaries
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using _Scripts.Structures.StructuresData;
+
+using UnityEngine;
+
+namespace _Scripts.Data.Dictionaries
 {
-    public class StructureDictionary
+    [CreateAssetMenu(menuName = "Data/Dictionaries/StructureDictionary", fileName = "StructureDictionary", order = 0)]
+    public class StructureDictionary : ScriptableObject
     {
+        [SerializeField]
+        public List<StructureData> structures;
+
+        public StructureData Get(StructureType structureType)
+        {
+            return structures.FirstOrDefault(x => x.structureType == structureType);
+        }
     }
 }

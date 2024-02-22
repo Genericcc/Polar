@@ -1,6 +1,6 @@
 namespace _Scripts.Structures
 {
-    public interface IBuilding
+    public interface IStructure
     {
         void OnBuild();
         void OnDemolish();

@@ -21,20 +21,20 @@ namespace _Scripts.Managers
         private PolarNodeFactory _polarNodeFactory;
         
         [SerializeField]
-        private PolarGirdRingsSettings polarGirdRingsSettings;
+        private PolarGridRingsSettings polarGridRingsSettings;
 
         private PolarGrid _polarGrid;
 
         public bool Initalised { get; set; }
         
         [Inject]
-        public void Construct(PolarNodeFactory polarNodeFactory, PolarGirdRingsSettings injectedPolarGirdRingsSettings)
+        public void Construct(PolarNodeFactory polarNodeFactory, PolarGridRingsSettings injectedPolarGridRingsSettings)
         {
             _polarNodeFactory = polarNodeFactory;
 
-            if (polarGirdRingsSettings == null)
+            if (polarGridRingsSettings == null)
             {
-                polarGirdRingsSettings = injectedPolarGirdRingsSettings;
+                polarGridRingsSettings = injectedPolarGridRingsSettings;
             }
             
             CreateGrid();
@@ -44,7 +44,7 @@ namespace _Scripts.Managers
         {
             ClearGrid();
             
-            _polarGrid = new PolarGrid(polarGirdRingsSettings, columnHeight);
+            _polarGrid = new PolarGrid(polarGridRingsSettings, columnHeight);
             _polarGrid.Populate(_polarNodeFactory);
 
             Initalised = true;

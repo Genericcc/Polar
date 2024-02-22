@@ -2,7 +2,7 @@
 
 namespace _Scripts.Structures
 {
-    public class HouseBuilding : Building
+    public class HouseStructure : Structure
     {
         private SignalBus _signalBus;
 

@@ -21,7 +21,7 @@ namespace _Scripts.Grid
         public Vector3 WorldPosition { get; private set; }
 
         [SerializeField]
-        public Building Building { get; private set; }
+        public Structure Structure { get; private set; }
 
         [SerializeField]
         private TextMeshPro textMeshPro;
@@ -35,7 +35,7 @@ namespace _Scripts.Grid
         [SerializeField]
         private Material[] highlightMaterials;
 
-        public bool IsFree => Building == null;
+        public bool IsFree => Structure == null;
 
         private SignalBus _signalBus;
         private PolarGridManager _polarGridManager;
@@ -69,14 +69,14 @@ namespace _Scripts.Grid
             textMeshPro.text = ToString();
         }
 
-        public void SetBuilding(Building building)
+        public void SetBuilding(Structure structure)
         {
-            Building = building;
+            Structure = structure;
         }
 
         public void ClearBuilding()
         {
-            Building = null;
+            Structure = null;
         }
 
         public override string ToString()

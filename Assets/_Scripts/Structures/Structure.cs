@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace _Scripts.Structures
 {
-    public abstract class Building : MonoBehaviour, IBuilding
+    public abstract class Structure : MonoBehaviour, IStructure
     {
         public StructureData StructureData { get; private set; }
         public List<PolarNode> polarNodes;

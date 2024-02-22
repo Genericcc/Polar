@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
+using _Scripts.Data.Dictionaries;
 using _Scripts.Grid;
 using _Scripts.Structures;
 using _Scripts.Structures.StructuresData;
@@ -22,9 +24,9 @@ namespace _Scripts.Managers
     {
         private SignalBus _signalBus;
         private PolarGridManager _polarGridManager;
-        private BuildingFactory _buildingFactory;
+        private StructureFactory _structureFactory;
 
-        public List<Building> buildings;
+        public List<Structure> buildings;
 
         public StructureData testStructureData;
 
@@ -36,14 +38,18 @@ namespace _Scripts.Managers
         [SerializeField]
         private StructureData selectedStructureData;
 
+        private StructureDictionary _structureDictionary;
+
         [Inject]
-        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, BuildingFactory buildingFactory)
+        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, StructureFactory structureFactory,
+            StructureDictionary structureDictionary)
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
-            _buildingFactory = buildingFactory;
+            _structureFactory = structureFactory;
+            _structureDictionary = structureDictionary;
             
-            buildings = new List<Building>();
+            buildings = new List<Structure>();
             
             World = World.DefaultGameObjectInjectionWorld;
             
@@ -105,7 +111,7 @@ namespace _Scripts.Managers
 
         private void ConstructBuilding(List<PolarNode> buildingNodes, StructureData structureData)
         {
-            var newBuilding = _buildingFactory.Create(buildingNodes, structureData);
+            var newBuilding = _structureFactory.Create(buildingNodes, structureData);
             buildings.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
@@ -131,25 +137,10 @@ namespace _Scripts.Managers
             }
         }
 
-        public void Select(StructureSizeType structureSizeType)
+        public void Select(StructureType structureType)
         {
-            switch (structureSizeType)
-            {
-                case StructureSizeType.Size2X2:
-                    break;
-
-                case StructureSizeType.Size2X3:
-                    break;
-
-                case StructureSizeType.Size3X2:
-                    break;
-
-                case StructureSizeType.Size3X3:
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(structureSizeType), structureSizeType, null);
-            }
+            var selectedStructure = _structureDictionary.Get(structureType);
+            
         }
     }
     
