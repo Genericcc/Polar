@@ -1,4 +1,4 @@
-namespace _Scripts.Buildings
+namespace _Scripts.Structures
 {
     public interface IBuilding
     {

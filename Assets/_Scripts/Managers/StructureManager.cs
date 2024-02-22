@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using _Scripts.Buildings;
-using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
+using _Scripts.Structures;
+using _Scripts.Structures.StructuresData;
 using _Scripts.Zenject.Signals;
 
 using com.cyborgAssets.inspectorButtonPro;
@@ -18,7 +18,7 @@ using Zenject;
 
 namespace _Scripts.Managers
 {
-    public class BuildingsManager : MonoBehaviour
+    public class StructureManager : MonoBehaviour
     {
         private SignalBus _signalBus;
         private PolarGridManager _polarGridManager;
@@ -26,13 +26,15 @@ namespace _Scripts.Managers
 
         public List<Building> buildings;
 
-        public BuildingData testBuildingData;
+        public StructureData testStructureData;
 
         private Entity Entity;
         private World World;
         private bool wasRun;
 
         public int numberOfBuildings;
+        [SerializeField]
+        private StructureData selectedStructureData;
 
         [Inject]
         public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, BuildingFactory buildingFactory)
@@ -55,7 +57,7 @@ namespace _Scripts.Managers
 
         private void Start()
         {
-            TestPlaceBuildings(numberOfBuildings, testBuildingData);
+            TestPlaceBuildings(numberOfBuildings, testStructureData);
         }
 
         private void LateUpdate()
@@ -76,7 +78,7 @@ namespace _Scripts.Managers
         public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
         {
             var originBuildNode = requestBuildingPlacementSignal.OriginBuildNode;
-            var buildingSize = BuildingSizeType.Size2X2; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
+            var buildingSize = StructureSizeType.Size2X2; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
 
             if (!_polarGridManager.TryGetNodesForBuilding(originBuildNode, buildingSize, out var nodesToBuildOn))
             {
@@ -88,7 +90,7 @@ namespace _Scripts.Managers
                 return;
             }
             
-            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.BuildingData);
+            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.StructureData);
         }
 
         private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
@@ -101,9 +103,9 @@ namespace _Scripts.Managers
             return false;
         }
 
-        private void ConstructBuilding(List<PolarNode> buildingNodes, BuildingData buildingData)
+        private void ConstructBuilding(List<PolarNode> buildingNodes, StructureData structureData)
         {
-            var newBuilding = _buildingFactory.Create(buildingNodes, buildingData);
+            var newBuilding = _buildingFactory.Create(buildingNodes, structureData);
             buildings.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
@@ -121,11 +123,32 @@ namespace _Scripts.Managers
         }
 
         [ProButton]
-        public void TestPlaceBuildings(int numberOfBuildings, BuildingData buildingData)
+        public void TestPlaceBuildings(int numberOfBuildings, StructureData structureData)
         {
             for (var i = 0; i < numberOfBuildings; i++)
             {
-                _signalBus.Fire(new RequestBuildingPlacementSignal(buildingData, _polarGridManager.GetRandomNode()));
+                _signalBus.Fire(new RequestBuildingPlacementSignal(structureData, _polarGridManager.GetRandomNode()));
+            }
+        }
+
+        public void Select(StructureSizeType structureSizeType)
+        {
+            switch (structureSizeType)
+            {
+                case StructureSizeType.Size2X2:
+                    break;
+
+                case StructureSizeType.Size2X3:
+                    break;
+
+                case StructureSizeType.Size3X2:
+                    break;
+
+                case StructureSizeType.Size3X3:
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(structureSizeType), structureSizeType, null);
             }
         }
     }

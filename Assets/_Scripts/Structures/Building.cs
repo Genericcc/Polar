@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
+using _Scripts.Structures.StructuresData;
 
 using UnityEngine;
 
-namespace _Scripts.Buildings
+namespace _Scripts.Structures
 {
     public abstract class Building : MonoBehaviour, IBuilding
     {
-        public BuildingData buildingData;
+        public StructureData StructureData { get; private set; }
         public List<PolarNode> polarNodes;
 
-        public string Name => buildingData.ToString();
+        public string Name => StructureData.ToString();
         
-        public void Initialise(List<PolarNode> newPolarNodes, BuildingData newBuildingData)
+        public void Initialise(List<PolarNode> newPolarNodes, StructureData newStructureData)
         {
             polarNodes = newPolarNodes;
-            buildingData = newBuildingData;
+            StructureData = newStructureData;
 
             AlignTransform();
         }

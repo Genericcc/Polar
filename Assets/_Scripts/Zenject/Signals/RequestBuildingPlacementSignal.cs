@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 
-using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
+using _Scripts.Structures.StructuresData;
 
 namespace _Scripts.Zenject.Signals
 {
     public class RequestBuildingPlacementSignal
     {
-        public readonly BuildingData BuildingData;
+        public readonly StructureData StructureData;
         public readonly PolarNode OriginBuildNode;
 
-        public RequestBuildingPlacementSignal(BuildingData buildingData, PolarNode originBuildNode)
+        public RequestBuildingPlacementSignal(StructureData structureData, PolarNode originBuildNode)
         {
-            BuildingData = buildingData;
+            StructureData = structureData;
             OriginBuildNode = originBuildNode;
         }
     }

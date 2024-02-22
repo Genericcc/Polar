@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-using _Scripts.Buildings.BuildingsData;
 using _Scripts.Grid;
+using _Scripts.Structures.StructuresData;
 
 using UnityEngine;
 
@@ -12,8 +12,8 @@ namespace _Scripts.Managers
     public class PolarGridManager : MonoBehaviour
     {
         [SerializeField]
-        [Range(0.1f, 5f)]
-        private float columnHeight;
+        [Range(0.5f, 5f)]
+        private float columnHeight = 2;
 
         [InspectorButton("CreateGrid")]
         public bool rebuild;
@@ -61,16 +61,16 @@ namespace _Scripts.Managers
             }
         }
         
-        public bool TryGetNodesForBuilding(PolarNode originNode, BuildingSizeType spaceOccupationType, out List<PolarNode> nodes)
+        public bool TryGetNodesForBuilding(PolarNode originNode, StructureSizeType spaceOccupationType, out List<PolarNode> nodes)
         {
             nodes = new List<PolarNode>();
 
             var checkShifts = spaceOccupationType switch
             {
-                BuildingSizeType.Size2X2 => (2, 2),
-                BuildingSizeType.Size2X3 => (2, 3),
-                BuildingSizeType.Size3X2 => (3, 2),
-                BuildingSizeType.Size3X3 => (3, 3),
+                StructureSizeType.Size2X2 => (2, 2),
+                StructureSizeType.Size2X3 => (2, 3),
+                StructureSizeType.Size3X2 => (3, 2),
+                StructureSizeType.Size3X3 => (3, 3),
                 _ => (69, 69)
             };
 
@@ -92,7 +92,7 @@ namespace _Scripts.Managers
 
         public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition)
         {
-            return _polarGrid.GetPolarFromWorld(worldPosition);
+            return _polarGrid.GetNodePolarPositionAt(worldPosition);
         }
 
         public PolarNode GetRandomNode()

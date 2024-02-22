@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 
-using _Scripts.Buildings;
-using _Scripts.Buildings.BuildingsData;
+using _Scripts.Data.Dictionaries;
 using _Scripts.Grid;
 using _Scripts.Managers;
+using _Scripts.Structures;
+using _Scripts.Structures.StructuresData;
 using _Scripts.Zenject.Signals;
 
 using Zenject;
@@ -21,30 +22,35 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
 
-            Container.Bind<BuildingsManager>()
+            Container.Bind<StructureManager>()
                      .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
-            
-            
+
+
             Container.BindFactory<PolarGridPosition, Ring, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
                      .FromResource("Prefabs/Worlds/PolarGrids/PolarNodePrefab")
                      .WhenInjectedInto<CustomPolarNodeFactory>();
-            
-            Container.BindFactory<List<PolarNode>, BuildingData, Building, BuildingFactory>()
+
+            Container.BindFactory<List<PolarNode>, StructureData, Building, BuildingFactory>()
                      .FromFactory<CustomBuildingFactory>();
             Container.Bind<Building>()
                      .FromResource("Prefabs/Worlds/Buildings/HouseBuildingPrefab")
                      .WhenInjectedInto<CustomBuildingFactory>();
-            
-            
+
+
             Container.Bind<PolarGirdRingsSettings>()
                      .FromNewScriptableObjectResource("Settings/PolarGridRingsSettings")
                      .AsSingle()
                      .NonLazy();
-            
+
+            Container.Bind<StructureDictionary>()
+                     .FromNewScriptableObjectResource("Settings/StructureDictionary")
+                     .AsSingle()
+                     .NonLazy();
+
             RegisterAndBindSignals();
         }
 
@@ -52,7 +58,7 @@ namespace _Scripts.Zenject.Installers
         {
             Container.DeclareSignal<RequestBuildingPlacementSignal>().OptionalSubscriber();
             Container.BindSignal<RequestBuildingPlacementSignal>()
-                     .ToMethod<BuildingsManager>(x => x.OnRequestBuildingPlacementSignal)
+                     .ToMethod<StructureManager>(x => x.OnRequestBuildingPlacementSignal)
                      .FromResolveAll();
         }
     }

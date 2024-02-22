@@ -1,13 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using _Scripts.Extensions;
-using _Scripts.Managers;
 
 using UnityEngine;
-
-using Math = Unity.Physics.Math;
 
 namespace _Scripts.Grid
 {
@@ -15,16 +11,21 @@ namespace _Scripts.Grid
     {
         public List<PolarNode> GridNodes;
         public List<Ring> Rings;
-        public Dictionary<int, (float, float)> RingsBounds;
+        public Dictionary<Ring, (float minBound, float maxBound)> RingsBounds;
 
         private readonly PolarGirdRingsSettings _polarGirdRingsSettings;
         private readonly float _columnHeight;
 
+        private const int FullCircle = 360;
+        
+        //TODO wyczyścić / refaktor 
+        //TODO obrócić spawn nodów o 90 stopni żeby pasował do myszki, albo obczić czemu polar z myszki jest obrócony o 90 stopni
+        // Rings można zredukować?
         public PolarGrid(PolarGirdRingsSettings polarGirdRingsSettings, float columnHeight)
         {
             GridNodes = new List <PolarNode>();
             Rings = new List<Ring>();
-            RingsBounds = new Dictionary<int, (float, float)>();
+            RingsBounds = new Dictionary<Ring, (float, float)>();
             
             _polarGirdRingsSettings = polarGirdRingsSettings;
 
@@ -51,7 +52,7 @@ namespace _Scripts.Grid
                 startDistanceToWorldOrigin = endDistanceToWorldOrigin;
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
 
-                RingsBounds.TryAdd(ringIndex, (startDistanceToWorldOrigin, endDistanceToWorldOrigin));
+                RingsBounds.TryAdd(ring, (startDistanceToWorldOrigin, endDistanceToWorldOrigin));
             }
 
             foreach (var ringNode in Rings.SelectMany(ring => ring.Nodes))
@@ -64,9 +65,9 @@ namespace _Scripts.Grid
         {
             var previousFieldsCount = GetSumOfPreviousFields(polarGridPosition.ParentRingIndex);
             
-            var x = (polarGridPosition.D + previousFieldsCount) * (_columnHeight) * Mathf.Cos(-polarGridPosition.Fi * Mathf.Deg2Rad);
+            var x = (polarGridPosition.D + previousFieldsCount) * _columnHeight * Mathf.Cos(-polarGridPosition.Fi * Mathf.Deg2Rad);
             var y = polarGridPosition.H;
-            var z = (polarGridPosition.D + previousFieldsCount)* (_columnHeight) * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
+            var z = (polarGridPosition.D + previousFieldsCount)* _columnHeight * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
 
             return new Vector3(x, y, z );
         }
@@ -103,7 +104,7 @@ namespace _Scripts.Grid
                 for (var s = 0; s < shift.side; s++)
                 {
                     var polarPosition = startingPolarPosition +
-                                        new PolarGridPosition(originNode.ParentRing.RingIndex, d, s * thisRingFi, 0);
+                                        new PolarGridPosition(0, d, s * thisRingFi, 0);
 
                     if (polarPosition.Fi >= 360)
                     {
@@ -128,18 +129,34 @@ namespace _Scripts.Grid
             return true;
         }
 
-        public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition)
+        public PolarGridPosition GetNodePolarPositionAt(Vector3 worldPosition)
         {
             var purePolar = GetPurePolarFromWorld(worldPosition);
             
             var ringBoundsPair = RingsBounds.FirstOrDefault(
-                x => x.Value.Item1 <= purePolar.D && purePolar.D < x.Value.Item2);
-            var ringLeftoverR = purePolar.D - ringBoundsPair.Value.Item1;
-            var d = Mathf.FloorToInt(ringLeftoverR / (_columnHeight));
+                x => x.Value.minBound <= purePolar.D && purePolar.D < x.Value.maxBound);
 
-            return new PolarGridPosition(ringBoundsPair.Key, d, purePolar.Fi, purePolar.H);
+            if (ringBoundsPair.Key == null)
+            {
+                Debug.LogWarning("Mouse outside the rings. Returning default");
+                return default;
+            }
+            
+            var ringLocalStart = purePolar.D - ringBoundsPair.Value.Item1;
+            var snappedD = Mathf.FloorToInt(ringLocalStart / _columnHeight);
+            
+            var ringFi = purePolar.Fi - FullCircle % ringBoundsPair.Key.RingSettings.fi;
+            var snappedFi = (FullCircle % ringBoundsPair.Key.RingSettings.fi) * ringBoundsPair.Key.RingSettings.fi;
+
+            return new PolarGridPosition(ringBoundsPair.Key.RingIndex, snappedD, purePolar.Fi, purePolar.H);
         }
 
+        /// <summary>
+        /// Gets Pure Polar Coordinates with ParentRingIndex as 0.
+        /// d is r, fi is in degrees
+        /// </summary>
+        /// <param name="worldPosition"></param>
+        /// <returns></returns>
         public PolarGridPosition GetPurePolarFromWorld(Vector3 worldPosition) 
         {
              var r = Mathf.RoundToInt(Vector3.Magnitude(worldPosition));
@@ -158,62 +175,6 @@ namespace _Scripts.Grid
         public PolarNode GetRandom()
         {
             return GridNodes.GetRandom();
-        }
-    }
-
-    public class RingFactory
-    {
-        public Ring Create(int ringIndex, RingSettings ringSettings, float rStart, PolarNodeFactory polarNodeFactory)
-        {
-            var ring = new Ring(ringIndex, ringSettings, rStart);
-            ring.PopulateWithNodes(polarNodeFactory);
-
-            return ring;
-        }
-    }
-
-    public class Ring
-    {
-        public int RingIndex { get; }
-        public float RStart { get; private set; }
-        public RingSettings RingSettings { get; }
-        public List<PolarNode> Nodes { get; set; }
-
-        public Ring(int ringIndex, RingSettings ringSettings, float rStart)
-        {
-            RingIndex = ringIndex;
-            RingSettings = ringSettings;
-            RStart = rStart;
-
-            Nodes = new List<PolarNode>();
-        }
-
-        public void PopulateWithNodes(PolarNodeFactory polarNodeFactory)
-        {
-            var segmentsInGame = 6;
-
-            //centreNode
-            if (RingIndex == 0)
-            {
-                var polarGridPosition = new PolarGridPosition(0, 0, 0, RingSettings.height);
-                    
-                var node = polarNodeFactory.Create(polarGridPosition, this);
-                Nodes.Add(node);
-                    
-                return;
-            }
-
-            for (var depth = 0; depth < RingSettings.depth; depth++)
-            {
-                for (var fi = 360 - segmentsInGame * 60; fi < 360; fi += RingSettings.fi)
-                {
-                    var polarGridPosition = new PolarGridPosition(RingIndex, depth, fi, RingSettings.height);
-
-                    var node = polarNodeFactory.Create(polarGridPosition, this);
-                    
-                    Nodes.Add(node);
-                }
-            }
         }
     }
 }

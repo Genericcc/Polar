@@ -1,5 +1,5 @@
-using _Scripts.Buildings;
 using _Scripts.Managers;
+using _Scripts.Structures;
 using _Scripts.Zenject.Signals;
 
 using TMPro;
@@ -18,21 +18,7 @@ namespace _Scripts.Grid
         [SerializeField]
         public Ring ParentRing { get; set; }
         
-        [SerializeField]
-        public Vector3 WorldPosition
-        {
-            get
-            {
-                var value = _polarGridManager.GetWorldFromPolar(PolarGridPosition);
-                WorldPosition = value;
-                return value;
-            }
-
-            set
-            {
-                WorldPosition = value;
-            }
-        }
+        public Vector3 WorldPosition { get; private set; }
 
         [SerializeField]
         public Building Building { get; private set; }
@@ -74,10 +60,13 @@ namespace _Scripts.Grid
             var newPosition = _polarGridManager.GetWorldFromPolar(PolarGridPosition);
             var newRotation = Quaternion.LookRotation(newPosition - new Vector3(0, newPosition.y, 0));
 
-            textMeshPro.text = ToString();
+            var nodeTransform = transform;
+            nodeTransform.position = newPosition;
+            nodeTransform.rotation = newRotation;
 
-            transform.position = newPosition;
-            transform.rotation = newRotation;
+            WorldPosition = nodeTransform.position;
+                
+            textMeshPro.text = ToString();
         }
 
         public void SetBuilding(Building building)

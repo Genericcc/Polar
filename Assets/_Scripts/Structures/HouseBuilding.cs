@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace _Scripts.Buildings
+namespace _Scripts.Structures
 {
     public class HouseBuilding : Building
     {
