@@ -25,18 +25,17 @@ namespace _Scripts._Game.Grid
             Rings = new List<Ring>();
             
             _polarGridRingsSettings = polarGridRingsSettings;
-
             _columnHeight = columnHeight;
         }
 
-        public void PopulateWithRings(PolarNodeFactory polarNodeFactory)
+        public void PopulateGrid(PolarNodeFactory polarNodeFactory, RingFactory ringFactory)
         {
             var endDistanceToWorldOrigin = 0f;
 
             for (var ringIndex = 0; ringIndex < _polarGridRingsSettings.ringSettingsList.Count; ringIndex++)
             {
-                var ringFactory = new RingFactory();
-                var ring = ringFactory.Create(ringIndex, _polarGridRingsSettings.ringSettingsList[ringIndex], endDistanceToWorldOrigin);
+                var ring = ringFactory.Create(ringIndex);
+                
                 ring.PopulateWithNodes(polarNodeFactory);
                 GridNodes.AddRange(ring.Nodes);
                 
@@ -44,12 +43,9 @@ namespace _Scripts._Game.Grid
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
                 
                 ring.SetBounds((startDistanceToWorldOrigin, endDistanceToWorldOrigin));
+                ring.CreateMesh();
+                
                 Rings.Add(ring);
-            }
-
-            foreach (var ringNode in Rings.SelectMany(ring => ring.Nodes))
-            {
-                //ringNode.Set();
             }
         }
 
@@ -136,11 +132,12 @@ namespace _Scripts._Game.Grid
             
             var ringLocalStart = purePolar.D - ring.Bounds.min;
             var snappedD = Mathf.FloorToInt(ringLocalStart / _columnHeight);
-            
-            var ringFi = purePolar.Fi - FullCircle % ring.RingSettings.fi;
-            var snappedFi = (FullCircle % ring.RingSettings.fi) * ring.RingSettings.fi;
 
-            return new PolarGridPosition(ring.RingIndex, snappedD, purePolar.Fi, purePolar.H);
+
+            var howManyFiFitsIne = purePolar.Fi / ring.RingSettings.fi;
+            var snappedFi = howManyFiFitsIne * ring.RingSettings.fi;
+
+            return new PolarGridPosition(ring.RingIndex, snappedD, snappedFi, purePolar.H);
         }
 
         /// <summary>

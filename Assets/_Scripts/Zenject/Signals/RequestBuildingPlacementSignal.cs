@@ -7,12 +7,12 @@ namespace _Scripts.Zenject.Signals
 {
     public class RequestBuildingPlacementSignal
     {
-        public readonly StructureData StructureData;
+        public readonly BaseStructureData BaseStructureData;
         public readonly PolarNode OriginBuildNode;
 
-        public RequestBuildingPlacementSignal(StructureData structureData, PolarNode originBuildNode)
+        public RequestBuildingPlacementSignal(BaseStructureData baseStructureData, PolarNode originBuildNode)
         {
-            StructureData = structureData;
+            BaseStructureData = baseStructureData;
             OriginBuildNode = originBuildNode;
         }
     }

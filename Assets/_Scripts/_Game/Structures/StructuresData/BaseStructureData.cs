@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace _Scripts._Game.Structures.StructuresData
 {
-    public abstract class StructureData : ScriptableObject
+    public abstract class BaseStructureData : ScriptableObject
     {
         public List<ResourceAmount> resourceCost;
 

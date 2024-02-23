@@ -14,7 +14,7 @@ namespace _Scripts._Game.UIs.HUDs.Structures
     public class StructureSelectionButton : MonoBehaviour
     {
         [SerializeField]
-        private StructureData structureData;
+        private BaseStructureData baseStructureData;
         
         [SerializeField]
         public StructureManager structureManager;
@@ -39,7 +39,7 @@ namespace _Scripts._Game.UIs.HUDs.Structures
 
         private void SelectBuildingData()
         {
-            structureManager.SelectStructureToBuild(structureData);
+            structureManager.SelectStructureToBuild(baseStructureData);
         }
     }
 }

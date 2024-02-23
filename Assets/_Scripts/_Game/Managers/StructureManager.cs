@@ -31,10 +31,10 @@ namespace _Scripts._Game.Managers
         public List<Structure> buildings;
         
         public int testStructuresAmount;
-        public StructureData testStructureData;
+        public BaseStructureData testStructureData;
         
         [SerializeField]
-        private StructureData currentSelectedStructureData;
+        private BaseStructureData currentSelectedStructureData;
 
         private StructureDictionary _structureDictionary;
 
@@ -99,7 +99,7 @@ namespace _Scripts._Game.Managers
                 return;
             }
             
-            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.StructureData);
+            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.BaseStructureData);
         }
 
         private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
@@ -112,9 +112,9 @@ namespace _Scripts._Game.Managers
             return false;
         }
 
-        private void ConstructBuilding(List<PolarNode> buildingNodes, StructureData structureData)
+        private void ConstructBuilding(List<PolarNode> buildingNodes, BaseStructureData baseStructureData)
         {
-            var newBuilding = _structureFactory.Create(buildingNodes, structureData);
+            var newBuilding = _structureFactory.Create(buildingNodes, baseStructureData);
             buildings.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
@@ -132,17 +132,17 @@ namespace _Scripts._Game.Managers
         }
 
         [ProButton]
-        public void TestPlaceBuildings(int numberOfBuildings, StructureData structureData)
+        public void TestPlaceBuildings(int numberOfBuildings, BaseStructureData baseStructureData)
         {
             for (var i = 0; i < numberOfBuildings; i++)
             {
-                _signalBus.Fire(new RequestBuildingPlacementSignal(structureData, _polarGridManager.GetRandomNode()));
+                _signalBus.Fire(new RequestBuildingPlacementSignal(baseStructureData, _polarGridManager.GetRandomNode()));
             }
         }
 
-        public void SelectStructureToBuild(StructureData structureData)
+        public void SelectStructureToBuild(BaseStructureData baseStructureData)
         {
-            currentSelectedStructureData = structureData;
+            currentSelectedStructureData = baseStructureData;
         }
     }
     

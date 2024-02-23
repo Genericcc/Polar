@@ -23,6 +23,12 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
+            Container.BindFactory<int, Ring, RingFactory>()
+                     .FromFactory<CustomRingFactory>();
+            Container.Bind<Ring>()
+                     .FromResource("Prefabs/Worlds/PolarGrids/RingPlanePrefab")
+                     .WhenInjectedInto<CustomRingFactory>();
+            
             Container.BindFactory<PolarGridPosition, Ring, PolarNode, PolarNodeFactory>()
                      .FromFactory<CustomPolarNodeFactory>();
             Container.Bind<PolarNode>()
@@ -44,10 +50,13 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
-            Container.BindFactory<List<PolarNode>, StructureData, Structure, StructureFactory>()
+            Container.BindFactory<List<PolarNode>, BaseStructureData, Structure, StructureFactory>()
                      .FromFactory<CustomStructureFactory>();
-            Container.Bind<Structure>()
-                     .FromResource("Prefabs/Worlds/Structures/HouseBuildingPrefab")
+            Container.Bind<HouseStructure>()
+                     .FromResource("Prefabs/Worlds/Structures/HouseStructurePrefab")
+                     .WhenInjectedInto<CustomStructureFactory>();
+            Container.Bind<WallStructure>()
+                     .FromResource("Prefabs/Worlds/Structures/WallStructurePrefab")
                      .WhenInjectedInto<CustomStructureFactory>();
 
             Container.Bind<StructureDictionary>()

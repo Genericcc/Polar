@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WallStructureData
   m_EditorClassIdentifier: 
   resourceCost: []
-  structureType: 0
+  structureType: 2
   structureSizeType: 0

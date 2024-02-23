@@ -11,9 +11,9 @@ namespace _Scripts.Data.Dictionaries
     public class StructureDictionary : ScriptableObject
     {
         [SerializeField]
-        public List<StructureData> structures;
+        public List<BaseStructureData> structures;
 
-        public StructureData Get(StructureType structureType)
+        public BaseStructureData Get(StructureType structureType)
         {
             return structures.FirstOrDefault(x => x.structureType == structureType);
         }

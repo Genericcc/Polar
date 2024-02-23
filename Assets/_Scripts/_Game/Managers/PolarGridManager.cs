@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using _Scripts._Game.Grid;
 using _Scripts._Game.Structures.StructuresData;
@@ -24,12 +25,16 @@ namespace _Scripts._Game.Managers
         private PolarGridRingsSettings polarGridRingsSettings;
 
         private PolarGrid _polarGrid;
+        private RingFactory _ringFactory;
 
         public bool Initalised { get; set; }
         
         [Inject]
-        public void Construct(PolarNodeFactory polarNodeFactory, PolarGridRingsSettings injectedPolarGridRingsSettings)
+        public void Construct(PolarGridRingsSettings injectedPolarGridRingsSettings,
+            RingFactory ringFactory,
+            PolarNodeFactory polarNodeFactory)
         {
+            _ringFactory = ringFactory;
             _polarNodeFactory = polarNodeFactory;
 
             if (polarGridRingsSettings == null)
@@ -45,7 +50,20 @@ namespace _Scripts._Game.Managers
             ClearGrid();
             
             _polarGrid = new PolarGrid(polarGridRingsSettings, columnHeight);
-            _polarGrid.PopulateWithRings(_polarNodeFactory);
+            _polarGrid.PopulateGrid(_polarNodeFactory, _ringFactory);
+
+            if (_polarGrid.Rings.Any())
+            {
+                foreach (var ring in _polarGrid.Rings)
+                {
+                    var height = ring.Nodes.First().PolarGridPosition.H;
+                    
+                    var newPos = new Vector3(ring.transform.position.x, height, ring.transform.position.z);
+                    var newRot = new Vector3(90, 0, 0);
+                    
+                    ring.transform.SetPositionAndRotation(newPos, Quaternion.Euler(newRot));
+                }
+            }
 
             Initalised = true;
         }

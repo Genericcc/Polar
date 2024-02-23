@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
 
+using _Scripts.Extensions;
+
+using UnityEngine;
+
 namespace _Scripts._Game.Grid
 {
-    public class Ring
+    public class Ring : MonoBehaviour
     {
-        public int RingIndex { get; }
-        public float RStart { get; private set; }
-        public RingSettings RingSettings { get; }
-        public List<PolarNode> Nodes { get; set; }
+        public int RingIndex { get; private set; }
+        public RingSettings RingSettings { get; private set; }
         public (float min, float max) Bounds { get; private set; }
+        public List<PolarNode> Nodes { get; set; }
 
-        public Ring(int ringIndex, RingSettings ringSettings, float rStart)
+        public void Initialise(int ringIndex, RingSettings ringSettings)
         {
             RingIndex = ringIndex;
             RingSettings = ringSettings;
-            RStart = rStart;
 
             Nodes = new List<PolarNode>();
         }
@@ -49,6 +51,17 @@ namespace _Scripts._Game.Grid
         public void SetBounds((float startDistanceToWorldOrigin, float endDistanceToWorldOrigin) valueTuple)
         {
             Bounds = valueTuple;
+        }
+
+        public void CreateMesh()
+        {
+            if (Bounds.min <= 0 || Bounds.max <= 0)
+            {
+                return;
+            }
+            
+            var generator = GetComponent<RoundMeshGenerator>();
+            generator.CreateRoundMesh(Bounds.max, Nodes.Count);
         }
     }
 }

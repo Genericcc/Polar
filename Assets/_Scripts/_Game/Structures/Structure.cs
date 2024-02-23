@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using _Scripts._Game.Grid;
@@ -10,15 +11,32 @@ namespace _Scripts._Game.Structures
 {
     public abstract class Structure : MonoBehaviour, IStructure
     {
-        public StructureData StructureData { get; private set; }
+        public BaseStructureData BaseStructureData { get; private set; }
         public List<PolarNode> polarNodes;
 
-        public string Name => StructureData.ToString();
+        [SerializeField]
+        private Transform pivot;
         
-        public void Initialise(List<PolarNode> newPolarNodes, StructureData newStructureData)
+        [SerializeField]
+        private Transform centre;
+
+        private void Awake()
+        {
+            if (pivot == null)
+            {
+                pivot = transform.Find("Pivot");
+            }
+            
+            if (centre == null)
+            {
+                centre = transform.Find("Centre");
+            }
+        }
+
+        public void Initialise(List<PolarNode> newPolarNodes, BaseStructureData newStructureData)
         {
             polarNodes = newPolarNodes;
-            StructureData = newStructureData;
+            BaseStructureData = newStructureData;
 
             AlignTransform();
         }

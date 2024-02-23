@@ -12,4 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf22e9e390740398add3c35d4fe2d37, type: 3}
   m_Name: HouseStructureData
   m_EditorClassIdentifier: 
-  workers: 0
+  resourceCost: []
+  structureType: 0
+  structureSizeType: 3
+  workersAmount:
+    resourceType: 0
+    amount: 4
