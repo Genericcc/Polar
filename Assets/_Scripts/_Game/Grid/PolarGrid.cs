@@ -122,7 +122,7 @@ namespace _Scripts._Game.Grid
             var purePolar = GetPurePolarFromWorld(worldPosition);
             
             var ring = Rings.FirstOrDefault(
-                x => x.Bounds.min <= purePolar.D && purePolar.D < x.Bounds.max);
+                x => x.Bounds.min <= purePolar.Radius && purePolar.Radius < x.Bounds.max);
 
             if (ring == null)
             {
@@ -130,14 +130,14 @@ namespace _Scripts._Game.Grid
                 return default;
             }
             
-            var ringLocalStart = purePolar.D - ring.Bounds.min;
-            var snappedD = Mathf.FloorToInt(ringLocalStart / _columnHeight);
+            var distance = purePolar.Radius - ring.Bounds.min;
+            var howManyDFitsIn = Mathf.FloorToInt(distance / _columnHeight);
+            var snappedD = howManyDFitsIn * _columnHeight;
+            
+            var howManyFiFitsIn = purePolar.Fi / ring.RingSettings.fi;
+            var snappedFi = howManyFiFitsIn * ring.RingSettings.fi;
 
-
-            var howManyFiFitsIne = purePolar.Fi / ring.RingSettings.fi;
-            var snappedFi = howManyFiFitsIne * ring.RingSettings.fi;
-
-            return new PolarGridPosition(ring.RingIndex, snappedD, snappedFi, purePolar.H);
+            return new PolarGridPosition(ring.RingIndex, howManyDFitsIn, snappedFi, purePolar.H);
         }
 
         /// <summary>
@@ -146,14 +146,16 @@ namespace _Scripts._Game.Grid
         /// </summary>
         /// <param name="worldPosition"></param>
         /// <returns></returns>
-        public PolarGridPosition GetPurePolarFromWorld(Vector3 worldPosition) 
+        public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) 
         {
-             var r = Mathf.RoundToInt(Vector3.Magnitude(worldPosition));
-             var deg = Mathf.Atan2(worldPosition.x, worldPosition.z) * Mathf.Rad2Deg;;
+             var r = new Vector2(worldPosition.x, worldPosition.z).magnitude;
+             // CZEMU MINUS Z? Bo tworzę grid ze wskazówkami zegara, a trygonometria działa w drugą stronę
+             // link z obrazkiem (tam oś y to moje -z): https://www.omnicalculator.com/math/cartesian-to-polar 
+             var deg = Mathf.Atan2(-worldPosition.z, worldPosition.x) * Mathf.Rad2Deg;;
              var fi = (int)((deg + 360) % 360);
              var h = Mathf.RoundToInt(worldPosition.y);
 
-             return new PolarGridPosition(0, r, fi, h);
+             return new PurePolarCoords(r, fi, h);
         }
 
         public PolarNode GetPolarNode(PolarGridPosition polarGridPosition)
@@ -164,6 +166,25 @@ namespace _Scripts._Game.Grid
         public PolarNode GetRandom()
         {
             return GridNodes.GetRandom();
+        }
+    }
+
+    public struct PurePolarCoords
+    {
+        public float Radius;
+        public int Fi;
+        public int H;
+
+        public PurePolarCoords(float radius, int fi, int h)
+        {
+            Radius = radius;
+            Fi = fi;
+            H = h;
+        }
+
+        public override string ToString()
+        {
+            return $"R: {Radius}, Fi: {Fi}, H: {H}";
         }
     }
 }

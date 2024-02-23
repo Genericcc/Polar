@@ -55,8 +55,9 @@ namespace _Scripts._Game.Grid
 
         public void CreateMesh()
         {
-            if (Bounds.min <= 0 || Bounds.max <= 0)
+            if (RingIndex == 0)
             {
+                gameObject.SetActive(false);
                 return;
             }
             

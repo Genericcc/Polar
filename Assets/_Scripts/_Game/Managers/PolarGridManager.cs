@@ -106,15 +106,13 @@ namespace _Scripts._Game.Managers
             }
         }
         
-        public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition)
-        {
-            return _polarGrid.GetWorldFromPolar(polarGridPosition);
-        }
+        public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition) => _polarGrid.GetWorldFromPolar(polarGridPosition);
 
-        public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition)
-        {
-            return _polarGrid.GetNodePolarPositionAt(worldPosition);
-        }
+        public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition) => _polarGrid.GetNodePolarPositionAt(worldPosition);
+
+        public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) => _polarGrid.GetPurePolarFromWorld(worldPosition);
+
+        public PolarNode GetPolarNode(PolarGridPosition polarGridPosition) => _polarGrid.GetPolarNode(polarGridPosition);
 
         public PolarNode GetRandomNode()
         {
