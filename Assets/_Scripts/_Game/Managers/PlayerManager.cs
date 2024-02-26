@@ -8,57 +8,53 @@ namespace _Scripts._Game.Managers
 {
     public class PlayerManager : MonoBehaviour
     {
-        public InputAction Input;
-        public Camera Camera;
-        public int BuildingIndex;
+        public InputAction input;
+        public Camera mainCamera;
+        public int buildingIndex;
 
-        private Entity Entity;
-        private World World;
+        private Entity _entity;
+        private World _world;
 
         private void OnEnable()
         {
-            Input.started += MouseClicked;
-            Input.Enable();
+            input.started += MouseClicked;
+            input.Enable();
 
-            Camera = Camera == null ? Camera.main : Camera;
+            mainCamera = mainCamera == null ? Camera.main : mainCamera;
 
-            World = World.DefaultGameObjectInjectionWorld;
+            _world = World.DefaultGameObjectInjectionWorld;
         }
 
         private void MouseClicked(InputAction.CallbackContext ctx)
         {
-            Vector2 screenPostion = ctx.ReadValue<Vector2>();
-            UnityEngine.Ray ray = Camera.ScreenPointToRay(screenPostion);
+            var screenPostion = ctx.ReadValue<Vector2>();
+            var ray = mainCamera.ScreenPointToRay(screenPostion);
 
-            Debug.Log(ray.GetPoint(Camera.farClipPlane));
+            Debug.Log(ray.GetPoint(mainCamera.farClipPlane));
 
-            if(World.IsCreated && !World.EntityManager.Exists(Entity))
+            if (_world.IsCreated && !_world.EntityManager.Exists(_entity))
             {
-                Entity = World.EntityManager.CreateEntity();
-                World.EntityManager.AddBuffer<BuildingPlacementInput>(Entity);
+                _entity = _world.EntityManager.CreateEntity();
+                _world.EntityManager.AddBuffer<BuildingPlacementInput>(_entity);
             }
 
-            var input = new RaycastInput() { 
-                Start = ray.origin,
-                Filter = CollisionFilter.Default,
-                End = ray.GetPoint(Camera.farClipPlane)
+            var input = new RaycastInput
+            {
+                Start = ray.origin, Filter = CollisionFilter.Default, End = ray.GetPoint(mainCamera.farClipPlane)
             };
 
-            World.EntityManager.GetBuffer<BuildingPlacementInput>(Entity).Add(new BuildingPlacementInput
-            {
-                Value = input, 
-                index = BuildingIndex
-            });
+            _world.EntityManager.GetBuffer<BuildingPlacementInput>(_entity)
+                 .Add(new BuildingPlacementInput { Value = input, index = buildingIndex });
         }
 
         private void OnDisable()
         {
-            Input.started -= MouseClicked;
-            Input.Disable();
+            input.started -= MouseClicked;
+            input.Disable();
 
-            if (World.IsCreated && World.EntityManager.Exists(Entity))
+            if (_world.IsCreated && _world.EntityManager.Exists(_entity))
             {
-                World.EntityManager.DestroyEntity(Entity);
+                _world.EntityManager.DestroyEntity(_entity);
             }
         }
     }

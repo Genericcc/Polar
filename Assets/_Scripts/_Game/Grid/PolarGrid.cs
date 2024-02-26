@@ -91,8 +91,8 @@ namespace _Scripts._Game.Grid
             {
                 for (var s = 0; s < shift.side; s++)
                 {
-                    var polarPosition = startingPolarPosition +
-                                        new PolarGridPosition(0, d, s * thisRingFi, 0);
+                    var fi = s * thisRingFi;
+                    var polarPosition = startingPolarPosition + new PolarGridPosition(0, d, fi, 0);
 
                     if (polarPosition.Fi >= 360)
                     {
@@ -106,7 +106,6 @@ namespace _Scripts._Game.Grid
                         Debug.Log("No next node found, cannot build here");
 
                         nodesForBuilding = new List<PolarNode>();
-
                         return false;
                     }
 
@@ -120,10 +119,8 @@ namespace _Scripts._Game.Grid
         public PolarGridPosition GetNodePolarPositionAt(Vector3 worldPosition)
         {
             var purePolar = GetPurePolarFromWorld(worldPosition);
-            
-            var ring = Rings.FirstOrDefault(
-                x => x.Bounds.min <= purePolar.Radius && purePolar.Radius < x.Bounds.max);
 
+            var ring = GetRingThroughRadius(purePolar.Radius);
             if (ring == null)
             {
                 Debug.LogWarning("Mouse outside the rings. Returning default");
@@ -131,13 +128,17 @@ namespace _Scripts._Game.Grid
             }
             
             var distance = purePolar.Radius - ring.Bounds.min;
-            var howManyDFitsIn = Mathf.FloorToInt(distance / _columnHeight);
-            var snappedD = howManyDFitsIn * _columnHeight;
+            var snappedD = Mathf.FloorToInt(distance / _columnHeight);
             
             var howManyFiFitsIn = purePolar.Fi / ring.RingSettings.fi;
             var snappedFi = howManyFiFitsIn * ring.RingSettings.fi;
 
-            return new PolarGridPosition(ring.RingIndex, howManyDFitsIn, snappedFi, purePolar.H);
+            return new PolarGridPosition(ring.RingIndex, snappedD, snappedFi, purePolar.H);
+        }
+
+        private Ring GetRingThroughRadius(float purePolarRadius)
+        {
+            return Rings.FirstOrDefault(x => x.Bounds.min <= purePolarRadius && purePolarRadius < x.Bounds.max);
         }
 
         /// <summary>
@@ -149,6 +150,7 @@ namespace _Scripts._Game.Grid
         public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) 
         {
              var r = new Vector2(worldPosition.x, worldPosition.z).magnitude;
+             
              // CZEMU MINUS Z? Bo tworzę grid ze wskazówkami zegara, a trygonometria działa w drugą stronę
              // link z obrazkiem (tam oś y to moje -z): https://www.omnicalculator.com/math/cartesian-to-polar 
              var deg = Mathf.Atan2(-worldPosition.z, worldPosition.x) * Mathf.Rad2Deg;;

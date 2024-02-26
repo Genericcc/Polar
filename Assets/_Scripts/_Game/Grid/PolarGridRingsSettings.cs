@@ -7,34 +7,12 @@ namespace _Scripts._Game.Grid
 {
     [CreateAssetMenu(menuName = "Create PolarGridRingsSettings", fileName = "PolarGridRingsSettings", order = 0)]
     [Serializable]
-    public class PolarGridRingsSettings : ScriptableObject, ISerializationCallbackReceiver
+    public class PolarGridRingsSettings : ScriptableObject
     {
         [SerializeField]
         public List<RingSettings> ringSettingsList;
 
         public int segmentsInGame;
-        public void OnBeforeSerialize()
-        {
-        }
-
-        public void OnAfterDeserialize()
-        {
-            // if (ringSettingsList == null)
-            // {
-            //     return;
-            // }
-            //
-            // for (var i = 0; i < ringSettingsList.Count; i++)
-            // {
-            //     RingSettings currentRingSettings = ringSettingsList[i];
-            //     
-            //     if (currentRingSettings.fi == 0 || currentRingSettings.fi == 360)
-            //     {
-            //         currentRingSettings.fi = 60;
-            //         ringSettingsList[i] = currentRingSettings;
-            //     }
-            // }
-        }
     }
 
     [Serializable]
@@ -43,5 +21,6 @@ namespace _Scripts._Game.Grid
         public int depth;
         public int fi;
         public int height;
+        public Color color;
     }
 }

@@ -55,7 +55,7 @@ namespace _Scripts
             
             var purePolar = polarGridManager.GetPurePolarFromWorld(_mousePos);
             
-            Debug.Log($"Mouse pos: {_mousePos}, Polar: {purePolar}");
+            //Debug.Log($"Mouse pos: {_mousePos}, Polar: {purePolar}");
             
             var polarPos = polarGridManager.GetPolarFromWorld(_mousePos);
             var node = polarGridManager.GetPolarNode(polarPos);
