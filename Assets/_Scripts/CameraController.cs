@@ -59,23 +59,23 @@ namespace _Scripts
         private void HandleMovement()
         {
             var cameraTransform = transform;
-            var moveDir = cameraTransform.forward * input.Direction.y + cameraTransform.right * input.Direction.x;
+            var moveDir = cameraTransform.forward * input.CameraMoveDir.y + cameraTransform.right * input.CameraMoveDir.x;
             cameraTransform.position += moveDir * (moveSpeed * Time.deltaTime);
         }
 
         private void HandleRotation()
         {
-            var rotationVector = new Vector3(0, -input.RotationDirection.x, 0);
+            var rotationVector = new Vector3(0, -input.CameraRotationDir.x, 0);
             transform.eulerAngles += rotationVector * (rotationSpeed * Time.deltaTime);
         }
 
         private void HandleZoom()
         {
-            if (input.ZoomDir.y > 0)
+            if (input.CameraZoomDir.y > 0)
             {
                 _targetFollowOffset.y -= zoomAmount;
             }
-            if (input.ZoomDir.y < 0)
+            if (input.CameraZoomDir.y < 0)
             {
                 _targetFollowOffset.y += zoomAmount;
             }

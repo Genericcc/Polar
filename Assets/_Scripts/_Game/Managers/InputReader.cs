@@ -11,40 +11,36 @@ namespace _Scripts._Game.Managers
     [CreateAssetMenu(menuName = "InputReader", fileName = "InputReader", order = 0)]
     public class InputReader : ScriptableObject, IPlayerActions
     {
-        public event UnityAction<Vector2> MoveCamera = delegate { };
-        public event UnityAction<Vector2> RotateCamera = delegate { };
-        public event UnityAction<Vector2> ZoomCamera = delegate { };
+        private PlayerInputActions _inputActions;
 
-        public PlayerInputActions inputActions;
-
-        public Vector3 Direction => inputActions.Player.MoveCamera.ReadValue<Vector2>();
-        public Vector2 RotationDirection => inputActions.Player.CameraRotation.ReadValue<Vector2>();
-        public Vector2 ZoomDir => inputActions.Player.ZoomCamera.ReadValue<Vector2>();
+        public Vector3 CameraMoveDir => _inputActions.Player.MoveCamera.ReadValue<Vector2>();
+        public Vector2 CameraRotationDir => _inputActions.Player.CameraRotation.ReadValue<Vector2>();
+        public Vector2 CameraZoomDir => _inputActions.Player.ZoomCamera.ReadValue<Vector2>();
 
         private void OnEnable()
         {
-            if (inputActions == null)
+            if (_inputActions == null)
             {
-                inputActions = new PlayerInputActions();
-                inputActions.Player.SetCallbacks(this);
+                _inputActions = new PlayerInputActions();
+                _inputActions.Player.SetCallbacks(this);
             }
             
-            inputActions.Enable();
+            _inputActions.Enable();
         }
         
         public void OnMoveCamera(InputAction.CallbackContext context)
         {
-            MoveCamera.Invoke(context.ReadValue<Vector2>());
+            
         }
 
         public void OnCameraRotation(InputAction.CallbackContext context)
         {
-            RotateCamera.Invoke(context.ReadValue<Vector2>());
+            
         }
 
         public void OnZoomCamera(InputAction.CallbackContext context)
         {
-            ZoomCamera.Invoke(context.ReadValue<Vector2>());
+            
         }
         
         public void OnEnableCameraRotation(InputAction.CallbackContext context)
