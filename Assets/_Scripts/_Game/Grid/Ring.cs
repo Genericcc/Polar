@@ -63,6 +63,9 @@ namespace _Scripts._Game.Grid
             
             var generator = GetComponent<RoundMeshGenerator>();
             generator.CreateRoundMesh(Bounds.max, Nodes.Count);
+
+            var mesh = GetComponent<MeshRenderer>();
+            mesh.material.color *= RingSettings.color;
         }
     }
 }

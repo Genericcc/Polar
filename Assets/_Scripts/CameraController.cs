@@ -38,15 +38,12 @@ namespace _Scripts
         [SerializeField]
         private InputReader input;
 
-        private void OnEnable()
-        {
-            //inputReader.MoveCamera += MoveCamera();
-        }
-
         private void Start()
         {
             _cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
             _targetFollowOffset = _cinemachineTransposer.m_FollowOffset;
+            
+            input.EnablePlayerActions();
         }
 
         private void Update()
@@ -58,6 +55,11 @@ namespace _Scripts
 
         private void HandleMovement()
         {
+            if (input.CameraMoveDir == Vector3.zero)
+            {
+                return;
+            }
+            
             var cameraTransform = transform;
             var moveDir = cameraTransform.forward * input.CameraMoveDir.y + cameraTransform.right * input.CameraMoveDir.x;
             cameraTransform.position += moveDir * (moveSpeed * Time.deltaTime);
@@ -65,6 +67,11 @@ namespace _Scripts
 
         private void HandleRotation()
         {
+            if (input.CameraRotationDir == Vector2.zero)
+            {
+                return;
+            }
+            
             var rotationVector = new Vector3(0, -input.CameraRotationDir.x, 0);
             transform.eulerAngles += rotationVector * (rotationSpeed * Time.deltaTime);
         }
@@ -75,6 +82,7 @@ namespace _Scripts
             {
                 _targetFollowOffset.y -= zoomAmount;
             }
+            
             if (input.CameraZoomDir.y < 0)
             {
                 _targetFollowOffset.y += zoomAmount;
