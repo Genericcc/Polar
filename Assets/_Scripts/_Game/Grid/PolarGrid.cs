@@ -10,16 +10,12 @@ namespace _Scripts._Game.Grid
 {
     public class PolarGrid
     {
-        public List<PolarNode> GridNodes;
-        public List<Ring> Rings;
+        public readonly List<PolarNode> GridNodes;
+        public readonly List<Ring> Rings;
 
         private readonly PolarGridRingsSettings _polarGridRingsSettings;
         private readonly float _columnHeight;
 
-        private const int FullCircle = 360;
-        
-        //TODO wyczyścić / refaktor 
-        //TODO obrócić spawn nodów o 90 stopni żeby pasował do myszki, albo obczić czemu polar z myszki jest obrócony o 90 stopni
         public PolarGrid(PolarGridRingsSettings polarGridRingsSettings, float columnHeight)
         {
             GridNodes = new List <PolarNode>();
@@ -37,14 +33,14 @@ namespace _Scripts._Game.Grid
             {
                 var ring = ringFactory.Create(ringIndex);
                 
-                ring.PopulateWithNodes(polarNodeFactory);
-                GridNodes.AddRange(ring.Nodes);
-                
                 var startDistanceToWorldOrigin = endDistanceToWorldOrigin;
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
                 
                 ring.SetBounds((startDistanceToWorldOrigin, endDistanceToWorldOrigin));
-                ring.CreateMesh();
+                ring.CreateMesh(50);
+                ring.PopulateWithNodes(polarNodeFactory);
+                
+                GridNodes.AddRange(ring.Nodes);
                 
                 Rings.Add(ring);
             }
@@ -56,9 +52,18 @@ namespace _Scripts._Game.Grid
             
             var x = (polarGridPosition.D + previousFieldsCount) * _columnHeight * Mathf.Cos(-polarGridPosition.Fi * Mathf.Deg2Rad);
             var y = polarGridPosition.H;
-            var z = (polarGridPosition.D + previousFieldsCount)* _columnHeight * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
+            var z = (polarGridPosition.D + previousFieldsCount) * _columnHeight * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
 
-            return new Vector3(x, y, z );
+            return new Vector3(x, y, z);
+        }
+        
+        public Vector3 GetWorldFromPurePolar(PurePolarCoords purePolar)
+        {
+            var x = purePolar.Radius * Mathf.Cos(-purePolar.Fi * Mathf.Deg2Rad);
+            var y = purePolar.H;
+            var z = purePolar.Radius * Mathf.Sin(-purePolar.Fi * Mathf.Deg2Rad);
+
+            return new Vector3(x, y, z);
         }
 
         private int GetSumOfPreviousFields(int ringIndex)
@@ -131,7 +136,7 @@ namespace _Scripts._Game.Grid
             var distance = purePolar.Radius - ring.Bounds.min;
             var snappedD = Mathf.FloorToInt(distance / _columnHeight);
             
-            var howManyFiFitsIn = purePolar.Fi / ring.RingSettings.fi;
+            var howManyFiFitsIn = Mathf.FloorToInt(purePolar.Fi / ring.RingSettings.fi);
             var snappedFi = howManyFiFitsIn * ring.RingSettings.fi;
 
             return new PolarGridPosition(ring.RingIndex, snappedD, snappedFi, purePolar.H);
@@ -142,12 +147,6 @@ namespace _Scripts._Game.Grid
             return Rings.FirstOrDefault(x => x.Bounds.min <= purePolarRadius && purePolarRadius < x.Bounds.max);
         }
 
-        /// <summary>
-        /// Gets Pure Polar Coordinates with ParentRingIndex as 0.
-        /// d is r, fi is in degrees
-        /// </summary>
-        /// <param name="worldPosition"></param>
-        /// <returns></returns>
         public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) 
         {
              var r = new Vector2(worldPosition.x, worldPosition.z).magnitude;
@@ -155,8 +154,8 @@ namespace _Scripts._Game.Grid
              // CZEMU MINUS Z? Bo tworzę grid ze wskazówkami zegara, a trygonometria działa w drugą stronę
              // link z obrazkiem (tam oś y to moje -z): https://www.omnicalculator.com/math/cartesian-to-polar 
              var deg = Mathf.Atan2(-worldPosition.z, worldPosition.x) * Mathf.Rad2Deg;;
-             var fi = (int)((deg + 360) % 360);
-             var h = Mathf.RoundToInt(worldPosition.y);
+             var fi = (float)((deg + 360) % 360);
+             var h = worldPosition.y;
 
              return new PurePolarCoords(r, fi, h);
         }
@@ -170,35 +169,15 @@ namespace _Scripts._Game.Grid
         {
             return GridNodes.GetRandom();
         }
-
-        // public Vector3 GetNodeCentre(PolarNode polarNode)
-        // {
-        //     var pureWorld = GetHalfNodeShift(polarNode.PolarGridPosition, polarNode.ParentRing.RingSettings.fi / 2);
-        //
-        //     return pureWorld;
-        // }
-        //
-        // public Vector3 GetHalfNodeShift(PolarGridPosition polarGridPosition, int fiShift)
-        // {
-        //     var previousFieldsCount = GetSumOfPreviousFields(polarGridPosition.ParentRingIndex);
-        //     
-        //     var x = (polarGridPosition.D + previousFieldsCount + 0.5f * _columnHeight) 
-        //             * Mathf.Cos(-(polarGridPosition.Fi + fiShift) * Mathf.Deg2Rad);
-        //     var y = polarGridPosition.H;
-        //     var z = (polarGridPosition.D + previousFieldsCount + 0.5f) * _columnHeight
-        //             * Mathf.Sin(-(polarGridPosition.Fi + fiShift) * Mathf.Deg2Rad);
-        //
-        //     return new Vector3(x, y, z);
-        // }
     }
 
     public struct PurePolarCoords
     {
         public float Radius;
-        public int Fi;
-        public int H;
+        public float Fi;
+        public float H;
 
-        public PurePolarCoords(float radius, int fi, int h)
+        public PurePolarCoords(float radius, float fi, float h)
         {
             Radius = radius;
             Fi = fi;

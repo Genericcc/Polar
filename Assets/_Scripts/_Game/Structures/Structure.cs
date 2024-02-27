@@ -14,24 +14,24 @@ namespace _Scripts._Game.Structures
         public IStructureData StructureData { get; private set; }
         public List<PolarNode> polarNodes;
 
-        [SerializeField]
-        private Transform pivot;
-        
-        [SerializeField]
-        private Transform centre;
-
-        private void Awake()
-        {
-            if (pivot == null)
-            {
-                pivot = transform.Find("Pivot");
-            }
-            
-            if (centre == null)
-            {
-                centre = transform.Find("Centre");
-            }
-        }
+        // [SerializeField]
+        // private Transform pivot;
+        //
+        // [SerializeField]
+        // private Transform centre;
+        //
+        // private void Awake()
+        // {
+        //     if (pivot == null)
+        //     {
+        //         pivot = transform.Find("Pivot");
+        //     }
+        //     
+        //     if (centre == null)
+        //     {
+        //         centre = transform.Find("Centre");
+        //     }
+        // }
 
         public void Initialise(List<PolarNode> newPolarNodes, IStructureData newStructureData)
         {
@@ -62,14 +62,14 @@ namespace _Scripts._Game.Structures
             
             foreach (var polarNode in polarNodes)
             {
-                newPos.x += polarNode.WorldPosition.x;
-                newPos.z += polarNode.WorldPosition.z;
+                newPos.x += polarNode.CentrePosition.x;
+                newPos.z += polarNode.CentrePosition.z;
             }
 
             //newPos = new Vector3(newPos.x / polarNodes.Count, newPos.y / polarNodes.Count, newPos.z / polarNodes.Count);
             newPos *= 1f / polarNodes.Count;
 
-            newPos.y = polarNodes[0].WorldPosition.y;
+            newPos.y = polarNodes[0].CentrePosition.y;
 
             return newPos;
         }

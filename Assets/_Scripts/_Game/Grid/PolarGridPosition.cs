@@ -7,9 +7,9 @@ namespace _Scripts._Game.Grid
         public int ParentRingIndex;
         public int D;
         public int Fi;
-        public int H;
+        public float H;
 
-        public PolarGridPosition(int parentRingIndex, int d, int fi, int h)
+        public PolarGridPosition(int parentRingIndex, int d, int fi, float h)
         {
             ParentRingIndex = parentRingIndex;
             D = d;

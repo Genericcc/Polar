@@ -837,6 +837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd591edbfcbf4983acea718de2b8b70d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _structureData: {fileID: 11400000, guid: 65a5ac9d1b5be4e41ba2475291c5d875, type: 2}
 --- !u!114 &763202097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1247,9 +1248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d899fcc4b2b4e4ea018e2871471cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 0}
   mainCamera: {fileID: 0}
-  polarGridManager: {fileID: 0}
   buildingIndex: 0
 --- !u!4 &1389033002
 Transform:
@@ -1362,6 +1361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd591edbfcbf4983acea718de2b8b70d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _structureData: {fileID: 11400000, guid: dd97d9ba33812cd40bbccf6af5a60b25, type: 2}
 --- !u!114 &1422438952
 MonoBehaviour:
   m_ObjectHideFlags: 0

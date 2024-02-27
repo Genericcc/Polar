@@ -15,6 +15,7 @@ namespace _Scripts._Game.Managers
         [SerializeField]
         [Range(0.5f, 5f)]
         private float columnHeight = 2;
+        public float ColumnHeight => columnHeight;
 
         [InspectorButton("CreateGrid")]
         public bool rebuild;
@@ -51,19 +52,6 @@ namespace _Scripts._Game.Managers
             
             _polarGrid = new PolarGrid(polarGridRingsSettings, columnHeight);
             _polarGrid.PopulateGrid(_polarNodeFactory, _ringFactory);
-
-            if (_polarGrid.Rings.Any())
-            {
-                foreach (var ring in _polarGrid.Rings)
-                {
-                    var height = ring.Nodes.First().PolarGridPosition.H;
-                    
-                    var newPos = new Vector3(ring.transform.position.x, height, ring.transform.position.z);
-                    var newRot = new Vector3(90, 0, 0);
-                    
-                    ring.transform.SetPositionAndRotation(newPos, Quaternion.Euler(newRot));
-                }
-            }
 
             Initalised = true;
         }
@@ -112,6 +100,7 @@ namespace _Scripts._Game.Managers
 
         public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) => _polarGrid.GetPurePolarFromWorld(worldPosition);
         //public Vector3 GetNodeCentre(PolarNode polarNode) => _polarGrid.GetNodeCentre(polarNode);
+        public Vector3 GetWorldFromPurePolar(PurePolarCoords purePolar) => _polarGrid.GetWorldFromPurePolar(purePolar);
 
         public PolarNode GetPolarNode(PolarGridPosition polarGridPosition) => _polarGrid.GetPolarNode(polarGridPosition);
 

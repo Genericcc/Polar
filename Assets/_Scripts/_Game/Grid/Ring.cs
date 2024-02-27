@@ -26,15 +26,15 @@ namespace _Scripts._Game.Grid
             var segmentsInGame = 6;
 
             //centreNode
-            if (RingIndex == 0)
-            {
-                var polarGridPosition = new PolarGridPosition(0, 0, 0, RingSettings.height);
-                    
-                var node = polarNodeFactory.Create(polarGridPosition, this);
-                Nodes.Add(node);
-                    
-                return;
-            }
+            // if (RingIndex == 0)
+            // {
+            //     var polarGridPosition = new PolarGridPosition(0, 0, 0, RingSettings.height);
+            //         
+            //     var node = polarNodeFactory.Create(polarGridPosition, this);
+            //     Nodes.Add(node);
+            //         
+            //     return;
+            // }
 
             for (var depth = 0; depth < RingSettings.depth; depth++)
             {
@@ -43,6 +43,7 @@ namespace _Scripts._Game.Grid
                     var polarGridPosition = new PolarGridPosition(RingIndex, depth, fi, RingSettings.height);
 
                     var node = polarNodeFactory.Create(polarGridPosition, this);
+                    node.transform.SetParent(this.transform, false);
                     Nodes.Add(node);
                 }
             }
@@ -53,16 +54,10 @@ namespace _Scripts._Game.Grid
             Bounds = valueTuple;
         }
 
-        public void CreateMesh()
+        public void CreateMesh(int sides)
         {
-            if (RingIndex == 0)
-            {
-                gameObject.SetActive(false);
-                return;
-            }
-            
             var generator = GetComponent<RoundMeshGenerator>();
-            generator.CreateRoundMesh(Bounds.max, Nodes.Count);
+            generator.CreateRoundMesh(Bounds.max, sides);
 
             var mesh = GetComponent<MeshRenderer>();
             mesh.material.color *= RingSettings.color;

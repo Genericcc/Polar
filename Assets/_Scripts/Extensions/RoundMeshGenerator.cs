@@ -22,7 +22,7 @@ namespace _Scripts.Extensions
             {
                 var x = radius * Mathf.Sin((2 * Mathf.PI * i) / sides);
                 var z = radius * Mathf.Cos((2 * Mathf.PI * i) / sides);
-                verticesList.Add(new Vector3(x, z, 0f));
+                verticesList.Add(new Vector3(x, 0f, z));
             }
             var vertices = verticesList.ToArray();
 

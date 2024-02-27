@@ -20,7 +20,7 @@ namespace _Scripts._Game.Grid
     {
         public int depth;
         public int fi;
-        public int height;
+        public float height;
         public Color color;
     }
 }
