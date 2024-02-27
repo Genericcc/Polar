@@ -11,12 +11,14 @@ namespace _Scripts._Game.Managers
     [CreateAssetMenu(menuName = "InputReader", fileName = "InputReader", order = 0)]
     public class InputReader : ScriptableObject, IPlayerActions
     {
+        public event UnityAction MouseClicked = delegate {};
         
         private PlayerInputActions _inputActions;
 
         public Vector3 CameraMoveDir => _inputActions.Player.MoveCamera.ReadValue<Vector2>();
         public Vector2 CameraRotationDir => _inputActions.Player.CameraRotation.ReadValue<Vector2>();
         public Vector2 CameraZoomDir => _inputActions.Player.ZoomCamera.ReadValue<Vector2>();
+        public Vector2 PointerPosition => _inputActions.Player.MovePointer.ReadValue<Vector2>();
 
         private void OnEnable()
         {
@@ -32,6 +34,16 @@ namespace _Scripts._Game.Managers
         public void EnablePlayerActions()
         {
             _inputActions.Enable();
+        }
+
+        public void DisablePlayerActions()
+        {
+            _inputActions.Disable();
+        }
+
+        public void OnFire(InputAction.CallbackContext context)
+        {
+            MouseClicked.Invoke();
         }
 
         public void OnMoveCamera(InputAction.CallbackContext context)
@@ -55,11 +67,6 @@ namespace _Scripts._Game.Managers
         }
 
         public void OnMovePointer(InputAction.CallbackContext context)
-        {
-            
-        }
-
-        public void OnFire(InputAction.CallbackContext context)
         {
             
         }

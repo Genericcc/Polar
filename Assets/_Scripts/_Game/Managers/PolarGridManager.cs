@@ -111,6 +111,7 @@ namespace _Scripts._Game.Managers
         public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition) => _polarGrid.GetNodePolarPositionAt(worldPosition);
 
         public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) => _polarGrid.GetPurePolarFromWorld(worldPosition);
+        //public Vector3 GetNodeCentre(PolarNode polarNode) => _polarGrid.GetNodeCentre(polarNode);
 
         public PolarNode GetPolarNode(PolarGridPosition polarGridPosition) => _polarGrid.GetPolarNode(polarGridPosition);
 

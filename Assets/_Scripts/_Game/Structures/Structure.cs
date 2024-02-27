@@ -11,7 +11,7 @@ namespace _Scripts._Game.Structures
 {
     public abstract class Structure : MonoBehaviour, IStructure
     {
-        public BaseStructureData BaseStructureData { get; private set; }
+        public IStructureData StructureData { get; private set; }
         public List<PolarNode> polarNodes;
 
         [SerializeField]
@@ -33,15 +33,14 @@ namespace _Scripts._Game.Structures
             }
         }
 
-        public void Initialise(List<PolarNode> newPolarNodes, BaseStructureData newStructureData)
+        public void Initialise(List<PolarNode> newPolarNodes, IStructureData newStructureData)
         {
             polarNodes = newPolarNodes;
-            BaseStructureData = newStructureData;
+            StructureData = newStructureData;
 
             AlignTransform();
         }
         
-        //-----------Move all below to BuildingManager or BuildingFactory----------
         private void AlignTransform()
         {
             if (polarNodes == null || !polarNodes.Any())
@@ -50,17 +49,17 @@ namespace _Scripts._Game.Structures
                 return;
             }
             
+            var newPos = GetAveragePosition();
+
             var buildingTransform = transform;
-            var newPos = new Vector3();
-
-            newPos = GetAveragePosition(newPos);
-
             buildingTransform.position = newPos;
             buildingTransform.rotation = Quaternion.LookRotation(newPos - new Vector3(0, newPos.y, 0));;
         }
 
-        private Vector3 GetAveragePosition(Vector3 newPos)
+        private Vector3 GetAveragePosition()
         {
+            var newPos = new Vector3();
+            
             foreach (var polarNode in polarNodes)
             {
                 newPos.x += polarNode.WorldPosition.x;

@@ -50,7 +50,7 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
-            Container.BindFactory<List<PolarNode>, BaseStructureData, Structure, StructureFactory>()
+            Container.BindFactory<List<PolarNode>, IStructureData, Structure, StructureFactory>()
                      .FromFactory<CustomStructureFactory>();
             Container.Bind<HouseStructure>()
                      .FromResource("Prefabs/Worlds/Structures/HouseStructurePrefab")
@@ -66,13 +66,27 @@ namespace _Scripts.Zenject.Installers
 
             #endregion
 
+            #region Player
+
+            Container.Bind<MouseWorld>()
+                     .FromComponentInHierarchy()
+                     .AsSingle()
+                     .NonLazy();
+
+            Container.Bind<InputReader>()
+                     .FromResource("Settings/InputReader")
+                     .AsSingle()
+                     .NonLazy();
+
+            #endregion
+
             RegisterAndBindSignals();
         }
 
         private void RegisterAndBindSignals()
         {
-            Container.DeclareSignal<RequestBuildingPlacementSignal>().OptionalSubscriber();
-            Container.BindSignal<RequestBuildingPlacementSignal>()
+            Container.DeclareSignal<RequestStructurePlacementSignal>().OptionalSubscriber();
+            Container.BindSignal<RequestStructurePlacementSignal>()
                      .ToMethod<StructureManager>(x => x.OnRequestBuildingPlacementSignal)
                      .FromResolveAll();
         }

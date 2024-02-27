@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -121,9 +122,9 @@ namespace _Scripts._Game.Grid
             var purePolar = GetPurePolarFromWorld(worldPosition);
 
             var ring = GetRingThroughRadius(purePolar.Radius);
-            if (ring == null)
+            if (ring is null)
             {
-                Debug.LogWarning("Mouse outside the rings. Returning default");
+                Debug.Log("Mouse outside the rings. Returning default");
                 return default;
             }
             
@@ -169,6 +170,26 @@ namespace _Scripts._Game.Grid
         {
             return GridNodes.GetRandom();
         }
+
+        // public Vector3 GetNodeCentre(PolarNode polarNode)
+        // {
+        //     var pureWorld = GetHalfNodeShift(polarNode.PolarGridPosition, polarNode.ParentRing.RingSettings.fi / 2);
+        //
+        //     return pureWorld;
+        // }
+        //
+        // public Vector3 GetHalfNodeShift(PolarGridPosition polarGridPosition, int fiShift)
+        // {
+        //     var previousFieldsCount = GetSumOfPreviousFields(polarGridPosition.ParentRingIndex);
+        //     
+        //     var x = (polarGridPosition.D + previousFieldsCount + 0.5f * _columnHeight) 
+        //             * Mathf.Cos(-(polarGridPosition.Fi + fiShift) * Mathf.Deg2Rad);
+        //     var y = polarGridPosition.H;
+        //     var z = (polarGridPosition.D + previousFieldsCount + 0.5f) * _columnHeight
+        //             * Mathf.Sin(-(polarGridPosition.Fi + fiShift) * Mathf.Deg2Rad);
+        //
+        //     return new Vector3(x, y, z);
+        // }
     }
 
     public struct PurePolarCoords

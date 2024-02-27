@@ -15,7 +15,7 @@ namespace _Scripts.Data.Dictionaries
 
         public BaseStructureData Get(StructureType structureType)
         {
-            return structures.FirstOrDefault(x => x.structureType == structureType);
+            return structures.FirstOrDefault(x => x.StructureType == structureType);
         }
     }
 }

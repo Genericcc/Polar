@@ -1,27 +1,22 @@
 using _Scripts._Game.Managers;
 using _Scripts._Game.Structures;
-using _Scripts.Zenject.Signals;
 
 using TMPro;
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 using Zenject;
 
 namespace _Scripts._Game.Grid
 {
-    public class PolarNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class PolarNode : MonoBehaviour
     {
-        [SerializeField]
         public PolarGridPosition PolarGridPosition { get; private set; }
 
-        [SerializeField]
         public Ring ParentRing { get; set; }
         
         public Vector3 WorldPosition { get; private set; }
 
-        [SerializeField]
         public Structure Structure { get; private set; }
 
         [SerializeField]
@@ -38,13 +33,11 @@ namespace _Scripts._Game.Grid
 
         public bool IsFree => Structure == null;
 
-        private SignalBus _signalBus;
         private PolarGridManager _polarGridManager;
 
         [Inject]
-        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager)
+        public void Construct(PolarGridManager polarGridManager)
         {
-            _signalBus = signalBus;
             _polarGridManager = polarGridManager;
             
             //Chujowo ustawiane, lepiej byłoby mieć pogrupowane Ringami? 
@@ -82,28 +75,5 @@ namespace _Scripts._Game.Grid
         {
             return PolarGridPosition.ToString();
         }
-        
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            meshRenderer.materials = highlightMaterials;
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            meshRenderer.materials = defaultMaterial;
-        }
-        
-        //Test, potem robić z BuildingManagera?
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            _signalBus.Fire(new RequestBuildingPlacementSignal(null, this));
-        }
-
-        // public PolarGridPosition GetHorizontalNeighbourPosition(bool isToTheRight)
-        // {
-        //     var nextPos = PolarGridPosition + new PolarGridPosition(0, 0, _parentRingSettings.fi, 0);
-        //
-        //     
-        // }
     }
 }

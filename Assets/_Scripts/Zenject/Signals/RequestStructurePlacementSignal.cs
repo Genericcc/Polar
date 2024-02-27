@@ -5,14 +5,12 @@ using _Scripts._Game.Structures.StructuresData;
 
 namespace _Scripts.Zenject.Signals
 {
-    public class RequestBuildingPlacementSignal
+    public class RequestStructurePlacementSignal
     {
-        public readonly BaseStructureData BaseStructureData;
         public readonly PolarNode OriginBuildNode;
 
-        public RequestBuildingPlacementSignal(BaseStructureData baseStructureData, PolarNode originBuildNode)
+        public RequestStructurePlacementSignal(PolarNode originBuildNode)
         {
-            BaseStructureData = baseStructureData;
             OriginBuildNode = originBuildNode;
         }
     }

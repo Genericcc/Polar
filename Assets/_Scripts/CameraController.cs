@@ -1,5 +1,3 @@
-using System;
-
 using _Scripts._Game.Managers;
 
 using Cinemachine;
@@ -9,7 +7,6 @@ namespace _Scripts
 {
     public class CameraController : MonoBehaviour
     {
-
         [SerializeField] 
         private float minFollowYOffset = 2f;
         
@@ -30,13 +27,12 @@ namespace _Scripts
 
         [SerializeField] 
         private CinemachineVirtualCamera cinemachineVirtualCamera;
+        
+        [SerializeField]
+        private InputReader input;
 
         private CinemachineTransposer _cinemachineTransposer;
         private Vector3 _targetFollowOffset;
-
-
-        [SerializeField]
-        private InputReader input;
 
         private void Start()
         {

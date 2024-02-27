@@ -5,6 +5,7 @@ using _Scripts._Game.Grid;
 using _Scripts._Game.Structures;
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Data.Dictionaries;
+using _Scripts.Zenject.Installers;
 using _Scripts.Zenject.Signals;
 
 using com.cyborgAssets.inspectorButtonPro;
@@ -24,22 +25,24 @@ namespace _Scripts._Game.Managers
         private PolarGridManager _polarGridManager;
         private StructureFactory _structureFactory;
 
-        private Entity Entity;
-        private World World;
-        private bool wasRun;
+        private Entity _entity;
+        private World _world;
+        private bool _wasRun;
 
         public List<Structure> buildings;
         
         public int testStructuresAmount;
-        public BaseStructureData testStructureData;
+        public IStructureData TestStructureData;
         
         [SerializeField]
-        private BaseStructureData currentSelectedStructureData;
+        private IStructureData _selectedStructureData;
 
         private StructureDictionary _structureDictionary;
 
         [Inject]
-        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, StructureFactory structureFactory,
+        public void Construct(SignalBus signalBus, 
+            PolarGridManager polarGridManager, 
+            StructureFactory structureFactory,
             StructureDictionary structureDictionary)
         {
             _signalBus = signalBus;
@@ -47,47 +50,47 @@ namespace _Scripts._Game.Managers
             _structureFactory = structureFactory;
             _structureDictionary = structureDictionary;
             
-            buildings = new List<Structure>();
+            _world = World.DefaultGameObjectInjectionWorld;
             
-            World = World.DefaultGameObjectInjectionWorld;
-            
-            if(World.IsCreated && !World.EntityManager.Exists(Entity))
+            if(_world.IsCreated && !_world.EntityManager.Exists(_entity))
             {
-                Entity = World.EntityManager.CreateEntity(typeof(BuildingManagerTag));
+                _entity = _world.EntityManager.CreateEntity(typeof(BuildingManagerTag));
 
-                World.EntityManager.AddBuffer<BuildingPositionBuffer>(Entity);
+                _world.EntityManager.AddBuffer<BuildingPositionBuffer>(_entity);
             }
         }
 
         private void Start()
         {
-            TestPlaceBuildings(testStructuresAmount, testStructureData);
+            buildings = new List<Structure>();
+            
+            TestPlaceBuildings(testStructuresAmount, TestStructureData);
         }
 
         private void LateUpdate()
         {
-            if (wasRun)
+            if (_wasRun)
             {
                 return;
             }
 
-            wasRun = true;
+            _wasRun = true;
             
             if (buildings.Any())
             {
-                World.EntityManager.AddComponent<SomethingBuiltTag>(Entity);
+                _world.EntityManager.AddComponent<SomethingBuiltTag>(_entity);
             }
         }
 
-        public void OnRequestBuildingPlacementSignal(RequestBuildingPlacementSignal requestBuildingPlacementSignal)
+        public void OnRequestBuildingPlacementSignal(RequestStructurePlacementSignal requestStructurePlacementSignal)
         {
-            if (currentSelectedStructureData == null)
+            if (_selectedStructureData == null)
             {
                 return;
             }
             
-            var originBuildNode = requestBuildingPlacementSignal.OriginBuildNode;
-            var buildingSize = currentSelectedStructureData.structureSizeType; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
+            var originBuildNode = requestStructurePlacementSignal.OriginBuildNode;
+            var buildingSize = _selectedStructureData.StructureSizeType; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
 
             if (!_polarGridManager.TryGetNodesForBuilding(originBuildNode, buildingSize, out var nodesToBuildOn))
             {
@@ -99,7 +102,7 @@ namespace _Scripts._Game.Managers
                 return;
             }
             
-            ConstructBuilding(nodesToBuildOn, requestBuildingPlacementSignal.BaseStructureData);
+            ConstructBuilding(nodesToBuildOn, _selectedStructureData);
         }
 
         private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
@@ -112,9 +115,9 @@ namespace _Scripts._Game.Managers
             return false;
         }
 
-        private void ConstructBuilding(List<PolarNode> buildingNodes, BaseStructureData baseStructureData)
+        private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData)
         {
-            var newBuilding = _structureFactory.Create(buildingNodes, baseStructureData);
+            var newBuilding = _structureFactory.Create(buildingNodes, structureData);
             buildings.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
@@ -124,25 +127,26 @@ namespace _Scripts._Game.Managers
             
             newBuilding.OnBuild();
             
-            //DOTS testing
-            World.EntityManager.GetBuffer<BuildingPositionBuffer>(Entity).Add(new BuildingPositionBuffer
+            _world.EntityManager.GetBuffer<BuildingPositionBuffer>(_entity).Add(new BuildingPositionBuffer
             {
                 Value = newBuilding.transform.position, 
             });
         }
 
         [ProButton]
-        public void TestPlaceBuildings(int numberOfBuildings, BaseStructureData baseStructureData)
+        public void TestPlaceBuildings(int numberOfBuildings, IStructureData structureData)
         {
+            _selectedStructureData = structureData;
+            
             for (var i = 0; i < numberOfBuildings; i++)
             {
-                _signalBus.Fire(new RequestBuildingPlacementSignal(baseStructureData, _polarGridManager.GetRandomNode()));
+                _signalBus.Fire(new RequestStructurePlacementSignal(_polarGridManager.GetRandomNode()));
             }
         }
 
-        public void SelectStructureToBuild(BaseStructureData baseStructureData)
+        public void OnSelectStructureToBuild(SelectStructureSignal selectStructureSignal)
         {
-            currentSelectedStructureData = baseStructureData;
+            _selectedStructureData = selectStructureSignal.StructureData;
         }
     }
     

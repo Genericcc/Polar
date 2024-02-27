@@ -1,4 +1,7 @@
-﻿using Zenject;
+﻿using _Scripts._Game.Managers;
+using _Scripts._Game.Structures.StructuresData;
+
+using Zenject;
 
 namespace _Scripts.Zenject.Installers
 {
@@ -6,6 +9,21 @@ namespace _Scripts.Zenject.Installers
     {
         public override void InstallBindings()
         {
+
+            Container.DeclareSignal<SelectStructureSignal>().OptionalSubscriber();
+            Container.BindSignal<SelectStructureSignal>()
+                     .ToMethod<StructureManager>(x => x.OnSelectStructureToBuild)
+                     .FromResolveAll();
+        }
+    }
+
+    public class SelectStructureSignal
+    {
+        public IStructureData StructureData;
+
+        public SelectStructureSignal(IStructureData structureData)
+        {
+            StructureData = structureData;
         }
     }
 }

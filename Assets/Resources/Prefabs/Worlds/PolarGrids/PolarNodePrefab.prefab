@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce43097f4d75574d8cf61bc4b1b5794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centre: {fileID: 0}
   textMeshPro: {fileID: 3852925682130365827}
   meshRenderer: {fileID: 1200824141587544276}
   defaultMaterial:

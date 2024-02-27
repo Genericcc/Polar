@@ -8,11 +8,11 @@ using Zenject;
 
 namespace _Scripts._Game.Structures
 {
-    public class StructureFactory : PlaceholderFactory<List<PolarNode>, BaseStructureData, Structure>
+    public class StructureFactory : PlaceholderFactory<List<PolarNode>, IStructureData, Structure>
     {
     }
 
-    public class CustomStructureFactory : IFactory<List<PolarNode>, BaseStructureData, Structure>
+    public class CustomStructureFactory : IFactory<List<PolarNode>, IStructureData, Structure>
     {
         private readonly DiContainer _container;
         private readonly HouseStructure _housePrefab;
@@ -27,16 +27,16 @@ namespace _Scripts._Game.Structures
             _wallPrefab = wallPrefab;
         }
 
-        public Structure Create(List<PolarNode> polarNodes, BaseStructureData baseStructureData)
+        public Structure Create(List<PolarNode> polarNodes, IStructureData iStructureData)
         {
-            var structure = baseStructureData.structureType switch
+            var structure = iStructureData.StructureType switch
             {
                 StructureType.House => _container.InstantiatePrefabForComponent<Structure>(_housePrefab),
                 StructureType.Wall => _container.InstantiatePrefabForComponent<Structure>(_wallPrefab),
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            structure.Initialise(polarNodes, baseStructureData);
+            structure.Initialise(polarNodes, iStructureData);
             
             return structure;
         }

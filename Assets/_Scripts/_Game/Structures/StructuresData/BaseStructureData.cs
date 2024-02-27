@@ -7,12 +7,24 @@ using UnityEngine;
 
 namespace _Scripts._Game.Structures.StructuresData
 {
-    public abstract class BaseStructureData : ScriptableObject
+    public abstract class BaseStructureData : ScriptableObject, IStructureData
     {
-        public List<ResourceAmount> resourceCost;
+        [SerializeField]
+        private List<ResourceAmount> resourceCost;
+        public List<ResourceAmount> Cost => resourceCost;
+        
+        [SerializeField]
+        private StructureSizeType structureSizeType;
+        public StructureSizeType StructureSizeType => structureSizeType;
+        
+        public abstract StructureType StructureType { get; }
+    }
 
-        public StructureType structureType;
-        public StructureSizeType structureSizeType;
+    public interface IStructureData
+    {
+        List<ResourceAmount> Cost { get; }
+        StructureType StructureType { get; }
+        StructureSizeType StructureSizeType { get; }
     }
 
     public enum StructureType

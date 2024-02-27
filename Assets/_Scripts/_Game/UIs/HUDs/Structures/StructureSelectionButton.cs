@@ -1,12 +1,11 @@
-﻿using System;
-
-using _Scripts._Game.Managers;
+﻿using _Scripts._Game.Managers;
 using _Scripts._Game.Structures.StructuresData;
-
-using UnityEditor.UI;
+using _Scripts.Zenject.Installers;
 
 using UnityEngine;
 using UnityEngine.UI;
+
+using Zenject;
 
 namespace _Scripts._Game.UIs.HUDs.Structures
 {
@@ -14,32 +13,35 @@ namespace _Scripts._Game.UIs.HUDs.Structures
     public class StructureSelectionButton : MonoBehaviour
     {
         [SerializeField]
-        private BaseStructureData baseStructureData;
+        public BaseStructureData _structureData;
         
-        [SerializeField]
-        public StructureManager structureManager;
-        
-        [SerializeField]
-        private Button button;
+        private Button _button;
+        private SignalBus _signalBus;
+
+        [Inject]
+        public void Construct(SignalBus signalBus)
+        {
+            _signalBus = signalBus;
+        }
 
         protected void Awake()
         {
-            if (structureManager == null)
+            if (_button == null)
             {
-                structureManager = FindObjectOfType<StructureManager>();
-            }
-            
-            if (button == null)
-            {
-                button = GetComponent<Button>();
+                _button = GetComponent<Button>();
             }
 
-            button.onClick.AddListener(SelectBuildingData);
+            if (_structureData == null)
+            {
+                Debug.Log($"Button: {name}, has no building data");
+            }
+
+            _button.onClick.AddListener(SelectBuildingData);
         }
 
         private void SelectBuildingData()
         {
-            structureManager.SelectStructureToBuild(baseStructureData);
+            _signalBus.Fire(new SelectStructureSignal(_structureData));
         }
     }
 }
