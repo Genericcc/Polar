@@ -1,5 +1,7 @@
-﻿using Unity.Entities;
-using Unity.Mathematics;
+﻿using _Scripts._Game.DOTS.Components.ComponentData;
+using _Scripts._Game.DOTS.Components.Tags;
+
+using Unity.Entities;
 
 using UnityEngine;
 
@@ -7,8 +9,6 @@ namespace _Scripts._Game.DOTS.Authoring.People
 {
     public class PersonAuthoring : MonoBehaviour
     {
-        public float speed;
-        
         class Baker : Baker<PersonAuthoring>
         {
             public override void Bake(PersonAuthoring authoring)
@@ -16,23 +16,9 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
                 AddComponent<Person>(entity);
-                AddComponent(entity, new PersonDestination
-                {
-                    Destination = new float3(),
-                    Speed = authoring.speed
-                });
+                AddComponent<HomePosition>(entity);
+                AddComponent<JobPosition>(entity);
             }
         }
-    }
-
-    public struct Person : IComponentData
-    {
-        
-    }
-    
-    public struct PersonDestination : IComponentData
-    {
-        public float3 Destination;
-        public float Speed;
     }
 }

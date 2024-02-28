@@ -1,4 +1,6 @@
-﻿using Unity.Entities;
+﻿using _Scripts._Game.DOTS.Components.Configs;
+
+using Unity.Entities;
 
 using UnityEngine;
 
@@ -7,7 +9,9 @@ namespace _Scripts._Game.DOTS.Authoring.People
     public class PeopleSpawnerAuthoring : MonoBehaviour
     {
         public GameObject personPrefab;
-        public int peopleCount;
+        public int peopleCount;      
+        public float minSpeed;
+        public float maxSpeed;
 
         class Baker : Baker<PeopleSpawnerAuthoring>
         {
@@ -18,14 +22,10 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 {
                     PersonPrefab = GetEntity(authoring.personPrefab, TransformUsageFlags.Dynamic),
                     PeopleCount = authoring.peopleCount,
+                    MinSpeed = authoring.minSpeed,
+                    MaxSpeed = authoring.maxSpeed
                 });
             }
         }
-    }
-
-    public struct PeopleSpawnerConfig : IComponentData
-    {
-        public Entity PersonPrefab;
-        public int PeopleCount;
     }
 }

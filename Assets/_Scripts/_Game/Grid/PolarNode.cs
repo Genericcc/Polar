@@ -59,11 +59,6 @@ namespace _Scripts._Game.Grid
 
             WorldPosition = nodeTransform.position;
 
-            if (ParentRing.RingIndex >= 5)
-            {
-                Debug.Log("");
-            }
-
             var purePolar = _polarGridManager.GetPurePolarFromWorld(WorldPosition);
             var purePolarShifted = new PurePolarCoords(
                 purePolar.Radius + _polarGridManager.ColumnHeight / 2f, 

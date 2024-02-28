@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using _Scripts._Game.DOTS.Components.Buffers;
+using _Scripts._Game.DOTS.Components.Tags;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Structures;
 using _Scripts._Game.Structures.StructuresData;
@@ -11,7 +13,6 @@ using _Scripts.Zenject.Signals;
 using com.cyborgAssets.inspectorButtonPro;
 
 using Unity.Entities;
-using Unity.Mathematics;
 
 using UnityEngine;
 
@@ -29,14 +30,13 @@ namespace _Scripts._Game.Managers
         private World _world;
         private bool _wasRun;
 
-        public List<Structure> buildings;
+        private List<Structure> _structures;
         
+        [Header("Testing")]
         public int testStructuresAmount;
-        public IStructureData TestStructureData;
+        public BaseStructureData testStructureData;
         
-        [SerializeField]
         private IStructureData _selectedStructureData;
-
         private StructureDictionary _structureDictionary;
 
         [Inject]
@@ -54,17 +54,17 @@ namespace _Scripts._Game.Managers
             
             if(_world.IsCreated && !_world.EntityManager.Exists(_entity))
             {
-                _entity = _world.EntityManager.CreateEntity(typeof(BuildingManagerTag));
+                _entity = _world.EntityManager.CreateEntity(typeof(StructureManagerTag));
 
-                _world.EntityManager.AddBuffer<BuildingPositionBuffer>(_entity);
+                _world.EntityManager.AddBuffer<StructureWaypointBuffer>(_entity);
             }
         }
 
         private void Start()
         {
-            buildings = new List<Structure>();
+            _structures = new List<Structure>();
             
-            TestPlaceBuildings(testStructuresAmount, TestStructureData);
+            TestPlaceBuildings(testStructuresAmount, testStructureData);
         }
 
         private void LateUpdate()
@@ -76,7 +76,7 @@ namespace _Scripts._Game.Managers
 
             _wasRun = true;
             
-            if (buildings.Any())
+            if (_structures.Any())
             {
                 _world.EntityManager.AddComponent<SomethingBuiltTag>(_entity);
             }
@@ -118,22 +118,24 @@ namespace _Scripts._Game.Managers
         private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData)
         {
             var newBuilding = _structureFactory.Create(buildingNodes, structureData);
-            buildings.Add(newBuilding);
+            _structures.Add(newBuilding);
 
             foreach (var polarNode in buildingNodes)
             {
                 polarNode.SetBuilding(newBuilding);
             }
-            
+
             newBuilding.OnBuild();
-            
-            _world.EntityManager.GetBuffer<BuildingPositionBuffer>(_entity).Add(new BuildingPositionBuffer
-            {
-                Value = newBuilding.transform.position, 
-            });
+
+            _world.EntityManager
+                  .GetBuffer<StructureWaypointBuffer>(_entity)
+                  .Add(new StructureWaypointBuffer 
+                  { 
+                      Position = newBuilding.transform.position,
+                  });
         }
 
-        [ProButton]
+        //[ProButton]
         public void TestPlaceBuildings(int numberOfBuildings, IStructureData structureData)
         {
             _selectedStructureData = structureData;
@@ -148,18 +150,5 @@ namespace _Scripts._Game.Managers
         {
             _selectedStructureData = selectStructureSignal.StructureData;
         }
-    }
-    
-    public struct BuildingPositionBuffer : IBufferElementData
-    {
-        public float3 Value;
-    }
-    
-    public struct BuildingManagerTag : IComponentData
-    {
-    }
-    
-    public struct SomethingBuiltTag : IComponentData
-    {
     }
 }

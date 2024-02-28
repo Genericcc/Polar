@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ringSettingsList:
   - depth: 1
-    fi: 60
-    height: 3
-    color: {r: 0.20754719, g: 0.044054832, b: 0.044054832, a: 0}
-  - depth: 2
-    fi: 45
-    height: 3
-    color: {r: 0.509434, g: 0.16692302, b: 0.03604485, a: 0}
-  - depth: 3
-    fi: 15
+    fi: 360
     height: 2
-    color: {r: 0.6981132, g: 0.316902, b: 0.055980783, a: 0}
+    color: {r: 0.55602527, g: 0.990566, b: 0.6960116, a: 0}
+  - depth: 2
+    fi: 20
+    height: 2.5
+    color: {r: 0.5912247, g: 0.6132076, b: 0.5582503, a: 0}
+  - depth: 3
+    fi: 12
+    height: 2
+    color: {r: 0.049172312, g: 0.6132076, b: 0.056135774, a: 0}
   - depth: 5
     fi: 8
-    height: 1
-    color: {r: 0.09053552, g: 0.3207547, b: 0.03177287, a: 0}
+    height: 1.5
+    color: {r: 0.4104116, g: 0.5754717, b: 0.12758099, a: 0}
   - depth: 10
-    fi: 5
-    height: 0
+    fi: 6
+    height: 1
     color: {r: 0.08854413, g: 0.5660378, b: 0.040049836, a: 0}
   - depth: 15
-    fi: 3
-    height: -1
+    fi: 4
+    height: 0.5
     color: {r: 0.09011214, g: 0.7075472, b: 0.45674127, a: 0}
   segmentsInGame: 6
