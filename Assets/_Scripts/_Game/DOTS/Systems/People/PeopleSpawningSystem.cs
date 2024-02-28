@@ -35,12 +35,6 @@ namespace _Scripts._Game.DOTS.Systems.People
             var buildings = SystemAPI.GetSingletonEntity<StructureManagerTag>();
             var structureWaypointBuffer = world.EntityManager.GetBuffer<StructureWaypointBuffer>(buildings);
 
-            // var peopleQuery = SystemAPI.QueryBuilder().WithAll<Person>().Build();
-            // if (!peopleQuery.IsEmpty)
-            // {
-            //     return;
-            // }
-
             var spawnerConfig = SystemAPI.GetSingleton<PeopleSpawnerConfig>();
             var prefab = spawnerConfig.PersonPrefab;
             var count = spawnerConfig.PeopleCount;
@@ -50,8 +44,8 @@ namespace _Scripts._Game.DOTS.Systems.People
             
             foreach (var homePos in SystemAPI.Query<RefRW<HomePosition>>().WithAll<Person>())
             {
-                var newHomePosition = random.NextInt(0, structureWaypointBuffer.Length);
-                homePos.ValueRW.Value = newHomePosition;
+                var randomStructure = random.NextInt(0, structureWaypointBuffer.Length);
+                homePos.ValueRW.Value = structureWaypointBuffer[randomStructure].Position;
             }
             
             

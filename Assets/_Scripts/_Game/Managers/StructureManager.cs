@@ -117,21 +117,21 @@ namespace _Scripts._Game.Managers
 
         private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData)
         {
-            var newBuilding = _structureFactory.Create(buildingNodes, structureData);
-            _structures.Add(newBuilding);
+            var structure = _structureFactory.Create(buildingNodes, structureData);
+            _structures.Add(structure);
 
             foreach (var polarNode in buildingNodes)
             {
-                polarNode.SetBuilding(newBuilding);
+                polarNode.SetBuilding(structure);
             }
 
-            newBuilding.OnBuild();
+            structure.OnBuild();
 
             _world.EntityManager
                   .GetBuffer<StructureWaypointBuffer>(_entity)
                   .Add(new StructureWaypointBuffer 
                   { 
-                      Position = newBuilding.transform.position,
+                      Position = structure.transform.position,
                   });
         }
 

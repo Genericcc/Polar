@@ -32,6 +32,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             _world = state.WorldUnmanaged;
         }
         
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             //For init test, change to check for AtHomeEnableComponent or something like that, then find new path
