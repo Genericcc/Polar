@@ -724,7 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   columnHeight: 2
   rebuild: 0
-  polarGridRingsSettings: {fileID: 11400000, guid: 91c2432c0bd29024880bcad45ef85a9b,
+  polarGridRingsSettings: {fileID: 11400000, guid: 497ce91fe432dc042845397c29d6ae61,
     type: 2}
 --- !u!4 &740475727
 Transform:
@@ -889,6 +889,17 @@ PrefabInstance:
       propertyPath: numberOfBuildings
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 3188766718219975849, guid: 408d3011e160e894a8204808c2e03e41,
+        type: 3}
+      propertyPath: testStructureData
+      value: 
+      objectReference: {fileID: 11400000, guid: dd97d9ba33812cd40bbccf6af5a60b25,
+        type: 2}
+    - target: {fileID: 3188766718219975849, guid: 408d3011e160e894a8204808c2e03e41,
+        type: 3}
+      propertyPath: testStructuresAmount
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 3667545600632666513, guid: 408d3011e160e894a8204808c2e03e41,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -947,11 +958,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5217124458428289660, guid: 408d3011e160e894a8204808c2e03e41,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1322172680}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 408d3011e160e894a8204808c2e03e41, type: 3}
 --- !u!1 &832575517
 GameObject:
@@ -1096,7 +1103,7 @@ GameObject:
   - component: {fileID: 1143329587}
   - component: {fileID: 1143329586}
   m_Layer: 0
-  m_Name: Testing
+  m_Name: TestObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1201,24 +1208,6 @@ Transform:
   - {fileID: 274925874}
   m_Father: {fileID: 698125238}
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
---- !u!1 &1322172679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5217124458428289660, guid: 408d3011e160e894a8204808c2e03e41,
-    type: 3}
-  m_PrefabInstance: {fileID: 826659611}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1322172680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322172679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48824f2043ad4c76a346f353c40b857d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1389033000
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,10 +1999,10 @@ SceneRoots:
   - {fileID: 1879260622}
   - {fileID: 698125238}
   - {fileID: 832575519}
-  - {fileID: 1551957941}
-  - {fileID: 1143329587}
-  - {fileID: 740475727}
-  - {fileID: 826659611}
-  - {fileID: 1855143797}
   - {fileID: 1955121951}
+  - {fileID: 1551957941}
+  - {fileID: 740475727}
   - {fileID: 1389033002}
+  - {fileID: 826659611}
+  - {fileID: 1143329587}
+  - {fileID: 1855143797}

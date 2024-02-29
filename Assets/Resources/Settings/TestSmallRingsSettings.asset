@@ -29,12 +29,4 @@ MonoBehaviour:
     fi: 8
     height: 1.5
     color: {r: 0.4104116, g: 0.5754717, b: 0.12758099, a: 0}
-  - depth: 10
-    fi: 6
-    height: 1
-    color: {r: 0.08854413, g: 0.5660378, b: 0.040049836, a: 0}
-  - depth: 15
-    fi: 4
-    height: 0.5
-    color: {r: 0.09011214, g: 0.7075472, b: 0.45674127, a: 0}
   segmentsInGame: 6

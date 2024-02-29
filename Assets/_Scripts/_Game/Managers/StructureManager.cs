@@ -63,8 +63,10 @@ namespace _Scripts._Game.Managers
         private void Start()
         {
             _structures = new List<Structure>();
+
+            _selectedStructureData = testStructureData;
             
-            TestPlaceBuildings(testStructuresAmount, testStructureData);
+            TestPlaceBuildings(testStructuresAmount);
         }
 
         private void LateUpdate()
@@ -135,11 +137,9 @@ namespace _Scripts._Game.Managers
                   });
         }
 
-        //[ProButton]
-        public void TestPlaceBuildings(int numberOfBuildings, IStructureData structureData)
+        [ProButton]
+        public void TestPlaceBuildings(int numberOfBuildings)
         {
-            _selectedStructureData = structureData;
-            
             for (var i = 0; i < numberOfBuildings; i++)
             {
                 _signalBus.Fire(new RequestStructurePlacementSignal(_polarGridManager.GetRandomNode()));
