@@ -22,23 +22,16 @@ namespace _Scripts._Game.Managers
 {
     public class PlacementManager : MonoBehaviour
     {
-        [SerializeField]
-        private Camera mainCamera;
-
         private InputReader _input;
         private SignalBus _signalBus;
 
-        public int buildingIndex;
-
-        private MouseWorld _mouseWorld;
         private IPlacementHandler _placementHandler;
-        private StructureManager _structureManager;
-        private PolarGridManager _polarGridManager;
-        
-        private IStructureData _structureData;
         private IPlacementValidator _placementValidator;
-        
+
+        //TODO change into ValidatorFactory
         private StructurePlacementValidator _structurePlacementValidator;
+        
+        //TODO change into HandlerFactory
         private RoadPlacementHandler _roadPlacementHandler;
         private StructurePlacementHandler _structurePlacementHandler;
         
@@ -47,16 +40,10 @@ namespace _Scripts._Game.Managers
         [Inject]
         public void Construct(
             SignalBus signalBus,
-            InputReader inputReader,
-            MouseWorld mouseWorld,
-            StructureManager structureManager,
-            PolarGridManager polarGridManager)
+            InputReader inputReader)
         {
             _signalBus = signalBus;
             _input = inputReader;
-            _mouseWorld = mouseWorld;
-            _structureManager = structureManager;
-            _polarGridManager = polarGridManager;
         }
 
         [Inject]
@@ -70,24 +57,14 @@ namespace _Scripts._Game.Managers
             _structurePlacementValidator = structurePlacementValidator;
         }
 
-        private void Start()
-        {
-            if (_input == null)
-            {
-                _input = FindObjectOfType<InputReader>();
-            }
-        }
-
         private void OnEnable()
         {
             _input.EnablePlayerActions();
-
-            mainCamera = mainCamera == null ? Camera.main : mainCamera;
         }
 
-        public void OnSelectStructureSignal(SelectStructureSignal selectStructureSignal)
+        public void OnStructureSelectedSignal(StructureSelectedSignal structureSelectedSignal)
         {
-            if (selectStructureSignal.StructureData == null)
+            if (structureSelectedSignal.StructureData == null)
             {
                 throw new Exception("No structureData when tried to select");
             }
@@ -97,28 +74,30 @@ namespace _Scripts._Game.Managers
                 StopCoroutine(_coroutine);
             }
             
-            _structureData = selectStructureSignal.StructureData;
+            var structureData = structureSelectedSignal.StructureData;
             
-            SelectPlacementHandler(selectStructureSignal);
+            var handler = GetPlacementHandler(structureData);
+            var validator = GetPlacementValidator(structureData);
             
-            _coroutine = StartCoroutine(_placementHandler._WaitForInput(_input, _structureData, _placementValidator));
+            _coroutine = StartCoroutine(handler._WaitForInput(_input, structureData, validator));
         }
 
-        private void SelectPlacementHandler(SelectStructureSignal selectStructureSignal)
+        private IPlacementHandler GetPlacementHandler(IStructureData structureData)
         {
-            _placementHandler = selectStructureSignal.StructureData.StructureType switch
+            return structureData.StructureType switch
             {
                 StructureType.Structure => _structurePlacementHandler,
                 StructureType.Road => _roadPlacementHandler,
                 
-                
                 _ => throw new ArgumentOutOfRangeException()
             };
-            
-            _placementValidator = selectStructureSignal.StructureData.StructureType switch
+        }
+
+        private IPlacementValidator GetPlacementValidator(IStructureData structureData)
+        {
+            return structureData.StructureType switch
             {
                 StructureType.Structure => _structurePlacementValidator,
-                
                 
                 _ => throw new ArgumentOutOfRangeException()
             };

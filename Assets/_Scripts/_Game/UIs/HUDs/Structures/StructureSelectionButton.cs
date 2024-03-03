@@ -41,7 +41,7 @@ namespace _Scripts._Game.UIs.HUDs.Structures
 
         private void SelectBuildingData()
         {
-            _signalBus.Fire(new SelectStructureSignal(_structureData));
+            _signalBus.Fire(new StructureSelectedSignal(_structureData));
         }
     }
 }

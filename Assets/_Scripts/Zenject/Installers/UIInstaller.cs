@@ -10,18 +10,18 @@ namespace _Scripts.Zenject.Installers
         public override void InstallBindings()
         {
 
-            Container.DeclareSignal<SelectStructureSignal>().OptionalSubscriber();
-            Container.BindSignal<SelectStructureSignal>()
-                     .ToMethod<PlacementManager>(x => x.OnSelectStructureSignal)
+            Container.DeclareSignal<StructureSelectedSignal>().OptionalSubscriber();
+            Container.BindSignal<StructureSelectedSignal>()
+                     .ToMethod<PlacementManager>(x => x.OnStructureSelectedSignal)
                      .FromResolveAll();
         }
     }
 
-    public class SelectStructureSignal
+    public class StructureSelectedSignal
     {
         public IStructureData StructureData;
 
-        public SelectStructureSignal(IStructureData structureData)
+        public StructureSelectedSignal(IStructureData structureData)
         {
             StructureData = structureData;
         }
