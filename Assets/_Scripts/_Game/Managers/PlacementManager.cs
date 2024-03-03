@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using _Scripts._Game.DOTS.Components.Buffers;
@@ -19,7 +20,7 @@ using Zenject;
 
 namespace _Scripts._Game.Managers
 {
-    public class StructurePlacementManager : MonoBehaviour
+    public class PlacementManager : MonoBehaviour
     {
         [SerializeField]
         private Camera mainCamera;
@@ -40,6 +41,8 @@ namespace _Scripts._Game.Managers
         private StructurePlacementValidator _structurePlacementValidator;
         private RoadPlacementHandler _roadPlacementHandler;
         private StructurePlacementHandler _structurePlacementHandler;
+        
+        private Coroutine _coroutine;
 
         [Inject]
         public void Construct(
@@ -77,38 +80,28 @@ namespace _Scripts._Game.Managers
 
         private void OnEnable()
         {
-            _input.MouseClicked += OnMouseClicked;
             _input.EnablePlayerActions();
 
             mainCamera = mainCamera == null ? Camera.main : mainCamera;
         }
 
-        private void OnMouseClicked()
-        {
-            var node = _placementHandler.GetNode(_mouseWorld.MousePos);
-            if (node == null)
-            {
-                return;
-            }
-
-            if (!_polarGridManager.TryGetNodesForStructure(node, _structureData.StructureSizeType, out var nodesToBuildOn))
-            {
-                return; 
-            }
-
-            if (!_placementValidator.Validate(nodesToBuildOn, _structureData))
-            {
-                return;
-            }
-
-            var newTransform = _placementHandler.GetBuildTransform(nodesToBuildOn, _structureData);
-            
-            _signalBus.Fire(new RequestStructurePlacementSignal(nodesToBuildOn, _structureData, newTransform));
-        }
-
         public void OnSelectStructureSignal(SelectStructureSignal selectStructureSignal)
         {
+            if (selectStructureSignal.StructureData == null)
+            {
+                throw new Exception("No structureData when tried to select");
+            }
+
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+            
+            _structureData = selectStructureSignal.StructureData;
+            
             SelectPlacementHandler(selectStructureSignal);
+            
+            _coroutine = StartCoroutine(_placementHandler._WaitForInput(_input, _structureData, _placementValidator));
         }
 
         private void SelectPlacementHandler(SelectStructureSignal selectStructureSignal)
@@ -129,13 +122,10 @@ namespace _Scripts._Game.Managers
                 
                 _ => throw new ArgumentOutOfRangeException()
             };
-
-            _structureData = selectStructureSignal.StructureData;
         }
 
         private void OnDisable()
         {
-            _input.MouseClicked -= OnMouseClicked;
             _input.DisablePlayerActions();
         }
     }

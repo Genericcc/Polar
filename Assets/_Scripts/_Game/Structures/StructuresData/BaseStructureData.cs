@@ -18,7 +18,7 @@ namespace _Scripts._Game.Structures.StructuresData
         public StructureSizeType StructureSizeType => structureSizeType;
         
         [SerializeField]
-        private float scale;
+        private float scale = 1f;
         public float Scale => scale;
 
         public abstract StructureType StructureType { get; }

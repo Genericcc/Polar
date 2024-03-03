@@ -71,6 +71,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""OpenStructures"",
+                    ""type"": ""Button"",
+                    ""id"": ""b84b07fb-d72c-4d2e-80c4-fd7cf03083a3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d9a620b-5cd6-4130-8bd6-b99904751676"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -348,6 +366,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CameraRotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4e9162a-e890-4f50-9305-57338e4e559b"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""OpenStructures"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94ce20f1-5548-471a-8dcb-a31911bed318"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -938,6 +978,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MovePointer = m_Player.FindAction("MovePointer", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_CameraRotation = m_Player.FindAction("CameraRotation", throwIfNotFound: true);
+        m_Player_OpenStructures = m_Player.FindAction("OpenStructures", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1016,6 +1058,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MovePointer;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_CameraRotation;
+    private readonly InputAction m_Player_OpenStructures;
+    private readonly InputAction m_Player_Cancel;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1025,6 +1069,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MovePointer => m_Wrapper.m_Player_MovePointer;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @CameraRotation => m_Wrapper.m_Player_CameraRotation;
+        public InputAction @OpenStructures => m_Wrapper.m_Player_OpenStructures;
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1049,6 +1095,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraRotation.started += instance.OnCameraRotation;
             @CameraRotation.performed += instance.OnCameraRotation;
             @CameraRotation.canceled += instance.OnCameraRotation;
+            @OpenStructures.started += instance.OnOpenStructures;
+            @OpenStructures.performed += instance.OnOpenStructures;
+            @OpenStructures.canceled += instance.OnOpenStructures;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1068,6 +1120,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CameraRotation.started -= instance.OnCameraRotation;
             @CameraRotation.performed -= instance.OnCameraRotation;
             @CameraRotation.canceled -= instance.OnCameraRotation;
+            @OpenStructures.started -= instance.OnOpenStructures;
+            @OpenStructures.performed -= instance.OnOpenStructures;
+            @OpenStructures.canceled -= instance.OnOpenStructures;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1255,6 +1313,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovePointer(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnCameraRotation(InputAction.CallbackContext context);
+        void OnOpenStructures(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

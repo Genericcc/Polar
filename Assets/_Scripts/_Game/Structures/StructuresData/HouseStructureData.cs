@@ -12,6 +12,6 @@ namespace _Scripts._Game.Structures.StructuresData
         [SerializeField]
         public ResourceAmount workersAmount;
 
-
+        
     }
 }

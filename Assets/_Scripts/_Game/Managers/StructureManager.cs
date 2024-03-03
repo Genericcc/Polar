@@ -71,7 +71,7 @@ namespace _Scripts._Game.Managers
             //
             // TestPlaceBuildings(testStructuresAmount);
             
-            _signalBus.Fire(new SelectStructureSignal(testStructureData));
+            //_signalBus.Fire(new SelectStructureSignal(testStructureData));
         }
 
         private void LateUpdate()

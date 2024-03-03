@@ -1,18 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 
-using _Scripts._Game.Grid;
+using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
-
-using Unity.Mathematics;
-using Unity.Transforms;
-
-using UnityEngine;
 
 namespace _Scripts._Game.Managers.PlacementHandlers
 {
     public interface IPlacementHandler
     {
-        PolarNode GetNode(Vector3 mousePosition);
-        LocalTransform GetBuildTransform(List<PolarNode> polarNodes, IStructureData structureData);
+        IEnumerator _WaitForInput(InputReader input, IStructureData structureData, IPlacementValidator placementValidator);
     }
 }

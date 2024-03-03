@@ -95,15 +95,18 @@ namespace _Scripts._Game.Managers
         }
         
         public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition) => _polarGrid.GetWorldFromPolar(polarGridPosition);
-
         public PolarGridPosition GetPolarFromWorld(Vector3 worldPosition) => _polarGrid.GetNodePolarPositionAt(worldPosition);
-
         public PurePolarCoords GetPurePolarFromWorld(Vector3 worldPosition) => _polarGrid.GetPurePolarFromWorld(worldPosition);
-        //public Vector3 GetNodeCentre(PolarNode polarNode) => _polarGrid.GetNodeCentre(polarNode);
         public Vector3 GetWorldFromPurePolar(PurePolarCoords purePolar) => _polarGrid.GetWorldFromPurePolar(purePolar);
-
         public PolarNode GetPolarNode(PolarGridPosition polarGridPosition) => _polarGrid.GetPolarNode(polarGridPosition);
+        public PolarNode GetPolarNode(Vector3 mouseWorldMousePos)
+        {
+            var polarPos = GetPolarFromWorld(mouseWorldMousePos);
+            var node = GetPolarNode(polarPos);
 
+            return node;
+        }
+        
         public PolarNode GetRandomNode()
         {
             return _polarGrid.GetRandom();

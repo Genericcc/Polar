@@ -52,7 +52,7 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
 
-            Container.Bind<StructurePlacementManager>()
+            Container.Bind<PlacementManager>()
                      .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
