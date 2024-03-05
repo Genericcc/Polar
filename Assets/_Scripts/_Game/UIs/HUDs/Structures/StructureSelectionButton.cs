@@ -10,7 +10,7 @@ using Zenject;
 namespace _Scripts._Game.UIs.HUDs.Structures
 {
     [RequireComponent(typeof(Button))]
-    public class StructureSelectionButton : MonoBehaviour
+    public class StructureSelectionButton : BaseView
     {
         [SerializeField]
         public BaseStructureData _structureData;

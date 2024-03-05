@@ -2,6 +2,7 @@
 
 namespace _Scripts._Game.UIs
 {
+    [RequireComponent(typeof(UIMarker))]
     public class BaseView : MonoBehaviour
     {
         public void Open()
