@@ -2,6 +2,7 @@ using System;
 
 using _Scripts._Game.Managers;
 using _Scripts._Game.Structures;
+using _Scripts._Game.Structures.StructuresData;
 
 using TMPro;
 
@@ -19,7 +20,7 @@ namespace _Scripts._Game.Grid
         
         public Vector3 WorldPosition { get; private set; }
 
-        public Structure Structure { get; private set; }
+        public IStructureData Structure { get; private set; }
 
         [SerializeField]
         private TextMeshPro textMeshPro;
@@ -77,7 +78,7 @@ namespace _Scripts._Game.Grid
             Gizmos.DrawWireSphere(CentrePosition, 0.3f);
         }
 
-        public void SetBuilding(Structure structure)
+        public void SetBuilding(IStructureData structure)
         {
             Structure = structure;
         }

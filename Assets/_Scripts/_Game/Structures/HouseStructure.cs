@@ -1,4 +1,8 @@
-﻿using Zenject;
+﻿using System;
+
+using UnityEngine;
+
+using Zenject;
 
 namespace _Scripts._Game.Structures
 {
@@ -11,7 +15,12 @@ namespace _Scripts._Game.Structures
         {
             _signalBus = signalBus;
         }
-        
+
+        private void OnEnable()
+        {
+            Debug.Log("hehehe ");
+        }
+
         public override void OnBuild()
         {
         }

@@ -50,14 +50,14 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
-            Container.BindFactory<List<PolarNode>, IStructureData, Structure, StructureFactory>()
-                     .FromFactory<CustomStructureFactory>();
-            Container.Bind<HouseStructure>()
-                     .FromResource("Prefabs/Worlds/Structures/HouseStructurePrefab")
-                     .WhenInjectedInto<CustomStructureFactory>();
-            Container.Bind<WallStructure>()
-                     .FromResource("Prefabs/Worlds/Structures/WallStructurePrefab")
-                     .WhenInjectedInto<CustomStructureFactory>();
+            // Container.BindFactory<List<PolarNode>, IStructureData, Structure, StructureFactory>()
+            //          .FromFactory<CustomStructureFactory>();
+            // Container.Bind<HouseStructure>()
+            //          .FromResource("Prefabs/Worlds/Structures/HouseStructurePrefab")
+            //          .WhenInjectedInto<CustomStructureFactory>();
+            // Container.Bind<WallStructure>()
+            //          .FromResource("Prefabs/Worlds/Structures/WallStructurePrefab")
+            //          .WhenInjectedInto<CustomStructureFactory>();
 
             Container.Bind<StructureDictionary>()
                      .FromNewScriptableObjectResource("Dictionaries/StructureDictionary")

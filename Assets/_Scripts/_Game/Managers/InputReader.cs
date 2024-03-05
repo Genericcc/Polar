@@ -43,6 +43,11 @@ namespace _Scripts._Game.Managers
 
         public void OnFire(InputAction.CallbackContext context)
         {
+            if (context.phase != InputActionPhase.Started)
+            {
+                return;
+            }
+            
             MouseClicked.Invoke();
         }
 

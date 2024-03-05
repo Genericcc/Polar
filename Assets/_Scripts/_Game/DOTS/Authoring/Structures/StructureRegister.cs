@@ -15,21 +15,16 @@ namespace _Scripts._Game.DOTS.Authoring.Structures
             public override void Bake(StructureRegister authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                var buffer = AddBuffer<Structure>(entity);
+                var buffer = AddBuffer<AvailableStructure>(entity);
                 
                 foreach(var structure in authoring.structures)
                 {
-                    buffer.Add(new Structure
+                    buffer.Add(new AvailableStructure
                     {
                         Prefab = GetEntity(structure, TransformUsageFlags.Dynamic)
                     });
                 }
             }
         }
-    }
-    
-    public struct Structure : IBufferElementData
-    {
-        public Entity Prefab;
     }
 }

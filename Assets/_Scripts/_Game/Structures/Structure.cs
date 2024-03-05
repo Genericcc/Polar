@@ -38,41 +38,10 @@ namespace _Scripts._Game.Structures
             polarNodes = newPolarNodes;
             StructureData = newStructureData;
 
-            AlignTransform();
+            //AlignTransform();
         }
         
-        private void AlignTransform()
-        {
-            if (polarNodes == null || !polarNodes.Any())
-            {
-                Debug.LogError($"Cannot align building: {this}");
-                return;
-            }
-            
-            var newPos = GetAveragePosition();
-
-            var buildingTransform = transform;
-            buildingTransform.position = newPos;
-            buildingTransform.rotation = Quaternion.LookRotation(newPos - new Vector3(0, newPos.y, 0));;
-        }
-
-        private Vector3 GetAveragePosition()
-        {
-            var newPos = new Vector3();
-            
-            foreach (var polarNode in polarNodes)
-            {
-                newPos.x += polarNode.CentrePosition.x;
-                newPos.z += polarNode.CentrePosition.z;
-            }
-
-            //newPos = new Vector3(newPos.x / polarNodes.Count, newPos.y / polarNodes.Count, newPos.z / polarNodes.Count);
-            newPos *= 1f / polarNodes.Count;
-
-            newPos.y = polarNodes[0].CentrePosition.y;
-
-            return newPos;
-        }
+        
 
         public abstract void OnBuild();
         public abstract void OnDemolish();

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 
+using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.Grid;
 using _Scripts.Zenject.Signals;
 
@@ -17,20 +19,22 @@ namespace _Scripts._Game.Managers
     {
         [SerializeField]
         private Camera mainCamera;
-        
+
         private InputReader _input;
         private PolarGridManager _polarGridManager;
         private SignalBus _signalBus;
-        
+
         public int buildingIndex;
 
         private Entity _entity;
         private World _world;
         private MouseWorld _mouseWorld;
+        private List<PolarNode> _triedNodes;
 
         [Inject]
-        public void Construct(SignalBus signalBus, 
-            InputReader inputReader, 
+        public void Construct(
+            SignalBus signalBus,
+            InputReader inputReader,
             PolarGridManager polarGridManager,
             MouseWorld mouseWorld)
         {
@@ -46,6 +50,8 @@ namespace _Scripts._Game.Managers
             {
                 _input = FindObjectOfType<InputReader>();
             }
+
+            _triedNodes = new List<PolarNode>();
         }
 
         private void OnEnable()
@@ -64,34 +70,21 @@ namespace _Scripts._Game.Managers
             var ray = mainCamera.ScreenPointToRay(screenPosition);
 
             var node = _mouseWorld.CurrentNode;
+
             if (node == null)
             {
                 return;
             }
 
-            _signalBus.Fire(new RequestStructurePlacementSignal(node));
 
-            //------ENTITIES-------
-            // var raycastInput = new RaycastInput
-            // {
-            //     Start = ray.origin, 
-            //     Filter = CollisionFilter.Default, 
-            //     End = ray.GetPoint(mainCamera.farClipPlane)
-            // };
-            
-            if (_world.IsCreated && !_world.EntityManager.Exists(_entity))
+            if (_triedNodes.Contains(node))
             {
-                _entity = _world.EntityManager.CreateEntity();
-                _world.EntityManager.AddBuffer<StructurePlacementInput>(_entity);
+                return;
             }
             
-            _world.EntityManager.GetBuffer<StructurePlacementInput>(_entity)
-                  .Add(new StructurePlacementInput 
-                    { 
-                        //RaycastInput = raycastInput, 
-                        //PolarGridPosition = polar, 
-                        StructureIndex = buildingIndex 
-                    });
+            _signalBus.Fire(new RequestStructurePlacementSignal(node));
+
+            _triedNodes.Add(node);
         }
 
         private void OnDisable()
@@ -104,12 +97,5 @@ namespace _Scripts._Game.Managers
                 _world.EntityManager.DestroyEntity(_entity);
             }
         }
-    }
-
-    public struct StructurePlacementInput : IBufferElementData
-    {
-        
-        public PolarGridPosition PolarGridPosition;
-        internal int StructureIndex;
     }
 }
