@@ -4,6 +4,7 @@ using System.Linq;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.Tags;
 using _Scripts._Game.Grid;
+using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures;
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Data.Dictionaries;
@@ -14,6 +15,7 @@ using com.cyborgAssets.inspectorButtonPro;
 
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 
 using UnityEngine;
 
@@ -24,21 +26,21 @@ namespace _Scripts._Game.Managers
     public class StructureManager : MonoBehaviour
     {
         private SignalBus _signalBus;
-        private PolarGridManager _polarGridManager;
         private StructureFactory _structureFactory;
 
         private Entity _entity;
         private World _world;
         private bool _wasRun;
 
-        private List<Structure> _structures;
+        //private List<Structure> _structures;
         
         [Header("Testing")]
         public int testStructuresAmount;
         public BaseStructureData testStructureData;
         
-        private IStructureData _selectedStructureData;
         private StructureDictionary _structureDictionary;
+
+        private IPlacementValidator _placementValidator;
 
         [Inject]
         public void Construct(SignalBus signalBus, 
@@ -47,7 +49,6 @@ namespace _Scripts._Game.Managers
             StructureDictionary structureDictionary)
         {
             _signalBus = signalBus;
-            _polarGridManager = polarGridManager;
             //_structureFactory = structureFactory;
             _structureDictionary = structureDictionary;
             
@@ -64,11 +65,13 @@ namespace _Scripts._Game.Managers
 
         private void Start()
         {
-            _structures = new List<Structure>();
+            //_structures = new List<Structure>();
 
-            _selectedStructureData = testStructureData;
+            // _selectedStructureData = testStructureData;
+            //
+            // TestPlaceBuildings(testStructuresAmount);
             
-            TestPlaceBuildings(testStructuresAmount);
+            _signalBus.Fire(new SelectStructureSignal(testStructureData));
         }
 
         private void LateUpdate()
@@ -80,46 +83,23 @@ namespace _Scripts._Game.Managers
 
             _wasRun = true;
             
-            if (_structures.Any())
-            {
-                _world.EntityManager.AddComponent<SomethingBuiltTag>(_entity);
-            }
+            // if (_structures.Any())
+            // {
+            //     _world.EntityManager.AddComponent<SomethingBuiltTag>(_entity);
+            // }
         }
 
         public void OnRequestBuildingPlacementSignal(RequestStructurePlacementSignal requestStructurePlacementSignal)
         {
-            if (_selectedStructureData == null)
-            {
-                return;
-            }
-            
-            var originBuildNode = requestStructurePlacementSignal.OriginBuildNode;
-            var buildingSize = _selectedStructureData.StructureSizeType; //requestBuildingPlacementSignal.BuildingData.buildingSizeType;
-            
-            if (!_polarGridManager.TryGetNodesForBuilding(originBuildNode, buildingSize, out var nodesToBuildOn))
-            {
-                return;
-            }
-            
-            if (!CanBuildOnNodes(nodesToBuildOn))
-            {
-                return;
-            }
-            
-            ConstructBuilding(new List<PolarNode>{ requestStructurePlacementSignal.OriginBuildNode }, _selectedStructureData);
+            ConstructBuilding(
+                requestStructurePlacementSignal.Nodes, 
+                requestStructurePlacementSignal.StructureData,
+                requestStructurePlacementSignal.LocalTransform
+                );
         }
 
-        private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
-        {
-            if (buildingNodes.All(x => x.IsFree))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData)
+        private void ConstructBuilding(
+            List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
         {
             //var structure = _structureFactory.Create(buildingNodes, structureData);
             //_structures.Add(structure);
@@ -129,14 +109,11 @@ namespace _Scripts._Game.Managers
                 polarNode.SetBuilding(structureData);
             }
 
-            var structurePos = GetNodesCentre(buildingNodes);
-
             _world.EntityManager.GetBuffer<StructurePlacementOrder>(_entity)
                   .Add(new StructurePlacementOrder 
                   { 
-                      NewPosition = structurePos.Item1,
-                      NewRotation = structurePos.Item2,
-                      StructureIndex = 0
+                      StructureIndex = 0,
+                      NewTransform = localTransform,
                   });
 
 
@@ -144,40 +121,18 @@ namespace _Scripts._Game.Managers
                   .GetBuffer<StructureWaypointBuffer>(_entity)
                   .Add(new StructureWaypointBuffer 
                   { 
-                      Position = structurePos.Item1,
+                      Position = localTransform.Position,
                   });
         }
 
-        [ProButton]
-        public void TestPlaceBuildings(int numberOfBuildings)
-        {
-            for (var i = 0; i < numberOfBuildings; i++)
-            {
-                _signalBus.Fire(new RequestStructurePlacementSignal(_polarGridManager.GetRandomNode()));
-            }
-        }
 
-        public void OnSelectStructureToBuild(SelectStructureSignal selectStructureSignal)
-        {
-            _selectedStructureData = selectStructureSignal.StructureData;
-        }
-        
-        private (float3, quaternion) GetNodesCentre(List<PolarNode> polarNodes)
-        {
-            var newPos = new Vector3();
-            
-            foreach (var polarNode in polarNodes)
-            {
-                newPos.x += polarNode.CentrePosition.x;
-                newPos.z += polarNode.CentrePosition.z;
-            }
-
-            //newPos = new Vector3(newPos.x / polarNodes.Count, newPos.y / polarNodes.Count, newPos.z / polarNodes.Count);
-            newPos *= 1f / polarNodes.Count;
-
-            newPos.y = polarNodes[0].CentrePosition.y;
-
-            return (math.float3(newPos), Quaternion.LookRotation(newPos - new Vector3(0, newPos.y, 0)));
-        }
+        // [ProButton]
+        // public void TestPlaceBuildings(int numberOfBuildings)
+        // {
+        //     for (var i = 0; i < numberOfBuildings; i++)
+        //     {
+        //         _signalBus.Fire(new RequestStructurePlacementSignal(_polarGridManager.GetRandomNode()));
+        //     }
+        // }
     }
 }

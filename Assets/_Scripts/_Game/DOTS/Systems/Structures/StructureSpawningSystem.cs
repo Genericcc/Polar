@@ -17,7 +17,7 @@ namespace _Scripts._Game.DOTS.Systems.Structures
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
             
             state.RequireForUpdate<StructureManagerTag>();
         }
@@ -33,8 +33,8 @@ namespace _Scripts._Game.DOTS.Systems.Structures
              }
             
             var availableStructures = SystemAPI.GetSingletonBuffer<AvailableStructure>();
-            var ecbBSG = SystemAPI
-                         .GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+            var ecb = SystemAPI
+                         .GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
                          .CreateCommandBuffer(state.WorldUnmanaged);
 
             // foreach (var (availableStructures, placementOrders) 
@@ -51,15 +51,13 @@ namespace _Scripts._Game.DOTS.Systems.Structures
             for (var i = 0; i < buildOrders.Length; i++)
             {
                 var structure = availableStructures[buildOrders[i].StructureIndex].Prefab;
-                var e = ecbBSG.Instantiate(structure);
-                ecbBSG.SetComponent(e, 
-                    LocalTransform.FromPositionRotationScale(
-                        buildOrders[i].NewPosition, 
-                        buildOrders[i].NewRotation,
-                        0.25f));
+                var e = ecb.Instantiate(structure);
+                ecb.SetComponent(e, buildOrders[i].NewTransform);
             }
             
             buildOrders.Clear();
+            
+            //ecb.Playback();
         }
     }
 }

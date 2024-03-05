@@ -17,6 +17,10 @@ namespace _Scripts._Game.Structures.StructuresData
         private StructureSizeType structureSizeType;
         public StructureSizeType StructureSizeType => structureSizeType;
         
+        [SerializeField]
+        private float scale;
+        public float Scale => scale;
+
         public abstract StructureType StructureType { get; }
     }
 
@@ -25,11 +29,12 @@ namespace _Scripts._Game.Structures.StructuresData
         List<ResourceAmount> Cost { get; }
         StructureType StructureType { get; }
         StructureSizeType StructureSizeType { get; }
+        float Scale { get; }
     }
 
     public enum StructureType
     {
-        House,
+        Structure,
         Road,
         Wall,
     }

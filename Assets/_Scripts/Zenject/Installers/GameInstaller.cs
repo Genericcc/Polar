@@ -2,6 +2,8 @@
 
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers;
+using _Scripts._Game.Managers.PlacementHandlers;
+using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures;
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Data.Dictionaries;
@@ -47,6 +49,28 @@ namespace _Scripts.Zenject.Installers
 
             Container.Bind<StructureManager>()
                      .FromComponentInHierarchy()
+                     .AsSingle()
+                     .NonLazy();
+
+            Container.Bind<StructurePlacementManager>()
+                     .FromComponentInHierarchy()
+                     .AsSingle()
+                     .NonLazy();
+            
+            Container.BindInterfacesAndSelfTo<StructurePlacementHandler>()
+                     .AsSingle()
+                     .NonLazy();
+            Container.BindInterfacesAndSelfTo<RoadPlacementHandler>()
+                     .AsSingle()
+                     .NonLazy();
+            // Container.Bind<IPlacementHandler>().To<StructurePlacementHandler>()
+            //          .AsSingle()
+            //          .NonLazy();
+            // Container.Bind<IPlacementHandler>().To<RoadPlacementHandler>()
+            //          .AsSingle()
+            //          .NonLazy();
+            
+            Container.BindInterfacesAndSelfTo<StructurePlacementValidator>()
                      .AsSingle()
                      .NonLazy();
             

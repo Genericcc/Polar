@@ -31,7 +31,7 @@ namespace _Scripts._Game.Structures
         {
             var structure = iStructureData.StructureType switch
             {
-                StructureType.House => _container.InstantiatePrefabForComponent<Structure>(_housePrefab),
+                StructureType.Structure => _container.InstantiatePrefabForComponent<Structure>(_housePrefab),
                 StructureType.Wall => _container.InstantiatePrefabForComponent<Structure>(_wallPrefab),
                 _ => throw new ArgumentOutOfRangeException()
             };

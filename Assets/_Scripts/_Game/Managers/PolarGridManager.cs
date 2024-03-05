@@ -67,7 +67,7 @@ namespace _Scripts._Game.Managers
             }
         }
         
-        public bool TryGetNodesForBuilding(PolarNode originNode, StructureSizeType spaceOccupationType, out List<PolarNode> nodes)
+        public bool TryGetNodesForStructure(PolarNode originNode, StructureSizeType spaceOccupationType, out List<PolarNode> nodes)
         {
             nodes = new List<PolarNode>();
 

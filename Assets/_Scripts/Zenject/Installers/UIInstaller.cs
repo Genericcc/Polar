@@ -12,7 +12,7 @@ namespace _Scripts.Zenject.Installers
 
             Container.DeclareSignal<SelectStructureSignal>().OptionalSubscriber();
             Container.BindSignal<SelectStructureSignal>()
-                     .ToMethod<StructureManager>(x => x.OnSelectStructureToBuild)
+                     .ToMethod<StructurePlacementManager>(x => x.OnSelectStructureSignal)
                      .FromResolveAll();
         }
     }

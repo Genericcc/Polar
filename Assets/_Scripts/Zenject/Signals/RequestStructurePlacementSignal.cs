@@ -3,15 +3,21 @@
 using _Scripts._Game.Grid;
 using _Scripts._Game.Structures.StructuresData;
 
+using Unity.Transforms;
+
 namespace _Scripts.Zenject.Signals
 {
     public class RequestStructurePlacementSignal
     {
-        public readonly PolarNode OriginBuildNode;
+        public List<PolarNode> Nodes { get; }
+        public IStructureData StructureData { get; }
+        public LocalTransform LocalTransform { get; }
 
-        public RequestStructurePlacementSignal(PolarNode originBuildNode)
+        public RequestStructurePlacementSignal(List<PolarNode> nodes, IStructureData structureData, LocalTransform localTransform)
         {
-            OriginBuildNode = originBuildNode;
+            Nodes = nodes;
+            StructureData = structureData;
+            LocalTransform = localTransform;
         }
     }
 }

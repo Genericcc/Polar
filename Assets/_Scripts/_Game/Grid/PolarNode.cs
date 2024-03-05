@@ -20,7 +20,7 @@ namespace _Scripts._Game.Grid
         
         public Vector3 WorldPosition { get; private set; }
 
-        public IStructureData Structure { get; private set; }
+        public IStructureData StructureData { get; private set; }
 
         [SerializeField]
         private TextMeshPro textMeshPro;
@@ -34,7 +34,7 @@ namespace _Scripts._Game.Grid
         [SerializeField]
         private Material[] highlightMaterials;
 
-        public bool IsFree => Structure == null;
+        public bool IsFree => StructureData == null;
         
         public Vector3 CentrePosition { get; set; }
         
@@ -78,14 +78,14 @@ namespace _Scripts._Game.Grid
             Gizmos.DrawWireSphere(CentrePosition, 0.3f);
         }
 
-        public void SetBuilding(IStructureData structure)
+        public void SetBuilding(IStructureData structureData)
         {
-            Structure = structure;
+            StructureData = structureData;
         }
 
         public void ClearBuilding()
         {
-            Structure = null;
+            StructureData = null;
         }
 
         public override string ToString()
