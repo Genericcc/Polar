@@ -23,9 +23,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443357688197563584}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 251203662479489860}
   - {fileID: 6100384194781352154}
@@ -35,7 +37,6 @@ Transform:
   - {fileID: 175288000015452560}
   - {fileID: 1447004548534568721}
   m_Father: {fileID: 5468750956094218124}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2699494136127222306
 GameObject:
@@ -46,7 +47,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4785396458034822094}
-  - component: {fileID: 7442428105947587527}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_05
   m_TagString: Untagged
@@ -61,26 +61,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2699494136127222306}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.04319, y: 1.591, z: 0.045}
   m_LocalScale: {x: 0.7924703, y: 0.15779, z: 0.11029664}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &7442428105947587527
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2699494136127222306}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3008481993610022092
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +78,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9096930486074959002}
-  - component: {fileID: 8337195211208079049}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_03
   m_TagString: Untagged
@@ -105,26 +92,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3008481993610022092}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.04319, y: 0.567, z: 0.045}
   m_LocalScale: {x: 0.7924703, y: 0.15779, z: 0.11029664}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &8337195211208079049
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3008481993610022092}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4322646196515066928
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +109,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6100384194781352154}
-  - component: {fileID: 5190715222287157787}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_02
   m_TagString: Untagged
@@ -149,26 +123,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4322646196515066928}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.269, y: 1.525, z: -0}
   m_LocalScale: {x: 0.14784497, y: 3.081032, z: 0.14221284}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &5190715222287157787
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4322646196515066928}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4882812201646119045
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +140,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3352075644127481710}
-  - component: {fileID: 1635554954016133555}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_04
   m_TagString: Untagged
@@ -193,26 +154,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4882812201646119045}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.04319, y: 1.083, z: 0.045}
   m_LocalScale: {x: 0.7924703, y: 0.15779, z: 0.11029664}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &1635554954016133555
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4882812201646119045}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5378436766246163631
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +171,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 175288000015452560}
-  - component: {fileID: 3772978669318594452}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_06
   m_TagString: Untagged
@@ -237,26 +185,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5378436766246163631}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.04319, y: 2.095, z: 0.045}
   m_LocalScale: {x: 0.7924703, y: 0.15779, z: 0.11029664}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &3772978669318594452
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5378436766246163631}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5468750956094374824
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,12 +218,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5468750956094374824}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.000000094830646, y: 0.006819099, z: -0.00000015805058, w: 0.99997675}
   m_LocalPosition: {x: -0.016007558, y: -0.017172307, z: -0.010116681}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5468750956094218124}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0.781, z: 0}
 --- !u!33 &5468750956095512494
 MeshFilter:
@@ -308,9 +245,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -322,6 +262,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -334,6 +275,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5468750956094374826
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,12 +301,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5468750956094374826}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.000000094830646, y: 0.006819099, z: -0.00000015805058, w: 0.99997675}
   m_LocalPosition: {x: -0.014400244, y: -0.017172307, z: -0.010116681}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5468750956094218124}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0.781, z: 0}
 --- !u!33 &5468750956095512488
 MeshFilter:
@@ -385,9 +328,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -399,6 +345,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -411,6 +358,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5468750956094374828
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,16 +383,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5468750956094374828}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5468750956094218126}
   - {fileID: 5468750956094218120}
   - {fileID: 5468750956094218122}
   - {fileID: 1811297571742851468}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &5468750956079090476
 LODGroup:
@@ -498,12 +447,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5468750956094374830}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.000000094830646, y: 0.006819099, z: -0.00000015805058, w: 0.99997675}
   m_LocalPosition: {x: -0.016023435, y: -0.017172307, z: -0.010116681}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5468750956094218124}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0.781, z: 0}
 --- !u!33 &5468750956095512492
 MeshFilter:
@@ -524,9 +474,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -538,6 +491,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -550,6 +504,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5791231516397942510
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +514,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 251203662479489860}
-  - component: {fileID: 5229951510028390282}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_01
   m_TagString: Untagged
@@ -574,26 +528,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5791231516397942510}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: 0.229, y: 1.525, z: 0}
   m_LocalScale: {x: 0.13833378, y: 3.081032, z: 0.09446876}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &5229951510028390282
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5791231516397942510}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7402080062194757143
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +545,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1447004548534568721}
-  - component: {fileID: 5374983212475791251}
   m_Layer: 0
   m_Name: Medieval_steps_Ladder_Collision_07
   m_TagString: Untagged
@@ -618,23 +559,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7402080062194757143}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.0000000072329627, y: -0, z: 0.002604974, w: 0.99999666}
   m_LocalPosition: {x: -0.04319, y: 2.629, z: 0.045}
   m_LocalScale: {x: 0.7924703, y: 0.15779, z: 0.11029664}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1811297571742851468}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.29900002}
---- !u!65 &5374983212475791251
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7402080062194757143}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

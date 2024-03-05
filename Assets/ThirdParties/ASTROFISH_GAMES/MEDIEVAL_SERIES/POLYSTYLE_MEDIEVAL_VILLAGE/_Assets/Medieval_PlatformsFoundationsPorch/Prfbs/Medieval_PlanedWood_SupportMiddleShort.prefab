@@ -25,12 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 226184889884218569}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000025568, y: -0.00001207, z: 0.0000024508}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1707296774760432339}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4729229781444251614
 MeshFilter:
@@ -51,9 +52,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -77,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &474162718006778722
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +93,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6445829460396146552}
   - component: {fileID: 512756111253564285}
-  - component: {fileID: 1395043216158182981}
   m_Layer: 0
   m_Name: Medieval_PlanedWood_SupportMiddleShort_Collision_3
   m_TagString: Untagged
@@ -102,12 +107,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474162718006778722}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.24009787, y: -0, z: 0.000000044703473, w: 0.9707487}
   m_LocalPosition: {x: -0, y: 1.9066, z: 0.0545}
   m_LocalScale: {x: 0.37414, y: 0.95947146, z: 0.42459044}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7732314135552314307}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 27.785002, y: 0, z: 0}
 --- !u!33 &512756111253564285
 MeshFilter:
@@ -117,19 +123,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474162718006778722}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1395043216158182981
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 474162718006778722}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1488104558696285659
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,12 +148,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488104558696285659}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.00028703, y: -0.00001207, z: 0.0000024508}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1707296774760432339}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2755634747377160446
 MeshFilter:
@@ -181,9 +175,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -195,6 +192,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -207,6 +205,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1980808180511266970
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7863967172574710013}
   - component: {fileID: 314664580866878173}
-  - component: {fileID: 1965904410964871633}
   m_Layer: 0
   m_Name: Medieval_PlanedWood_SupportMiddleShort_Collision_4
   m_TagString: Untagged
@@ -232,12 +230,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980808180511266970}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.000000029802326, z: -0.31179014, w: 0.950151}
   m_LocalPosition: {x: 0.5132, y: 2.3667, z: -0.248}
   m_LocalScale: {x: 0.25189832, y: 1.5859218, z: 0.2301439}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7732314135552314307}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -36.334003}
 --- !u!33 &314664580866878173
 MeshFilter:
@@ -247,19 +246,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980808180511266970}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1965904410964871633
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980808180511266970}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2037538394596951558
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,7 +256,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9002233467230001705}
   - component: {fileID: 6151551679095985395}
-  - component: {fileID: 7441073665918004736}
   m_Layer: 0
   m_Name: Medieval_PlanedWood_SupportMiddleShort_Collision_1
   m_TagString: Untagged
@@ -285,12 +270,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037538394596951558}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5169, z: -0.2629}
   m_LocalScale: {x: 0.37414, y: 3.0317256, z: 0.34989572}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7732314135552314307}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6151551679095985395
 MeshFilter:
@@ -300,19 +286,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037538394596951558}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7441073665918004736
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2037538394596951558}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3000829055306167373
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,9 +309,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3000829055306167373}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9002233467230001705}
   - {fileID: 6384729953867044205}
@@ -346,7 +321,6 @@ Transform:
   - {fileID: 7863967172574710013}
   - {fileID: 4008773385304961219}
   m_Father: {fileID: 1707296774760432339}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3897751548900306236
 GameObject:
@@ -358,7 +332,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4008773385304961219}
   - component: {fileID: 1943908202666016728}
-  - component: {fileID: 2365676495298710668}
   m_Layer: 0
   m_Name: Medieval_PlanedWood_SupportMiddleShort_Collision_5
   m_TagString: Untagged
@@ -373,12 +346,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3897751548900306236}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.011986166, y: 0.0039333403, z: 0.32125086, w: 0.94691014}
   m_LocalPosition: {x: -0.5302, y: 2.4288, z: -0.2249}
   m_LocalScale: {x: 0.25189832, y: 1.4175826, z: 0.2301439}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7732314135552314307}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 1.156, y: 0.86800003, z: 37.489002}
 --- !u!33 &1943908202666016728
 MeshFilter:
@@ -388,19 +362,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3897751548900306236}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2365676495298710668
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3897751548900306236}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4390268336597948520
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +372,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6384729953867044205}
   - component: {fileID: 7052510896770599552}
-  - component: {fileID: 8718599565554279315}
   m_Layer: 0
   m_Name: Medieval_PlanedWood_SupportMiddleShort_Collision_2
   m_TagString: Untagged
@@ -426,12 +386,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4390268336597948520}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.5215, z: 0.2111}
   m_LocalScale: {x: 0.37414, y: 0.95947146, z: 0.6021705}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7732314135552314307}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7052510896770599552
 MeshFilter:
@@ -441,19 +402,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4390268336597948520}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &8718599565554279315
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4390268336597948520}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8119503837679855615
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,16 +426,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8119503837679855615}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9203660547856452581}
   - {fileID: 8174751156561057495}
   - {fileID: 8894380698142573204}
   - {fileID: 7732314135552314307}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &1158322183181465703
 LODGroup:
@@ -541,12 +490,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9203660547856619461}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.00060365, y: -0.00001207, z: 0.0000024731}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1707296774760432339}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9203660547859844039
 MeshFilter:
@@ -567,9 +517,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -581,6 +534,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -593,3 +547,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

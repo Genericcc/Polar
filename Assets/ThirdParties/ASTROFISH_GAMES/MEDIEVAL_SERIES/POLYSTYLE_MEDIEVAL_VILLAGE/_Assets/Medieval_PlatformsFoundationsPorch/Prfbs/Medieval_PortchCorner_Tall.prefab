@@ -25,12 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 394947808469177827}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000059604645, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.005651202, y: 0.0009070039, z: 0.0039305687}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1916502757116401496}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &394947808469977569
 MeshFilter:
@@ -51,9 +52,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -77,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1733387312231380367
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,9 +106,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733387312231380367}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2261442534295337889}
   - {fileID: 4777659874194522021}
@@ -114,7 +122,6 @@ Transform:
   - {fileID: 1506440882427504781}
   - {fileID: 884558297990024733}
   m_Father: {fileID: 1916502757116401496}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1936492436456203259
 GameObject:
@@ -141,12 +148,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936492436456203259}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000059604645, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.006521702, y: 0.0009070039, z: 0.0039305687}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1916502757116401496}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1936492436452818937
 MeshFilter:
@@ -167,9 +175,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -181,6 +192,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -193,6 +205,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2168977120906666740
 GameObject:
   m_ObjectHideFlags: 0
@@ -218,12 +231,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2168977120906666740}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000059604645, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.0056381896, y: 0.0009070039, z: 0.0039305687}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1916502757116401496}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2962390399395356449
 MeshFilter:
@@ -244,9 +258,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -258,6 +275,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -270,6 +288,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2593044504876044092
 GameObject:
   m_ObjectHideFlags: 0
@@ -280,7 +299,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8256595764777995403}
   - component: {fileID: 930776949653829050}
-  - component: {fileID: 1288446231670722470}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_6
   m_TagString: Untagged
@@ -295,12 +313,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2593044504876044092}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.27059743, y: -0.65328085, z: 0.27059808, w: 0.65328234}
   m_LocalPosition: {x: 0.0211, y: 2.507, z: -0.0959}
   m_LocalScale: {x: 0.14942195, y: 0.80729663, z: 0.15128024}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 45.000004}
 --- !u!33 &930776949653829050
 MeshFilter:
@@ -310,19 +329,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2593044504876044092}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1288446231670722470
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2593044504876044092}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3754108350538119099
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,7 +339,6 @@ GameObject:
   m_Component:
   - component: {fileID: 37593028572913824}
   - component: {fileID: 8418608936481079863}
-  - component: {fileID: 8448330020796680899}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_7
   m_TagString: Untagged
@@ -348,12 +353,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3754108350538119099}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.70668197, y: -0.000000834465, z: -0.0000005066395, w: 0.7075314}
   m_LocalPosition: {x: 0.0174, y: 2.8187, z: -0.2665}
   m_LocalScale: {x: 0.26365188, y: 1.4658177, z: 0.23387213}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 89.934006, y: 0, z: 0}
 --- !u!33 &8418608936481079863
 MeshFilter:
@@ -363,19 +369,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3754108350538119099}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &8448330020796680899
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3754108350538119099}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3868875572943467140
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,16 +393,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3868875572943467140}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1936492436456243163}
   - {fileID: 5540594694001571356}
   - {fileID: 394947808468683203}
   - {fileID: 5982041807342741235}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &558922041909896914
 LODGroup:
@@ -448,7 +442,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4777659874194522021}
   - component: {fileID: 4371261379750663384}
-  - component: {fileID: 1102290721380607113}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_2
   m_TagString: Untagged
@@ -463,12 +456,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3937328419237764544}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0225, y: 1.9313, z: 0.2638}
   m_LocalScale: {x: 0.28424644, y: 2.5701954, z: 0.29883176}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4371261379750663384
 MeshFilter:
@@ -478,19 +472,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3937328419237764544}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1102290721380607113
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3937328419237764544}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3963261151769025126
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +482,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2261442534295337889}
   - component: {fileID: 7907262961548182911}
-  - component: {fileID: 7913362379255741376}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_1
   m_TagString: Untagged
@@ -516,12 +496,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3963261151769025126}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0278, y: 0.3583, z: 0.2638}
   m_LocalScale: {x: 0.53695726, y: 0.680554, z: 0.5443003}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7907262961548182911
 MeshFilter:
@@ -531,19 +512,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3963261151769025126}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7913362379255741376
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3963261151769025126}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4771622711193830949
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +522,6 @@ GameObject:
   m_Component:
   - component: {fileID: 884558297990024733}
   - component: {fileID: 6757348846904548682}
-  - component: {fileID: 6049111680099765827}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_9
   m_TagString: Untagged
@@ -569,12 +536,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4771622711193830949}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.000000059604645, z: 0.7071065, w: 0.7071072}
   m_LocalPosition: {x: -0.4864, y: 3.551, z: -0.141}
   m_LocalScale: {x: 0.15508205, y: 1.6075021, z: 0.17854302}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!33 &6757348846904548682
 MeshFilter:
@@ -584,19 +552,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4771622711193830949}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6049111680099765827
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4771622711193830949}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5236870971213789554
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +562,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6621618187596951145}
   - component: {fileID: 370753787412745317}
-  - component: {fileID: 860668569275796145}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_4
   m_TagString: Untagged
@@ -622,12 +576,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5236870971213789554}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.000000059604645, z: 0.7071065, w: 0.7071072}
   m_LocalPosition: {x: -0.4478, y: 2.8177, z: 0.2593}
   m_LocalScale: {x: 0.21456032, y: 1.4703528, z: 0.2470192}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!33 &370753787412745317
 MeshFilter:
@@ -637,19 +592,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5236870971213789554}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &860668569275796145
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5236870971213789554}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6159488523837698702
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +602,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8804501252050780445}
   - component: {fileID: 1311064953532691179}
-  - component: {fileID: 294233680995764879}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_3
   m_TagString: Untagged
@@ -675,12 +616,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6159488523837698702}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.8875368, y: 0.000000014901163, z: 0.000000029802326, w: 0.46073684}
   m_LocalPosition: {x: 0.019, y: 3.4231, z: 0.022}
   m_LocalScale: {x: 0.26365188, y: 2.5701954, z: 0.23063834}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 125.131, y: 0, z: 0}
 --- !u!33 &1311064953532691179
 MeshFilter:
@@ -690,19 +632,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6159488523837698702}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &294233680995764879
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6159488523837698702}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6421128671513574511
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +642,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1506440882427504781}
   - component: {fileID: 8243187574644138571}
-  - component: {fileID: 7565847044317374367}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_8
   m_TagString: Untagged
@@ -728,12 +656,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6421128671513574511}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.2705994, y: -0.65328205, z: -0.2705955, w: 0.6532815}
   m_LocalPosition: {x: 0.03, y: 2.507, z: 0.619}
   m_LocalScale: {x: 0.14942195, y: 0.80729663, z: 0.15128024}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: -45.000004}
 --- !u!33 &8243187574644138571
 MeshFilter:
@@ -743,19 +672,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6421128671513574511}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7565847044317374367
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6421128671513574511}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6447671931423570203
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,7 +682,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6528472018269372886}
   - component: {fileID: 1993882220794501599}
-  - component: {fileID: 4806737039994868975}
   m_Layer: 0
   m_Name: Medieval_PortchCorner_Tall_Collision_5
   m_TagString: Untagged
@@ -781,12 +696,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6447671931423570203}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.000000014901159, y: -0, z: 0.38268304, w: 0.9238797}
   m_LocalPosition: {x: -0.3504, y: 2.4754, z: 0.2694}
   m_LocalScale: {x: 0.14942195, y: 0.80729663, z: 0.15128024}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5982041807342741235}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45.000004}
 --- !u!33 &1993882220794501599
 MeshFilter:
@@ -796,16 +712,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6447671931423570203}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &4806737039994868975
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6447671931423570203}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9120607840910123153}
   - component: {fileID: 6677909852398036721}
-  - component: {fileID: 6627907511570448005}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_3
   m_TagString: Untagged
@@ -25,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588047924605542477}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.064, y: 0.824, z: 0.9357}
   m_LocalScale: {x: 2.4972775, y: 0.29630825, z: 0.99800164}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6677909852398036721
 MeshFilter:
@@ -40,19 +40,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 588047924605542477}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6627907511570448005
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 588047924605542477}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1127217064893930734
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +50,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1854978090267305286}
   - component: {fileID: 1360655095902015367}
-  - component: {fileID: 3306566126609969520}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_2
   m_TagString: Untagged
@@ -78,12 +64,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127217064893930734}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.064, y: 0.5461, z: 0.7406}
   m_LocalScale: {x: 2.4972775, y: 0.29630825, z: 1.3759761}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1360655095902015367
 MeshFilter:
@@ -93,19 +80,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127217064893930734}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &3306566126609969520
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1127217064893930734}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1898401739511444467
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,12 +105,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898401739511444467}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: 0.0037580729, y: 0.003165245, z: 0.0005927094}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7147036279594765823}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6599845931155768654
 MeshFilter:
@@ -157,9 +132,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -171,6 +149,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -183,6 +162,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3053739380615851831
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,12 +188,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3053739380615851831}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: 0.004469469, y: 0.003165245, z: 0.00059270946}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7147036279594765823}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3053739380612625205
 MeshFilter:
@@ -234,9 +215,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -248,6 +232,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -260,6 +245,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3355544456766466854
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,16 +270,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3355544456766466854}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3596035069846635011}
   - {fileID: 4386709000689112223}
   - {fileID: 3053739380616016663}
   - {fileID: 6148179444487007296}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &3355544456766466855
 LODGroup:
@@ -347,12 +334,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3596035069846347299}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: 0.0023281574, y: 0.003165245, z: 0.0005927091}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7147036279594765823}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3596035069849502241
 MeshFilter:
@@ -373,9 +361,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -387,6 +378,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -399,6 +391,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5099248465333255921
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +402,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6244926498852592470}
   - component: {fileID: 3130096480909620931}
-  - component: {fileID: 6629937016008009387}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_4
   m_TagString: Untagged
@@ -424,12 +416,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5099248465333255921}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.064, y: 1.089, z: 1.1479}
   m_LocalScale: {x: 2.4972775, y: 0.29630825, z: 0.5446716}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3130096480909620931
 MeshFilter:
@@ -439,19 +432,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5099248465333255921}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6629937016008009387
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5099248465333255921}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5326470416865490877
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +442,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5743146499680831306}
   - component: {fileID: 908635933063858336}
-  - component: {fileID: 8432344050931615361}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_1
   m_TagString: Untagged
@@ -477,12 +456,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5326470416865490877}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.0636, y: 0.1595, z: 0.578}
   m_LocalScale: {x: 2.4972775, y: 0.5141562, z: 1.6926757}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &908635933063858336
 MeshFilter:
@@ -492,19 +472,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5326470416865490877}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &8432344050931615361
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5326470416865490877}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5915738608858786772
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,9 +495,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5915738608858786772}
+  serializedVersion: 2
   m_LocalRotation: {x: 3.0616168e-17, y: 0.0000012516975, z: 3.970467e-23, w: 1}
   m_LocalPosition: {x: 0.001, y: 0.001, z: -0.002}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5743146499680831306}
   - {fileID: 1854978090267305286}
@@ -539,7 +508,6 @@ Transform:
   - {fileID: 7488213243323065261}
   - {fileID: 5226475239075932293}
   m_Father: {fileID: 7147036279594765823}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6917064939796832878
 GameObject:
@@ -551,7 +519,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5226475239075932293}
   - component: {fileID: 6440937920580186873}
-  - component: {fileID: 4745628538930081405}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_6
   m_TagString: Untagged
@@ -566,12 +533,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6917064939796832878}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00064514513, y: -0.09037382, z: 0.016040133, w: 0.99577856}
   m_LocalPosition: {x: 2.089, y: 1.2879932, z: 1.273}
   m_LocalScale: {x: 0.22563687, y: 0.2522176, z: 0.20991643}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0.24000001, y: -10.368, z: 1.8240001}
 --- !u!33 &6440937920580186873
 MeshFilter:
@@ -581,19 +549,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6917064939796832878}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &4745628538930081405
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6917064939796832878}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8878349465602473223
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +559,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7488213243323065261}
   - component: {fileID: 614486735905646588}
-  - component: {fileID: 62218547380254733}
   m_Layer: 0
   m_Name: Medieval_Platforms_Steps_Narrow_Collision_5
   m_TagString: Untagged
@@ -619,12 +573,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8878349465602473223}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.06, y: 1.288, z: 1.2554}
   m_LocalScale: {x: 0.22563687, y: 0.2522176, z: 0.20991643}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6148179444487007296}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &614486735905646588
 MeshFilter:
@@ -634,16 +589,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8878349465602473223}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &62218547380254733
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8878349465602473223}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

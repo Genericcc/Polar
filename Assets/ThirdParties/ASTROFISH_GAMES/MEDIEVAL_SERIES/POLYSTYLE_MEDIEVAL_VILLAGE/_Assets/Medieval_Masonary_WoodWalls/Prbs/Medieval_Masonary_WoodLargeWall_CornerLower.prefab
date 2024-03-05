@@ -25,12 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 667275211813604320}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.00000023841858, z: -0, w: 1}
   m_LocalPosition: {x: -0.0009098053, y: 0.002220869, z: -0.0057189465}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5911332941091019844}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &667275211814541282
 MeshFilter:
@@ -51,9 +52,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -65,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -77,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &950288909796739875
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,16 +107,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 950288909796739875}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 667275211813771200}
   - {fileID: 1822507543518220930}
   - {fileID: 3773417116962002737}
   - {fileID: 1815508009877774717}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &1244959012348873326
 LODGroup:
@@ -149,7 +156,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6526798089509413029}
   - component: {fileID: 7600353590304991444}
-  - component: {fileID: 2984669029675453483}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_5
   m_TagString: Untagged
@@ -164,12 +170,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169408852397582270}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.00000023841855, z: -0, w: 1}
   m_LocalPosition: {x: -1.851, y: 0.82580566, z: 0.609}
   m_LocalScale: {x: 0.4598646, y: 0.3084, z: 0.59982884}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7600353590304991444
 MeshFilter:
@@ -179,19 +186,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2169408852397582270}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2984669029675453483
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2169408852397582270}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3023758009855903576
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,12 +211,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3023758009855903576}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.00000023841858, z: -0, w: 1}
   m_LocalPosition: {x: -0.000909308, y: 0.002220869, z: -0.0057189465}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5911332941091019844}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6289442079854702544
 MeshFilter:
@@ -243,9 +238,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -257,6 +255,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -269,6 +268,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3773417116961704721
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,12 +294,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3773417116961704721}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.00000023841858, z: -0, w: 1}
   m_LocalPosition: {x: -0.0009087678, y: 0.002220869, z: -0.0057189465}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5911332941091019844}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3773417116960708371
 MeshFilter:
@@ -320,9 +321,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -334,6 +338,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -346,6 +351,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &3787382435505597150
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +362,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5272263551725892701}
   - component: {fileID: 972352181890350531}
-  - component: {fileID: 4696433301126311888}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_4
   m_TagString: Untagged
@@ -371,12 +376,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3787382435505597150}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.24481805, y: 0.6633732, z: 0.244818, w: 0.6633734}
   m_LocalPosition: {x: 0.409, y: 0.621, z: -1.825}
   m_LocalScale: {x: 0.4598646, y: 0.3084, z: 0.59982884}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -40.513, y: 90.00001, z: 0}
 --- !u!33 &972352181890350531
 MeshFilter:
@@ -386,19 +392,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3787382435505597150}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &4696433301126311888
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3787382435505597150}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4596768939261694618
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +402,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5570466467486313120}
   - component: {fileID: 8400362130935996947}
-  - component: {fileID: 6938278878109068130}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_1
   m_TagString: Untagged
@@ -424,12 +416,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4596768939261694618}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.968, y: 0.518, z: 0.0812}
   m_LocalScale: {x: 2.537884, y: 1, z: 0.54454017}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8400362130935996947
 MeshFilter:
@@ -439,19 +432,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4596768939261694618}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6938278878109068130
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4596768939261694618}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4692805748285103113
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,9 +455,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4692805748285103113}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5570466467486313120}
   - {fileID: 505876605958505966}
@@ -486,7 +468,6 @@ Transform:
   - {fileID: 6526798089509413029}
   - {fileID: 676488971336798513}
   m_Father: {fileID: 5911332941091019844}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6219246630471721371
 GameObject:
@@ -498,7 +479,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2576294102444911505}
   - component: {fileID: 3627555198721345235}
-  - component: {fileID: 7756136157133807483}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_3
   m_TagString: Untagged
@@ -513,12 +493,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6219246630471721371}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071067, z: -0, w: 0.70710695}
   m_LocalPosition: {x: 0.576, y: 0.8258, z: -1.825}
   m_LocalScale: {x: 0.4598646, y: 0.3084, z: 0.59982884}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: 0}
 --- !u!33 &3627555198721345235
 MeshFilter:
@@ -528,19 +509,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6219246630471721371}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7756136157133807483
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6219246630471721371}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6786788497284820994
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +519,6 @@ GameObject:
   m_Component:
   - component: {fileID: 505876605958505966}
   - component: {fileID: 7240284061346628883}
-  - component: {fileID: 1384402992857038226}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_2
   m_TagString: Untagged
@@ -566,12 +533,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6786788497284820994}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071067, z: -0, w: 0.70710695}
   m_LocalPosition: {x: 0.0661, y: 0.5180054, z: -0.912}
   m_LocalScale: {x: 2.537884, y: 1, z: 0.4298}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: 0}
 --- !u!33 &7240284061346628883
 MeshFilter:
@@ -581,19 +549,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6786788497284820994}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1384402992857038226
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6786788497284820994}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7187541277755947742
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +559,6 @@ GameObject:
   m_Component:
   - component: {fileID: 676488971336798513}
   - component: {fileID: 571014550012503004}
-  - component: {fileID: 2601655977322007480}
   m_Layer: 0
   m_Name: Medieval_Masonary_WoodLargeWall_CornerLower_Collision_6
   m_TagString: Untagged
@@ -619,12 +573,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7187541277755947742}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.27836937, y: 0.0000010728834, z: 0.0000005364417, w: 0.9604741}
   m_LocalPosition: {x: -1.848, y: 0.654, z: 0.493}
   m_LocalScale: {x: 0.4598646, y: 0.3084, z: 0.59982884}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1815508009877774717}
-  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: -32.326, y: 0, z: 0}
 --- !u!33 &571014550012503004
 MeshFilter:
@@ -634,16 +589,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7187541277755947742}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2601655977322007480
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7187541277755947742}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

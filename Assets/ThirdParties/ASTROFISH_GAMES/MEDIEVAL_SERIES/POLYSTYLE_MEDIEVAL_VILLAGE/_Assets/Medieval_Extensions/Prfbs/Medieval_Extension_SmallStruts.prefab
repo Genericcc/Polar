@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6005166362245882409}
   - component: {fileID: 2534147729706584767}
-  - component: {fileID: 7179021172644248783}
   m_Layer: 0
   m_Name: Medieval_Extension_SmallStruts_Collision_2
   m_TagString: Untagged
@@ -25,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198145687415342137}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.7724, y: 0.334, z: -0.0049}
   m_LocalScale: {x: 0.40449765, y: 0.37538624, z: 1.7848872}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6957377401592310150}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2534147729706584767
 MeshFilter:
@@ -40,19 +40,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198145687415342137}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7179021172644248783
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 198145687415342137}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &537564390810678178
 GameObject:
   m_ObjectHideFlags: 0
@@ -63,7 +50,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5852322059470498175}
   - component: {fileID: 5821056186219971610}
-  - component: {fileID: 8655419296368330640}
   m_Layer: 0
   m_Name: Medieval_Extension_SmallStruts_Collision_5
   m_TagString: Untagged
@@ -78,12 +64,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537564390810678178}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.22206162, y: 0.00000002980233, z: 0.000000022351745, w: 0.9750326}
   m_LocalPosition: {x: 0.732, y: -0.1252, z: -0.0073}
   m_LocalScale: {x: 0.19443491, y: 0.20157938, z: 1.6263322}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6957377401592310150}
-  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -25.660002, y: 0, z: 0}
 --- !u!33 &5821056186219971610
 MeshFilter:
@@ -93,19 +80,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537564390810678178}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &8655419296368330640
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 537564390810678178}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1542611032597219183
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +90,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5424935426366976549}
   - component: {fileID: 5481991146390708789}
-  - component: {fileID: 2040094325026869068}
   m_Layer: 0
   m_Name: Medieval_Extension_SmallStruts_Collision_3
   m_TagString: Untagged
@@ -131,12 +104,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542611032597219183}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0986, y: 0.3556, z: -0.0135}
   m_LocalScale: {x: 0.4312754, y: 0.4185932, z: 1.7677523}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6957377401592310150}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5481991146390708789
 MeshFilter:
@@ -146,19 +120,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542611032597219183}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2040094325026869068
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542611032597219183}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1746720427043578518
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,12 +145,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1746720427043578518}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0034115314, y: 0.0011937916, z: 0.026148438}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8063407265703940956}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &10559964728638066
 MeshFilter:
@@ -210,9 +172,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -224,6 +189,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -236,6 +202,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &2038727182478720996
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +213,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4884449711326151736}
   - component: {fileID: 7658659110993914832}
-  - component: {fileID: 6751560204781992118}
   m_Layer: 0
   m_Name: Medieval_Extension_SmallStruts_Collision_4
   m_TagString: Untagged
@@ -261,12 +227,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038727182478720996}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.22206162, y: 0.00000002980233, z: 0.000000022351745, w: 0.9750326}
   m_LocalPosition: {x: 0.077, y: -0.1239, z: -0.0046}
   m_LocalScale: {x: 0.19443491, y: 0.20157938, z: 1.6204985}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6957377401592310150}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -25.660002, y: 0, z: 0}
 --- !u!33 &7658659110993914832
 MeshFilter:
@@ -276,19 +243,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2038727182478720996}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6751560204781992118
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2038727182478720996}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2928241039657124239
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,15 +267,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2928241039657124239}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8786441548899294253}
   - {fileID: 4860634085930480832}
   - {fileID: 6957377401592310150}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &7653856920597720093
 LODGroup:
@@ -356,7 +311,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4701502308556154760}
   - component: {fileID: 6611553779799885642}
-  - component: {fileID: 2585092466445804405}
   m_Layer: 0
   m_Name: Medieval_Extension_SmallStruts_Collision_1
   m_TagString: Untagged
@@ -371,12 +325,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4775990977186864549}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5102, y: 0.6213, z: -0.0657}
   m_LocalScale: {x: 1.7123, y: 0.4354, z: 1.6633}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6957377401592310150}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6611553779799885642
 MeshFilter:
@@ -386,19 +341,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4775990977186864549}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2585092466445804405
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4775990977186864549}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7859964734866187846
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,9 +364,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7859964734866187846}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.000014305115, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4701502308556154760}
   - {fileID: 6005166362245882409}
@@ -432,7 +376,6 @@ Transform:
   - {fileID: 4884449711326151736}
   - {fileID: 5852322059470498175}
   m_Father: {fileID: 8063407265703940956}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8786441548899778573
 GameObject:
@@ -459,12 +402,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8786441548899778573}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00000024028, y: -0.000041992, z: 0.000025511}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8063407265703940956}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8786441548898524175
 MeshFilter:
@@ -485,9 +429,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -499,6 +446,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -511,3 +459,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}

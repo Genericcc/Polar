@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3163051358546712076}
   - component: {fileID: 3390179456216713668}
-  - component: {fileID: 7196339520341916924}
   m_Layer: 0
   m_Name: Medieval_Platforms_BoardPlanks_Supports_Collision_1
   m_TagString: Untagged
@@ -25,12 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454797583029238439}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.3826828, y: 0.000000029802322, z: -0.0000001937151, w: 0.92387986}
   m_LocalPosition: {x: 1.502, y: 0.636, z: 0.65}
   m_LocalScale: {x: 2.9415972, y: 0.29114217, z: 1.863618}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6483727324511842722}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -45.000004, y: 0, z: 0}
 --- !u!33 &3390179456216713668
 MeshFilter:
@@ -40,19 +40,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454797583029238439}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &7196339520341916924
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454797583029238439}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1479383000032835359
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,15 +63,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479383000032835359}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.000015616417, z: 0.000024795536}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3163051358546712076}
   - {fileID: 240191782593489901}
   - {fileID: 762362802370275589}
   m_Father: {fileID: 2128290886949407496}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2111998919317649324
 GameObject:
@@ -96,7 +84,6 @@ GameObject:
   m_Component:
   - component: {fileID: 762362802370275589}
   - component: {fileID: 2195060846074047168}
-  - component: {fileID: 6363045352874409834}
   m_Layer: 0
   m_Name: Medieval_Platforms_BoardPlanks_Supports_Collision_3
   m_TagString: Untagged
@@ -111,12 +98,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111998919317649324}
+  serializedVersion: 2
   m_LocalRotation: {x: -1, y: 0.0000004557991, z: -0.00000023841855, w: 0.00000052156736}
   m_LocalPosition: {x: 1.5019999, y: 0.38200343, z: 0.8540293}
   m_LocalScale: {x: 2.9415977, y: 0.46588585, z: 0.98567885}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6483727324511842722}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -180, y: 0, z: -0.000015258789}
 --- !u!33 &2195060846074047168
 MeshFilter:
@@ -126,19 +114,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111998919317649324}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6363045352874409834
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2111998919317649324}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4771078647345492399
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,12 +139,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4771078647345492399}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: -0.0044671595, y: 0.0004525187, z: 0.0009756081}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2128290886949407496}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4771078647342263725
 MeshFilter:
@@ -190,9 +166,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -204,6 +183,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -216,6 +196,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5702144602793232797
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,16 +221,17 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5702144602793232797}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4771078647345655183}
   - {fileID: 2114066441053983599}
   - {fileID: 9008126416366287546}
   - {fileID: 6483727324511842722}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &5702144602793232786
 LODGroup:
@@ -288,7 +270,6 @@ GameObject:
   m_Component:
   - component: {fileID: 240191782593489901}
   - component: {fileID: 6000113941775625861}
-  - component: {fileID: 1772911446229463937}
   m_Layer: 0
   m_Name: Medieval_Platforms_BoardPlanks_Supports_Collision_2
   m_TagString: Untagged
@@ -303,12 +284,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5844182654506308830}
+  serializedVersion: 2
   m_LocalRotation: {x: -0.70710653, y: 0.00000017881392, z: -0.00000026822087, w: 0.7071072}
   m_LocalPosition: {x: 1.5019997, y: 0.6039883, z: 1.1236216}
   m_LocalScale: {x: 2.9415987, y: 0.4658862, z: 0.9856793}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6483727324511842722}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 0}
 --- !u!33 &6000113941775625861
 MeshFilter:
@@ -318,19 +300,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5844182654506308830}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1772911446229463937
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5844182654506308830}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &9008126416366380698
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,12 +325,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9008126416366380698}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: -0.00567057, y: 0.0004525187, z: 0.0009756079}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2128290886949407496}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9008126416367614616
 MeshFilter:
@@ -382,9 +352,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -396,6 +369,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -408,6 +382,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9173797716699375316
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,12 +408,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9173797716699375316}
+  serializedVersion: 2
   m_LocalRotation: {x: 0.00000023841858, y: -0.00000011920929, z: 2.842171e-14, w: 1}
   m_LocalPosition: {x: -0.0053515434, y: 0.0004525187, z: 0.00097560795}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2128290886949407496}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1282335028932626971
 MeshFilter:
@@ -459,9 +435,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -473,6 +452,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -485,3 +465,4 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
