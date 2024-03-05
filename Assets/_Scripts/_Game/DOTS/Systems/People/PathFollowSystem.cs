@@ -1,6 +1,7 @@
 ﻿using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.Tags;
+using _Scripts._Game.Grid;
 
 using Unity.Burst;
 using Unity.Entities;

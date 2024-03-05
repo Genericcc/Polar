@@ -1,3 +1,4 @@
+using _Scripts._Game.DOTS.Authoring.Structures;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.Configs;
@@ -19,6 +20,7 @@ namespace _Scripts._Game.DOTS.Systems.People
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            //state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<StructureManagerTag>();
             state.RequireForUpdate<SomethingBuiltTag>();
             state.RequireForUpdate<PeopleSpawnerConfig>();
@@ -41,6 +43,17 @@ namespace _Scripts._Game.DOTS.Systems.People
 
             var instances = state.EntityManager.Instantiate(prefab, count, Allocator.Temp);
             var random = Random.CreateFromIndex(_updateCounter++);
+
+            // var structures = SystemAPI.GetSingletonBuffer<Structure>();
+            // var ecbBSG = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+            //                       .CreateCommandBuffer(state.WorldUnmanaged);
+
+            // for (int i = 0; i < count; i++)
+            // {   
+            //     var entity = ecbBSG.Instantiate()
+            //     
+            // }
+            
             
             foreach (var homePos in SystemAPI.Query<RefRW<HomePosition>>().WithAll<Person>())
             {

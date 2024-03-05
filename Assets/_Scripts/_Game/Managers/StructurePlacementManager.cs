@@ -13,7 +13,7 @@ using Zenject;
 
 namespace _Scripts._Game.Managers
 {
-    public class PlayerManager : MonoBehaviour
+    public class StructurePlacementManager : MonoBehaviour
     {
         [SerializeField]
         private Camera mainCamera;
@@ -50,7 +50,7 @@ namespace _Scripts._Game.Managers
 
         private void OnEnable()
         {
-            _input.MouseClicked += MouseClicked;
+            _input.MouseClicked += OnMouseClicked;
             _input.EnablePlayerActions();
 
             mainCamera = mainCamera == null ? Camera.main : mainCamera;
@@ -58,7 +58,7 @@ namespace _Scripts._Game.Managers
             _world = World.DefaultGameObjectInjectionWorld;
         }
 
-        private void MouseClicked()
+        private void OnMouseClicked()
         {
             var screenPosition = _input.PointerPosition;
             var ray = mainCamera.ScreenPointToRay(screenPosition);
@@ -70,31 +70,14 @@ namespace _Scripts._Game.Managers
             }
 
             _signalBus.Fire(new RequestStructurePlacementSignal(node));
-            Debug.Log($"{node}, {buildingIndex}");
-            
-                
-            // var polar = new PolarGridPosition();
-            // if (Physics.Raycast(ray, out var raycastHit, float.MaxValue, LayerMask.GetMask("MousePlane")))
-            // {
-            //     polar = _polarGridManager.GetPolarFromWorld(raycastHit.point);
-            //     var node = _polarGridManager.GetPolarNode(polar);
-            //
-            //     if (node == null)
-            //     {
-            //         return;
-            //     }
-            //     
-            //     _signalBus.Fire(new RequestStructurePlacementSignal(node));
-            //     Debug.Log($"{node}, {buildingIndex}");
-            // }
 
             //------ENTITIES-------
-            var raycastInput = new RaycastInput
-            {
-                Start = ray.origin, 
-                Filter = CollisionFilter.Default, 
-                End = ray.GetPoint(mainCamera.farClipPlane)
-            };
+            // var raycastInput = new RaycastInput
+            // {
+            //     Start = ray.origin, 
+            //     Filter = CollisionFilter.Default, 
+            //     End = ray.GetPoint(mainCamera.farClipPlane)
+            // };
             
             if (_world.IsCreated && !_world.EntityManager.Exists(_entity))
             {
@@ -105,7 +88,7 @@ namespace _Scripts._Game.Managers
             _world.EntityManager.GetBuffer<StructurePlacementInput>(_entity)
                   .Add(new StructurePlacementInput 
                     { 
-                        RaycastInput = raycastInput, 
+                        //RaycastInput = raycastInput, 
                         //PolarGridPosition = polar, 
                         StructureIndex = buildingIndex 
                     });
@@ -113,7 +96,7 @@ namespace _Scripts._Game.Managers
 
         private void OnDisable()
         {
-            _input.MouseClicked -= MouseClicked;
+            _input.MouseClicked -= OnMouseClicked;
             _input.DisablePlayerActions();
 
             if (_world.IsCreated && _world.EntityManager.Exists(_entity))
@@ -125,7 +108,7 @@ namespace _Scripts._Game.Managers
 
     public struct StructurePlacementInput : IBufferElementData
     {
-        public RaycastInput RaycastInput;
+        
         public PolarGridPosition PolarGridPosition;
         internal int StructureIndex;
     }
