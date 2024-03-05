@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: HouseStructureData
   m_EditorClassIdentifier: 
   resourceCost: []
-  structureType: 0
   structureSizeType: 3
+  scale: 0.25
   workersAmount:
     resourceType: 0
     amount: 4

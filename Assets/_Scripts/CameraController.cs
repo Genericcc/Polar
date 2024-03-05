@@ -3,6 +3,8 @@ using _Scripts._Game.Managers;
 using Cinemachine;
 using UnityEngine;
 
+using Zenject;
+
 namespace _Scripts
 {
     public class CameraController : MonoBehaviour
@@ -28,18 +30,23 @@ namespace _Scripts
         [SerializeField] 
         private CinemachineVirtualCamera cinemachineVirtualCamera;
         
-        [SerializeField]
-        private InputReader input;
+        private InputReader _inputReader;
 
         private CinemachineTransposer _cinemachineTransposer;
         private Vector3 _targetFollowOffset;
+
+        [Inject]
+        public void Construct(InputReader inputReader)
+        {
+            _inputReader = inputReader;
+        }
 
         private void Start()
         {
             _cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
             _targetFollowOffset = _cinemachineTransposer.m_FollowOffset;
             
-            input.EnablePlayerActions();
+            _inputReader.EnablePlayerActions();
         }
 
         private void Update()
@@ -51,35 +58,35 @@ namespace _Scripts
 
         private void HandleMovement()
         {
-            if (input.CameraMoveDir == Vector3.zero)
+            if (_inputReader.CameraMoveDir == Vector3.zero)
             {
                 return;
             }
             
             var cameraTransform = transform;
-            var moveDir = cameraTransform.forward * input.CameraMoveDir.y + cameraTransform.right * input.CameraMoveDir.x;
+            var moveDir = cameraTransform.forward * _inputReader.CameraMoveDir.y + cameraTransform.right * _inputReader.CameraMoveDir.x;
             cameraTransform.position += moveDir * (moveSpeed * Time.deltaTime);
         }
 
         private void HandleRotation()
         {
-            if (input.CameraRotationDir == Vector2.zero)
+            if (_inputReader.CameraRotationDir == Vector2.zero)
             {
                 return;
             }
             
-            var rotationVector = new Vector3(0, -input.CameraRotationDir.x, 0);
+            var rotationVector = new Vector3(0, -_inputReader.CameraRotationDir.x, 0);
             transform.eulerAngles += rotationVector * (rotationSpeed * Time.deltaTime);
         }
 
         private void HandleZoom()
         {
-            if (input.CameraZoomDir.y > 0)
+            if (_inputReader.CameraZoomDir.y > 0)
             {
                 _targetFollowOffset.y -= zoomAmount;
             }
             
-            if (input.CameraZoomDir.y < 0)
+            if (_inputReader.CameraZoomDir.y < 0)
             {
                 _targetFollowOffset.y += zoomAmount;
             }

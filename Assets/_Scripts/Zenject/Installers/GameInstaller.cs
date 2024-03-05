@@ -98,7 +98,7 @@ namespace _Scripts.Zenject.Installers
                      .NonLazy();
 
             Container.Bind<InputReader>()
-                     .FromResource("Settings/InputReader")
+                     .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
 

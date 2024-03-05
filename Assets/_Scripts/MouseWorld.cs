@@ -5,6 +5,8 @@ using _Scripts._Game.Managers;
 
 using UnityEngine;
 
+using Zenject;
+
 namespace _Scripts
 {
     public class MouseWorld : MonoBehaviour
@@ -18,7 +20,15 @@ namespace _Scripts
         [SerializeField]
         private Transform mouseMarker;
 
+        private InputReader _inputReader;
+
         public Vector3 MousePos { get; private set; }
+
+        [Inject]
+        public void Construct(InputReader inputReader)
+        {
+            _inputReader = inputReader;
+        }
 
         private void Awake()
         {
@@ -49,7 +59,7 @@ namespace _Scripts
 
         private Vector3 GetPosition()
         {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = Camera.main.ScreenPointToRay(_inputReader.PointerPosition);
 
             if (Physics.Raycast(ray, out var raycastHit, float.MaxValue, mousePlaneLayerMask))
             {

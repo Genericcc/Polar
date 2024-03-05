@@ -5,12 +5,14 @@ using System.Linq;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
+using _Scripts._Game.UIs;
 using _Scripts.Zenject.Signals;
 
 using Unity.Mathematics;
 using Unity.Transforms;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using Zenject;
 
@@ -32,6 +34,25 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _mouseWorld = mouseWorld;
         }
 
+        private bool IsMouseOverUI()
+        {
+            var pointerEventData = new PointerEventData(EventSystem.current);
+            pointerEventData.position = Input.mousePosition;
+
+            List<RaycastResult> results = new();
+            EventSystem.current.RaycastAll(pointerEventData, results);
+
+            foreach (var rayResult in results)
+            {
+                if (rayResult.gameObject.GetComponent<UIMarker>() != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public IEnumerator _WaitForInput(
             InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
         {
@@ -40,6 +61,19 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                 if (inputReader.WasCancelPressed)
                 {
                     break;
+                }
+
+                var isOverUI = IsMouseOverUI();
+
+                if (isOverUI)
+                {
+                    Debug.Log("Over UI");
+                    yield return 0f;
+                    continue;
+                }
+                else
+                {
+                    Debug.Log("Not Over UI");
                 }
 
                 if (!inputReader.WasMouseClicked)
