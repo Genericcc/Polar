@@ -34,25 +34,6 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _mouseWorld = mouseWorld;
         }
 
-        private bool IsMouseOverUI()
-        {
-            var pointerEventData = new PointerEventData(EventSystem.current);
-            pointerEventData.position = Input.mousePosition;
-
-            List<RaycastResult> results = new();
-            EventSystem.current.RaycastAll(pointerEventData, results);
-
-            foreach (var rayResult in results)
-            {
-                if (rayResult.gameObject.GetComponent<UIMarker>() != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         public IEnumerator _WaitForInput(
             InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
         {
@@ -63,20 +44,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                     break;
                 }
 
-                var isOverUI = IsMouseOverUI();
-
-                if (isOverUI)
-                {
-                    Debug.Log("Over UI");
-                    yield return 0f;
-                    continue;
-                }
-                else
-                {
-                    Debug.Log("Not Over UI");
-                }
-
-                if (!inputReader.WasMouseClicked)
+                if (!inputReader.WasMouseClicked || _mouseWorld.IsMouseOverUI())
                 {
                     yield return 0f;
                     continue;

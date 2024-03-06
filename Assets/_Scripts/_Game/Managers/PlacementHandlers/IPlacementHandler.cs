@@ -7,6 +7,6 @@ namespace _Scripts._Game.Managers.PlacementHandlers
 {
     public interface IPlacementHandler
     {
-        IEnumerator _WaitForInput(InputReader input, IStructureData structureData, IPlacementValidator placementValidator);
+        IEnumerator _WaitForInput(InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator);
     }
 }

@@ -74,6 +74,10 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
+            Container.BindInterfacesAndSelfTo<RoadPlacementValidator>()
+                     .AsSingle()
+                     .NonLazy();
+            
             // Container.BindFactory<List<PolarNode>, IStructureData, Structure, StructureFactory>()
             //          .FromFactory<CustomStructureFactory>();
             // Container.Bind<HouseStructure>()

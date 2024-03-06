@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers;
+using _Scripts._Game.UIs;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 using Zenject;
 
@@ -33,6 +36,25 @@ namespace _Scripts
         private void Awake()
         {
             mouseMarker = transform.GetChild(0);
+        }
+
+        public bool IsMouseOverUI()
+        {
+            var pointerEventData = new PointerEventData(EventSystem.current);
+            pointerEventData.position = Input.mousePosition;
+
+            List<RaycastResult> results = new();
+            EventSystem.current.RaycastAll(pointerEventData, results);
+
+            foreach (var rayResult in results)
+            {
+                if (rayResult.gameObject.GetComponent<UIMarker>() is not null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // private void OnDrawGizmos()

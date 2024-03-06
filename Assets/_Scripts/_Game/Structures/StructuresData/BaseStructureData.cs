@@ -22,6 +22,7 @@ namespace _Scripts._Game.Structures.StructuresData
         public float Scale => scale;
 
         public abstract StructureType StructureType { get; }
+        
     }
 
     public interface IStructureData

@@ -30,6 +30,7 @@ namespace _Scripts._Game.Managers
 
         //TODO change into ValidatorFactory
         private StructurePlacementValidator _structurePlacementValidator;
+        private RoadPlacementValidator _roadPlacementValidator;
         
         //TODO change into HandlerFactory
         private RoadPlacementHandler _roadPlacementHandler;
@@ -46,15 +47,18 @@ namespace _Scripts._Game.Managers
             _input = inputReader;
         }
 
+        //TODO inject factories 
         [Inject]
         public void InjectInterfaces(
             StructurePlacementHandler structurePlacementHandler,
             RoadPlacementHandler roadPlacementHandler,
-            StructurePlacementValidator structurePlacementValidator)
+            StructurePlacementValidator structurePlacementValidator,
+            RoadPlacementValidator roadPlacementValidator)
         {
             _structurePlacementHandler = structurePlacementHandler;
             _roadPlacementHandler = roadPlacementHandler;
             _structurePlacementValidator = structurePlacementValidator;
+            _roadPlacementValidator = roadPlacementValidator;
         }
 
         private void OnEnable()
@@ -79,6 +83,7 @@ namespace _Scripts._Game.Managers
             var handler = GetPlacementHandler(structureData);
             var validator = GetPlacementValidator(structureData);
             
+            //TODO Inject _input and validator into handler? 
             _coroutine = StartCoroutine(handler._WaitForInput(_input, structureData, validator));
         }
 
@@ -98,6 +103,7 @@ namespace _Scripts._Game.Managers
             return structureData.StructureType switch
             {
                 StructureType.Structure => _structurePlacementValidator,
+                StructureType.Road => _roadPlacementValidator,
                 
                 _ => throw new ArgumentOutOfRangeException()
             };
