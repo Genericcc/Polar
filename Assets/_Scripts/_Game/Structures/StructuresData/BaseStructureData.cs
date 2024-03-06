@@ -20,6 +20,10 @@ namespace _Scripts._Game.Structures.StructuresData
         [SerializeField]
         private float scale = 1f;
         public float Scale => scale;
+        
+        [SerializeField]
+        private int inhabitants = 1;
+        public int Inhabitants => inhabitants;
 
         public abstract StructureType StructureType { get; }
         
@@ -27,6 +31,7 @@ namespace _Scripts._Game.Structures.StructuresData
 
     public interface IStructureData
     {
+        int Inhabitants { get; }
         List<ResourceAmount> Cost { get; }
         StructureType StructureType { get; }
         StructureSizeType StructureSizeType { get; }

@@ -3,8 +3,8 @@ using Unity.Mathematics;
 
 namespace _Scripts._Game.DOTS.Components.ComponentData
 {
-    public struct JobPosition : IComponentData
+    public struct WorkData : IComponentData
     {
-        public float3 Value;
+        public float3 Position;
     }
 }

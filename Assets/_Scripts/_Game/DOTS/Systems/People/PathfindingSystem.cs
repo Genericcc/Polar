@@ -25,46 +25,37 @@ namespace _Scripts._Game.DOTS.Systems.People
             state.RequireForUpdate<PeopleSpawnerConfig>();
             
             state.RequireForUpdate<StructureManagerTag>();
-            state.RequireForUpdate<SomethingBuiltTag>();
+            //state.RequireForUpdate<SomethingBuiltTag>();
             
             state.RequireForUpdate<Waypoint>();
             
             _world = state.WorldUnmanaged;
         }
         
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            //For init test, change to check for AtHomeEnableComponent or something like that, then find new path
-            state.Enabled = false;
-            
-            var buildings = SystemAPI.GetSingletonEntity<StructureManagerTag>();
-            var structureWaypointBuffer = _world.EntityManager.GetBuffer<StructureWaypointBuffer>(buildings);
-            
-            // var peopleQuery = SystemAPI.QueryBuilder().WithAll<Person>().Build();
-            // if (!peopleQuery.IsEmpty)
-            // {
-            //     return;
-            // }
-            
-            //var peopleAtHomeQuery = SystemAPI.QueryBuilder()..WithAll<Person>().Build();
-            
-            if (structureWaypointBuffer.Length <= 0)
+            //for testing before roads
+            var structureWaypoints = SystemAPI.GetSingletonBuffer<StructureWaypointBuffer>();
+            if (structureWaypoints.Length <= 0)
             {
                 return;
             }
             
-            foreach (var waypoints 
-                     in SystemAPI.Query<DynamicBuffer<Waypoint>>()
+            foreach (var (homeDataRO, workDataRO, waypoints) 
+                     in SystemAPI.Query<RefRO<HomeData>, RefRO<WorkData>, DynamicBuffer<Waypoint>>()
                                  .WithAll<Person>())
             {
                 var random = Random.CreateFromIndex(_updateCounter++);
                 var posBuffer = new NativeArray<Waypoint>(4, Allocator.Temp);
+
+                posBuffer[0] = new Waypoint { Position = homeDataRO.ValueRO.Position };
+                posBuffer[^1] = new Waypoint { Position = workDataRO.ValueRO.Position };
                 
-                for (var i = 0; i <= 3; i++)
+                for (var i = 1; i < posBuffer.Length - 1; i++)
                 {
-                    var randomIndex = random.NextInt(0, structureWaypointBuffer.Length);
-                    var pos = structureWaypointBuffer[randomIndex];
+                    var randomIndex = random.NextInt(0, structureWaypoints.Length);
+                    var pos = structureWaypoints[randomIndex];
                     posBuffer[i] = new Waypoint 
                     { 
                         Position = pos.Position

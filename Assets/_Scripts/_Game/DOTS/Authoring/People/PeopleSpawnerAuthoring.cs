@@ -8,8 +8,7 @@ namespace _Scripts._Game.DOTS.Authoring.People
 {
     public class PeopleSpawnerAuthoring : MonoBehaviour
     {
-        public GameObject personPrefab;
-        public int peopleCount;      
+        public GameObject personPrefab;  
         public float minSpeed;
         public float maxSpeed;
 
@@ -21,7 +20,6 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 AddComponent(entity, new PeopleSpawnerConfig
                 {
                     PersonPrefab = GetEntity(authoring.personPrefab, TransformUsageFlags.Dynamic),
-                    PeopleCount = authoring.peopleCount,
                     MinSpeed = authoring.minSpeed,
                     MaxSpeed = authoring.maxSpeed
                 });

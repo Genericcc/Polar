@@ -50,7 +50,7 @@ namespace _Scripts._Game.DOTS.Systems.Structures
 
             for (var i = 0; i < buildOrders.Length; i++)
             {
-                var structure = availableStructures[buildOrders[i].StructureIndex].Prefab;
+                var structure = availableStructures[buildOrders[i].StructureId].Prefab;
                 var e = ecb.Instantiate(structure);
                 ecb.SetComponent(e, buildOrders[i].NewTransform);
             }

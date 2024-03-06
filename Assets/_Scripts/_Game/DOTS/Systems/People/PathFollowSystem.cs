@@ -17,13 +17,18 @@ namespace _Scripts._Game.DOTS.Systems.People
             state.RequireForUpdate<Person>();
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             foreach (var (speedRO, transformRW, nextPathIndexRW, waypoints) 
                      in SystemAPI.Query<RefRO<Speed>, RefRW<LocalTransform>, RefRW<NextPathIndex>, DynamicBuffer<Waypoint>>()
                                  .WithAll<Person>())
             {
+                if (waypoints.Length == 0)
+                {
+                    continue;
+                }
+                
                 ref readonly var speed = ref speedRO.ValueRO.Value;
                 ref LocalTransform transform = ref transformRW.ValueRW;
                 ref var nextPathIndex = ref nextPathIndexRW.ValueRW.Value;

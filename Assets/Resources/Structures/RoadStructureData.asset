@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourceCost: []
   structureSizeType: 0
-  scale: 1
+  scale: 0.25

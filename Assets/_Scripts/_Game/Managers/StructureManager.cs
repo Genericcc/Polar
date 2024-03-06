@@ -26,31 +26,23 @@ namespace _Scripts._Game.Managers
     public class StructureManager : MonoBehaviour
     {
         private SignalBus _signalBus;
-        private StructureFactory _structureFactory;
 
         private Entity _entity;
         private World _world;
         private bool _wasRun;
 
-        //private List<Structure> _structures;
-        
         [Header("Testing")]
         public int testStructuresAmount;
         public BaseStructureData testStructureData;
         
-        private StructureDictionary _structureDictionary;
-
         private IPlacementValidator _placementValidator;
+        private PolarGridManager _polarGridManager;
 
         [Inject]
-        public void Construct(SignalBus signalBus, 
-            PolarGridManager polarGridManager, 
-            //StructureFactory structureFactory,
-            StructureDictionary structureDictionary)
+        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager)
         {
             _signalBus = signalBus;
-            //_structureFactory = structureFactory;
-            _structureDictionary = structureDictionary;
+            _polarGridManager = polarGridManager;
             
             _world = World.DefaultGameObjectInjectionWorld;
             
@@ -58,35 +50,27 @@ namespace _Scripts._Game.Managers
             {
                 _entity = _world.EntityManager.CreateEntity(typeof(StructureManagerTag));
 
-                _world.EntityManager.AddBuffer<StructureWaypointBuffer>(_entity);
                 _world.EntityManager.AddBuffer<StructurePlacementOrder>(_entity);
+                _world.EntityManager.AddBuffer<PeopleSpawnOrder>(_entity);
+                _world.EntityManager.AddBuffer<StructureWaypointBuffer>(_entity);
             }
+
+            TestPlaceBuildings(testStructuresAmount);
         }
-
-        private void Start()
+        
+        [ProButton]
+        public void TestPlaceBuildings(int testStructuresAmount)
         {
-            //_structures = new List<Structure>();
-
-            // _selectedStructureData = testStructureData;
-            //
-            // TestPlaceBuildings(testStructuresAmount);
-            
-            //_signalBus.Fire(new SelectStructureSignal(testStructureData));
-        }
-
-        private void LateUpdate()
-        {
-            if (_wasRun)
+            for (var i = 0; i < testStructuresAmount; i++)
             {
-                return;
-            }
+                var nodes = new List<PolarNode>();
+                nodes.Add(_polarGridManager.GetRandomNode());
 
-            _wasRun = true;
-            
-            // if (_structures.Any())
-            // {
-            //     _world.EntityManager.AddComponent<SomethingBuiltTag>(_entity);
-            // }
+                var lt = new LocalTransform();
+                lt.Position = nodes[0].CentrePosition;
+                
+                _signalBus.Fire(new RequestStructurePlacementSignal(nodes, testStructureData, lt));
+            }
         }
 
         public void OnRequestBuildingPlacementSignal(RequestStructurePlacementSignal requestStructurePlacementSignal)
@@ -101,9 +85,6 @@ namespace _Scripts._Game.Managers
         private void ConstructBuilding(
             List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
         {
-            //var structure = _structureFactory.Create(buildingNodes, structureData);
-            //_structures.Add(structure);
-
             foreach (var polarNode in buildingNodes)
             {
                 polarNode.SetBuilding(structureData);
@@ -112,11 +93,17 @@ namespace _Scripts._Game.Managers
             _world.EntityManager.GetBuffer<StructurePlacementOrder>(_entity)
                   .Add(new StructurePlacementOrder 
                   { 
-                      StructureIndex = 0,
+                      StructureId = 0,
                       NewTransform = localTransform,
                   });
 
-
+            _world.EntityManager.GetBuffer<PeopleSpawnOrder>(_entity)
+                  .Add(new PeopleSpawnOrder 
+                  { 
+                      PeopleAmount = structureData.Inhabitants,
+                      SpawnTransform = localTransform,
+                  });
+            
             _world.EntityManager
                   .GetBuffer<StructureWaypointBuffer>(_entity)
                   .Add(new StructureWaypointBuffer 
@@ -124,15 +111,5 @@ namespace _Scripts._Game.Managers
                       Position = localTransform.Position,
                   });
         }
-
-
-        // [ProButton]
-        // public void TestPlaceBuildings(int numberOfBuildings)
-        // {
-        //     for (var i = 0; i < numberOfBuildings; i++)
-        //     {
-        //         _signalBus.Fire(new RequestStructurePlacementSignal(_polarGridManager.GetRandomNode()));
-        //     }
-        // }
     }
 }

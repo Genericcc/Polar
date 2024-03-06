@@ -16,8 +16,8 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
                 AddComponent<Person>(entity);
-                AddComponent<HomePosition>(entity);
-                AddComponent<JobPosition>(entity);
+                AddComponent<HomeData>(entity);
+                AddComponent<WorkData>(entity);
             }
         }
     }

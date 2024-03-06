@@ -20,67 +20,58 @@ namespace _Scripts._Game.DOTS.Systems.People
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            //state.RequireForUpdate<BeginSimulationEntityCommandBufferSystem.Singleton>();
+            state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
+            
             state.RequireForUpdate<StructureManagerTag>();
-            state.RequireForUpdate<SomethingBuiltTag>();
+            //state.RequireForUpdate<SomethingBuiltTag>();
             state.RequireForUpdate<PeopleSpawnerConfig>();
         }
 
-        [BurstCompile]
+        //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            //So it only runs once
-            state.Enabled = false;
+            var spawnOrders = SystemAPI.GetSingletonBuffer<PeopleSpawnOrder>();
             
-            var world = state.WorldUnmanaged;
-
-            var buildings = SystemAPI.GetSingletonEntity<StructureManagerTag>();
-            var structureWaypointBuffer = world.EntityManager.GetBuffer<StructureWaypointBuffer>(buildings);
-
+            if (spawnOrders.Length <= 0)
+            {
+                return;
+            }
+            
             var spawnerConfig = SystemAPI.GetSingleton<PeopleSpawnerConfig>();
-            var prefab = spawnerConfig.PersonPrefab;
-            var count = spawnerConfig.PeopleCount;
-
-            var instances = state.EntityManager.Instantiate(prefab, count, Allocator.Temp);
+            var structureWaypoints = SystemAPI.GetSingletonBuffer<StructureWaypointBuffer>();
+            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
+                               .CreateCommandBuffer(state.WorldUnmanaged);
+            
             var random = Random.CreateFromIndex(_updateCounter++);
 
-            // var structures = SystemAPI.GetSingletonBuffer<Structure>();
-            // var ecbBSG = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-            //                       .CreateCommandBuffer(state.WorldUnmanaged);
-
-            // for (int i = 0; i < count; i++)
-            // {   
-            //     var entity = ecbBSG.Instantiate()
-            //     
-            // }
-            
-            
-            foreach (var homePos in SystemAPI.Query<RefRW<HomePosition>>().WithAll<Person>())
+            for (var i = 0; i < spawnOrders.Length; i++)
             {
-                var randomStructure = random.NextInt(0, structureWaypointBuffer.Length);
-                homePos.ValueRW.Value = structureWaypointBuffer[randomStructure].Position;
-            }
-            
-            
-            //Test
-            foreach (var jobPos in SystemAPI.Query<RefRW<JobPosition>>().WithAll<Person>())
-            {
-                var newPos = random.NextInt(0, structureWaypointBuffer.Length);
-                jobPos.ValueRW.Value = newPos;
-            }
-            //
-            
-            
-            foreach (var entity in instances)
-            {
-                var speed = SystemAPI.GetComponentRW<Speed>(entity);
-                speed.ValueRW.Value = random.NextFloat(spawnerConfig.MinSpeed, spawnerConfig.MaxSpeed);
-
-                var transform = SystemAPI.GetComponentRW<LocalTransform>(entity);
-                var home = SystemAPI.GetComponentRO<HomePosition>(entity);
+                for (var j = 0; j < spawnOrders[i].PeopleAmount; j++)
+                {
+                    var entity = ecb.Instantiate(spawnerConfig.PersonPrefab);
                     
-                transform.ValueRW.Position = home.ValueRO.Value;
+                    ecb.SetComponent(entity, spawnOrders[i].SpawnTransform);
+                    
+                    ecb.SetComponent(entity, new Speed
+                    {
+                        Value = random.NextFloat(spawnerConfig.MinSpeed, spawnerConfig.MaxSpeed)
+                    });
+                    
+                    ecb.SetComponent(entity, new HomeData
+                    {
+                        Position = spawnOrders[i].SpawnTransform.Position
+                    });
+                    
+                    //TODO add Tag WorkplaceStructure and then add work from there
+                    var index = random.NextInt(0, structureWaypoints.Length);
+                    ecb.SetComponent(entity, new WorkData
+                    {
+                        Position = structureWaypoints[index].Position,
+                    });
+                }
             }
+                
+            spawnOrders.Clear();
         }
     }
 }
