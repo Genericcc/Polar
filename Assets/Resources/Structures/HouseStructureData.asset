@@ -15,6 +15,7 @@ MonoBehaviour:
   resourceCost: []
   structureSizeType: 3
   scale: 0.25
+  inhabitants: 10
   workersAmount:
     resourceType: 0
     amount: 4
