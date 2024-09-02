@@ -1,65 +1,60 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 
-using com.cyborgAssets.inspectorButtonPro;
+using System.Collections.Generic;
 
-using UnityEngine;
-
-namespace _Scripts.Extensions
+public class RoundMeshGenerator : MonoBehaviour
 {
-    //[RequireComponent(typeof(PolygonCollider2D))]
-    public class RoundMeshGenerator : MonoBehaviour
+    public void CreateRoundMesh(float radius, int sides)
     {
-        public void CreateRoundMesh(float radius, int sides)
+        var mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+
+        // Vertices
+        var vertices = new Vector3[sides + 1];
+        vertices[0] = Vector3.zero;
+
+        for (var i = 0; i < sides; i++)
         {
-            var mf = GetComponent<MeshFilter>();
-            var mesh = new Mesh();
-            mf.mesh = mesh;
-
-            //verticies
-            var verticesList = new List<Vector3>();
-
-            for (var i = 0; i < sides; i ++)
-            {
-                var x = radius * Mathf.Sin((2 * Mathf.PI * i) / sides);
-                var z = radius * Mathf.Cos((2 * Mathf.PI * i) / sides);
-                verticesList.Add(new Vector3(x, 0f, z));
-            }
-            var vertices = verticesList.ToArray();
-
-            //triangles
-            var trianglesList = new List<int> { };
-            for(var i = 0; i < (sides-2); i++)
-            {
-                trianglesList.Add(0);
-                trianglesList.Add(i+1);
-                trianglesList.Add(i+2);
-            }
-            var triangles = trianglesList.ToArray();
-
-            //normals
-            var normalsList = new List<Vector3> { };
-            for (var i = 0; i < vertices.Length; i++)
-            {
-                normalsList.Add(-Vector3.forward);
-            }
-            var normals = normalsList.ToArray();
-            
-            //uvs
-            // Vector2[] uvs = new Vector2[vertices.Length];
-            // for (int i = 0; i < uvs.Length; i++)
-            // {
-            //     uvs[i] = new Vector2(vertices[i].x / (radius*2) + 0.5f, vertices[i].y / (radius*2) + 0.5f);
-            // }
-            //mesh.uv = uvs;
-            
-            //initialise
-            mesh.vertices = vertices;
-            mesh.triangles = triangles;
-            mesh.normals = normals;
-            
-            //collider
-            var mc = GetComponent<MeshCollider>();
-            mc.sharedMesh = mesh;
+            var x = radius * Mathf.Sin((2 * Mathf.PI * i) / sides);
+            var z = radius * Mathf.Cos((2 * Mathf.PI * i) / sides);
+            vertices[i + 1] = new Vector3(x, 0f, z);
         }
+
+        // Triangles
+        var triangles = new int[sides * 3];
+
+        for (var i = 0; i < sides; i++)
+        {
+            triangles[i * 3] = 0;
+            triangles[i * 3 + 1] = (i + 1) % sides + 1;
+            triangles[i * 3 + 2] = (i + 2) % sides + 1;
+        }
+
+        // Normals (all facing forward)
+        var normals = new Vector3[sides + 1];
+
+        for (var i = 0; i < normals.Length; i++)
+        {
+            normals[i] = -Vector3.forward;
+        }
+
+        // Uvs
+        var uvs = new Vector2[sides + 1];
+        uvs[0] = new Vector2(0.5f, 0.5f); // Center vertex
+
+        for (var i = 0; i < sides; i++)
+        {
+            uvs[i + 1] = new Vector2(vertices[i + 1].x / (radius * 2) + 0.5f, vertices[i + 1].z / (radius * 2) + 0.5f);
+        }
+
+        // Assign to mesh
+        mesh.vertices = vertices;
+        mesh.triangles = triangles;
+        mesh.normals = normals;
+        mesh.uv = uvs;
+
+        // Assign to collider
+        var collider = GetComponent<MeshCollider>();
+        collider.sharedMesh = mesh;
     }
 }
