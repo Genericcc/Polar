@@ -50,14 +50,32 @@ namespace _Scripts._Game.DOTS.Systems.Structures
 
             for (var i = 0; i < buildOrders.Length; i++)
             {
-                var structure = availableStructures[buildOrders[i].StructureId].Prefab;
-                var e = ecb.Instantiate(structure);
-                ecb.SetComponent(e, buildOrders[i].NewTransform);
+                if (TryGetStructure(availableStructures, buildOrders[i].StructureId, out var structure))
+                {
+                    var e = ecb.Instantiate(structure.Prefab);
+                    ecb.SetComponent(e, buildOrders[i].NewTransform);
+                }
             }
             
             buildOrders.Clear();
             
             //ecb.Playback();
+        }
+
+        private static bool TryGetStructure(DynamicBuffer<AvailableStructure> availableStructures, 
+            int requestedId, out AvailableStructure structure)
+        {
+            for (var i = 0; i < availableStructures.Length; i++)
+            {
+                if (availableStructures[i].StructureId == requestedId)
+                {
+                    structure = availableStructures[i];
+                    return true;
+                }
+            }
+
+            structure = new AvailableStructure();
+            return false;
         }
     }
 }

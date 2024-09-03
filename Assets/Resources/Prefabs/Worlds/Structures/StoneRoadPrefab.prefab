@@ -207,6 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8031425629359355748}
   - component: {fileID: 3609503161162942385}
+  - component: {fileID: -444254655743458548}
   m_Layer: 0
   m_Name: StoneRoadPrefab
   m_TagString: Untagged
@@ -224,7 +225,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8894782537178296125}
@@ -260,6 +261,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7356622595930028660}
   m_Enabled: 1
+--- !u!114 &-444254655743458548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3609503161162942390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782d03cd7305473186fc4a5b85316809, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 0.4
+  polarNodes: []
 --- !u!1 &8894782537178264349
 GameObject:
   m_ObjectHideFlags: 0

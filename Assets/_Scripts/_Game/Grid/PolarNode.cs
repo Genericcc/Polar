@@ -19,6 +19,7 @@ namespace _Scripts._Game.Grid
         public Ring ParentRing { get; set; }
         
         public Vector3 WorldPosition { get; private set; }
+        public Vector3 CentrePosition { get; set; }
 
         public IStructureData StructureData { get; private set; }
 
@@ -35,8 +36,6 @@ namespace _Scripts._Game.Grid
         private Material[] highlightMaterials;
 
         public bool IsFree => StructureData == null;
-        
-        public Vector3 CentrePosition { get; set; }
         
         private PolarGridManager _polarGridManager;
 

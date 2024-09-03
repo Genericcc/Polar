@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fdbe94ae1246b88dafff30e312fed5, type: 3}
   m_Name: RoadStructureData
   m_EditorClassIdentifier: 
+  uid: c88223cabb7d279409ad4352f59644ea
+  prefab: {fileID: 3609503161162942390, guid: 64564e3ae48f5b6439fcb7bbb75e64dd, type: 3}
   resourceCost: []
   structureSizeType: 0
   scale: 0.25
+  inhabitants: 1

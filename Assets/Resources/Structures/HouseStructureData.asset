@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cf22e9e390740398add3c35d4fe2d37, type: 3}
   m_Name: HouseStructureData
   m_EditorClassIdentifier: 
+  uid: c9c6219e6b46a504e90258f99662834e
+  prefab: {fileID: 3027049012484542283, guid: 812123a1782e7f14db4600a353f2da49, type: 3}
   resourceCost: []
   structureSizeType: 3
   scale: 0.25

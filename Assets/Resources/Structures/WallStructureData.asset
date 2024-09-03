@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd8d443ce69840b58fa919fee268b405, type: 3}
   m_Name: WallStructureData
   m_EditorClassIdentifier: 
+  uid: 9a937277502d2494684ceec30d1d58cb
+  prefab: {fileID: 741573382498357402, guid: ff38ab02b2ad8db4894a0bdab94e97c6, type: 3}
   resourceCost: []
   structureSizeType: 0
   scale: 1
+  inhabitants: 1

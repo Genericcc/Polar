@@ -92,6 +92,7 @@ namespace _Scripts._Game.Managers
             return structureData.StructureType switch
             {
                 StructureType.Structure => _structurePlacementHandler,
+                StructureType.Wall => _roadPlacementHandler,
                 StructureType.Road => _roadPlacementHandler,
                 
                 _ => throw new ArgumentOutOfRangeException()
@@ -103,6 +104,7 @@ namespace _Scripts._Game.Managers
             return structureData.StructureType switch
             {
                 StructureType.Structure => _structurePlacementValidator,
+                StructureType.Wall => _roadPlacementValidator,
                 StructureType.Road => _roadPlacementValidator,
                 
                 _ => throw new ArgumentOutOfRangeException()

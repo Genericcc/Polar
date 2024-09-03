@@ -93,7 +93,7 @@ namespace _Scripts._Game.Managers
             _world.EntityManager.GetBuffer<StructurePlacementOrder>(_entity)
                   .Add(new StructurePlacementOrder 
                   { 
-                      StructureId = 0,
+                      StructureId = structureData.ID,
                       NewTransform = localTransform,
                   });
 

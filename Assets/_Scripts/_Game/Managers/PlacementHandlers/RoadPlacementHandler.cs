@@ -125,7 +125,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             //newPos = new Vector3(newPos.x / polarNodes.Count, newPos.y / polarNodes.Count, newPos.z / polarNodes.Count);
             newPos *= 1f / polarNodes.Count;
 
-            newPos.y = polarNodes[0].WorldPosition.y;
+            newPos.y = polarNodes[0].CentrePosition.y;
 
             var buildTransform = LocalTransform.FromPositionRotationScale(
                 math.float3(newPos),

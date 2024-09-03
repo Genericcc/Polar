@@ -4,6 +4,8 @@ using System.Linq;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Structures.StructuresData;
 
+using Sirenix.OdinInspector;
+
 using UnityEngine;
 
 using Zenject;
@@ -23,6 +25,7 @@ namespace _Scripts._Game.Managers
         private PolarNodeFactory _polarNodeFactory;
         
         [SerializeField]
+        [TableList]
         private PolarGridRingsSettings polarGridRingsSettings;
 
         private PolarGrid _polarGrid;
@@ -46,6 +49,7 @@ namespace _Scripts._Game.Managers
             CreateGrid();
         }
 
+        [Button]
         private void CreateGrid()
         {
             ClearGrid();
