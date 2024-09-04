@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using _Scripts._Game.Grid;
+using _Scripts._Game.Grid.Pathfinders;
 using _Scripts._Game.Managers;
 using _Scripts._Game.Managers.PlacementHandlers;
 using _Scripts._Game.Managers.PlacementValidators;
@@ -42,6 +43,9 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
+            Container.Bind<Pathfinder>()
+                     .AsSingle()
+                     .NonLazy();
 
             #endregion
 

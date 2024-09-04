@@ -16,36 +16,60 @@ namespace _Scripts._Game.DOTS.Systems.People
         {
             state.RequireForUpdate<Person>();
         }
-
-        //[BurstCompile]
+        
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (speedRO, transformRW, nextPathIndexRW, waypoints) 
-                     in SystemAPI.Query<RefRO<Speed>, RefRW<LocalTransform>, RefRW<NextPathIndex>, DynamicBuffer<Waypoint>>()
+            foreach (var (speedRO, transformRW, currentPathNodeIndexRW, waypoints) 
+                     in SystemAPI.Query<RefRO<Speed>, RefRW<LocalTransform>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>>()
                                  .WithAll<Person>())
             {
-                if (waypoints.Length == 0)
+                ref readonly var speed = ref speedRO.ValueRO.Value;
+                ref LocalTransform transform = ref transformRW.ValueRW;
+                ref var currentPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
+                
+                if (currentPathNodeIndex < 0)
                 {
                     continue;
                 }
                 
-                ref readonly var speed = ref speedRO.ValueRO.Value;
-                ref LocalTransform transform = ref transformRW.ValueRW;
-                ref var nextPathIndex = ref nextPathIndexRW.ValueRW.Value;
-
-                if (math.distance(transform.Position, waypoints[nextPathIndex].Position) < 0.1f)
+                var targetWaypointPosition = waypoints[currentPathNodeIndex].Position;
+                
+                var dir2 = math.normalizesafe(targetWaypointPosition - transform.Position);
+                transform.Position += dir2 * SystemAPI.Time.DeltaTime * speed;
+                transform.Rotation = quaternion.LookRotationSafe(dir2, new float3(0f,1f,0f));
+                
+                if (math.distance(transform.Position, targetWaypointPosition) < 0.1f)
                 {
-                    nextPathIndex = (nextPathIndex + 1) % waypoints.Length;
+                    currentPathNodeIndex--;
                 }
                 
-                var dir = math.normalize(waypoints[nextPathIndex].Position - transform.Position);
-                transform.Position += dir * SystemAPI.Time.DeltaTime * speed;
-                transform.Rotation = quaternion.LookRotationSafe(dir, new float3(0f,1f,0f));
-                //Almost the same
-                // transform.Rotation = TransformHelpers.LookAtRotation(
-                //     transform.Position,
-                //     waypoints[nextPathIndex].Position,
-                //     new float3(0f,1f,0f));
+                //
+                // if (waypoints.Length == 0)
+                // {
+                //     continue;
+                // }
+                //
+                //
+                // if (currentPathNodeIndex > waypoints.Length - 1)
+                // {
+                //     continue;
+                // }
+                //
+                // if (math.distance(transform.Position, waypoints[currentPathNodeIndex].Position) < 0.1f)
+                // {
+                //     currentPathNodeIndex += 1;
+                //     continue;
+                // }
+                //
+                // var dir = math.normalize(waypoints[currentPathNodeIndex].Position - transform.Position);
+                // transform.Position += dir * SystemAPI.Time.DeltaTime * speed;
+                // transform.Rotation = quaternion.LookRotationSafe(dir, new float3(0f,1f,0f));
+                //
+                // //Almost the same
+                // // transform.Rotation = TransformHelpers.LookAtRotation(
+                // //     transform.Position,
+                // //     waypoints[nextPathIndex].Position,
+                // //     new float3(0f,1f,0f));
             }
         }
     }

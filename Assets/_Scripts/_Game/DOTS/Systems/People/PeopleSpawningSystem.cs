@@ -1,6 +1,7 @@
 using _Scripts._Game.DOTS.Authoring.Structures;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
+using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using _Scripts._Game.DOTS.Components.Configs;
 using _Scripts._Game.DOTS.Components.Tags;
 
@@ -46,7 +47,7 @@ namespace _Scripts._Game.DOTS.Systems.People
 
             for (var i = 0; i < spawnOrders.Length; i++)
             {
-                for (var j = 0; j < spawnOrders[i].PeopleAmount; j++)
+                for (var j = 0; j < 1 /*spawnOrders[i].PeopleAmount*/; j++)
                 {
                     var entity = ecb.Instantiate(spawnerConfig.PersonPrefab);
                     
@@ -67,6 +68,12 @@ namespace _Scripts._Game.DOTS.Systems.People
                     ecb.SetComponent(entity, new WorkData
                     {
                         Position = structureWaypoints[index].Position,
+                    });
+                    
+                    ecb.SetComponent(entity, new PathfindingParams
+                    {
+                        StartPosition = spawnOrders[i].SpawnTransform.Position,
+                        EndPosition = structureWaypoints[index].Position,
                     });
                 }
             }

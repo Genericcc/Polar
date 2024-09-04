@@ -55,7 +55,7 @@ namespace _Scripts._Game.Managers
                 _world.EntityManager.AddBuffer<StructureWaypointBuffer>(_entity);
             }
 
-            TestPlaceBuildings(testStructuresAmount);
+            //TestPlaceBuildings(testStructuresAmount);
         }
         
         [ProButton]
@@ -90,14 +90,16 @@ namespace _Scripts._Game.Managers
                 polarNode.SetBuilding(structureData);
             }
 
-            _world.EntityManager.GetBuffer<StructurePlacementOrder>(_entity)
+            _world.EntityManager
+                  .GetBuffer<StructurePlacementOrder>(_entity)
                   .Add(new StructurePlacementOrder 
                   { 
                       StructureId = structureData.ID,
                       NewTransform = localTransform,
                   });
 
-            _world.EntityManager.GetBuffer<PeopleSpawnOrder>(_entity)
+            _world.EntityManager
+                  .GetBuffer<PeopleSpawnOrder>(_entity)
                   .Add(new PeopleSpawnOrder 
                   { 
                       PeopleAmount = structureData.Inhabitants,

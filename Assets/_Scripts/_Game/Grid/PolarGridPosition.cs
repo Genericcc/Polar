@@ -2,7 +2,7 @@ using System;
 
 namespace _Scripts._Game.Grid
 {
-    public struct PolarGridPosition : IEquatable<PolarGridPosition>
+    public struct PolarGridPosition //: IEquatable<PolarGridPosition>
     {
         public int ParentRingIndex;
         public int D;

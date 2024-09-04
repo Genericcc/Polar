@@ -22,9 +22,9 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 {
                     Value = 0,
                 });
-                AddComponent(entity, new NextPathIndex
+                AddComponent(entity, new CurrentPathNodeIndex
                 {
-                    Value = 0,
+                    Index = -1,
                 });
                 
                 Debug.Log($"{typeof(PathFollowAuthoring)} baked");

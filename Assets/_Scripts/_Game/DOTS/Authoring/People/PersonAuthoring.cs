@@ -1,4 +1,5 @@
 ﻿using _Scripts._Game.DOTS.Components.ComponentData;
+using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using _Scripts._Game.DOTS.Components.Tags;
 
 using Unity.Entities;
@@ -18,6 +19,7 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 AddComponent<Person>(entity);
                 AddComponent<HomeData>(entity);
                 AddComponent<WorkData>(entity);
+                AddComponent<PathfindingParams>(entity);
             }
         }
     }

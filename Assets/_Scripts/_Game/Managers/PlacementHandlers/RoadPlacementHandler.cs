@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using _Scripts._Game.Grid;
+using _Scripts._Game.Grid.Pathfinders;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Zenject.Signals;
@@ -21,15 +23,18 @@ namespace _Scripts._Game.Managers.PlacementHandlers
         private SignalBus _signalBus;
         private PolarGridManager _polarGridManager;
         private MouseWorld _mouseWorld;
+        private Pathfinder _pathfinder;
 
         [Inject]
         public void Construct(SignalBus signalBus,
             PolarGridManager polarGridManager,
-            MouseWorld mouseWorld)
+            MouseWorld mouseWorld,
+            Pathfinder pathfinder)
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
             _mouseWorld = mouseWorld;
+            _pathfinder = pathfinder;
         }
 
         public IEnumerator _WaitForInput(
@@ -40,12 +45,13 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             while (true)
             {
                 yield return 0f;
-                
+
                 if (inputReader.WasCancelPressed)
                 {
                     if (anchorNodes.Count == 1)
                     {
                         anchorNodes.Clear();
+
                         continue;
                     }
                     else
@@ -60,6 +66,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                 }
 
                 var node = _polarGridManager.GetPolarNode(_mouseWorld.MousePos);
+
                 if (node == null)
                 {
                     continue;
@@ -72,10 +79,12 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                     continue;
                 }
 
+                // The node is first added to the list as the Validator validates a whole list (check if it's necessary)
                 anchorNodes.Add(node);
 
                 if (!roadValidator.Validate(anchorNodes, structureData))
                 {
+                    //Remove the new node if the list failed to pass validation
                     anchorNodes.RemoveAt(anchorNodes.Count - 1);
 
                     continue;
@@ -87,23 +96,24 @@ namespace _Scripts._Game.Managers.PlacementHandlers
 
                     continue;
                 }
-
-                //TODO try to connect start and end build nodes? Pathfinding? 
-                // if (!_polarGridManager.TryGetNodesForStructure(node, structureData.StructureSizeType, out var nodesToBuildOn))
-                // {
-                //     yield return 0f;
-                //     continue;
-                // }
-
                 
-                //TODO refactor to build road BETWEEN TWO nodes, not on each
-                foreach (var anchor in anchorNodes)
-                {
-                    var singleNodeList = new List<PolarNode> { anchor };
-                    
-                    var newTransform = GetBuildTransform(singleNodeList, structureData);
+                var startNode = anchorNodes.First().PolarGridPosition;
+                var endNode = anchorNodes.Last().PolarGridPosition;
 
-                    _signalBus.Fire(new RequestStructurePlacementSignal(singleNodeList, structureData, newTransform));
+                var path = _pathfinder.FindPath(startNode, endNode);
+
+                //TODO refactor to build road BETWEEN TWO nodes, not on each
+                for (var i = 0; i < anchorNodes.Count - 1; i++)
+                {
+                    var connectedNodes = new List<PolarNode> { anchorNodes[i], anchorNodes[i + 1] };
+
+                    var newTransform = GetBuildTransform(connectedNodes, structureData);
+
+                    _signalBus.Fire(
+                        new RequestStructurePlacementSignal(
+                            new List<PolarNode> { anchorNodes[i] },
+                            structureData,
+                            newTransform));
                 }
 
                 var lastAnchor = anchorNodes[^1];

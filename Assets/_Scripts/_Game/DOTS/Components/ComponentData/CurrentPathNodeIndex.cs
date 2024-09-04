@@ -2,8 +2,8 @@
 
 namespace _Scripts._Game.DOTS.Components.ComponentData
 {
-    public struct NextPathIndex : IComponentData
+    public struct CurrentPathNodeIndex : IComponentData
     {
-        public int Value;
+        public int Index;
     }
 }
