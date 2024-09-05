@@ -22,5 +22,6 @@ namespace _Scripts._Game.Grid
         public int fi;
         public float height;
         public Color color;
+        public Material material;
     }
 }

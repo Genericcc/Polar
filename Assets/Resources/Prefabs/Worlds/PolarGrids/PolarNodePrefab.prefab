@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ce43097f4d75574d8cf61bc4b1b5794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  centre: {fileID: 0}
   textMeshPro: {fileID: 3852925682130365827}
   meshRenderer: {fileID: 1200824141587544276}
   defaultMaterial:
@@ -180,8 +179,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 3
-  m_fontSizeBase: 3
+  m_fontSize: 2
+  m_fontSizeBase: 2
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -240,7 +239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &80501139092722032
 Transform:
   m_ObjectHideFlags: 0
@@ -378,6 +377,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -425,6 +439,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

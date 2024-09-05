@@ -57,7 +57,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             {
                 ref var currentPathNodeIndexReference = ref currentPathNodeIndexRW.ValueRW.Index;
                 var random = Random.CreateFromIndex(_updateCounter++);
-                var posBuffer = new NativeArray<Waypoint>(4, Allocator.Temp);
+                var posBuffer = new NativeArray<Waypoint>(40, Allocator.Temp);
                 
                 if (currentPathNodeIndexReference != -1)
                 {

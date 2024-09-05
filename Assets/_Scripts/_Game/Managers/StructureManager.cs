@@ -13,6 +13,8 @@ using _Scripts.Zenject.Signals;
 
 using com.cyborgAssets.inspectorButtonPro;
 
+using Sirenix.OdinInspector;
+
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -58,7 +60,7 @@ namespace _Scripts._Game.Managers
             //TestPlaceBuildings(testStructuresAmount);
         }
         
-        [ProButton]
+        [Button]
         public void TestPlaceBuildings(int testStructuresAmount)
         {
             for (var i = 0; i < testStructuresAmount; i++)
@@ -85,9 +87,12 @@ namespace _Scripts._Game.Managers
         private void ConstructBuilding(
             List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
         {
-            foreach (var polarNode in buildingNodes)
+            if (structureData.StructureType != StructureType.Road)
             {
-                polarNode.SetBuilding(structureData);
+                foreach (var polarNode in buildingNodes)
+                {
+                    polarNode.SetBuilding(structureData);
+                }
             }
 
             _world.EntityManager

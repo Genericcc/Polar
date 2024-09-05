@@ -54,13 +54,13 @@ namespace _Scripts._Game.Grid
             Bounds = valueTuple;
         }
 
-        public void CreateMesh(int sides)
+        public void CreateMesh(int sides, Material newMaterial)
         {
             var generator = GetComponent<RoundMeshGenerator>();
             generator.CreateRoundMesh(Bounds.max, sides);
 
             var mesh = GetComponent<MeshRenderer>();
-            mesh.material.color *= RingSettings.color;
+            mesh.material = newMaterial;
         }
     }
 }

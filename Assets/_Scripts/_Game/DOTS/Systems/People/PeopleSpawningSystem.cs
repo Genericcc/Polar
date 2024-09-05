@@ -47,7 +47,7 @@ namespace _Scripts._Game.DOTS.Systems.People
 
             for (var i = 0; i < spawnOrders.Length; i++)
             {
-                for (var j = 0; j < 1 /*spawnOrders[i].PeopleAmount*/; j++)
+                for (var j = 0; j < spawnOrders[i].PeopleAmount; j++)
                 {
                     var entity = ecb.Instantiate(spawnerConfig.PersonPrefab);
                     

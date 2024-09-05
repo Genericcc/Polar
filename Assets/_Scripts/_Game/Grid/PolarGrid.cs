@@ -37,7 +37,7 @@ namespace _Scripts._Game.Grid
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
                 
                 ring.SetBounds((startDistanceToWorldOrigin, endDistanceToWorldOrigin));
-                ring.CreateMesh(50);
+                ring.CreateMesh(50, ring.RingSettings.material);
                 ring.PopulateWithNodes(polarNodeFactory);
                 
                 GridNodes.AddRange(ring.Nodes);
