@@ -55,7 +55,6 @@ namespace _Scripts._Game.DOTS.Systems.People
                                  .WithAll<Person>()
                                  .WithEntityAccess())
             {
-                
                 ref var currentPathNodeIndexReference = ref currentPathNodeIndexRW.ValueRW.Index;
                 var random = Random.CreateFromIndex(_updateCounter++);
                 var posBuffer = new NativeArray<Waypoint>(4, Allocator.Temp);
@@ -64,6 +63,13 @@ namespace _Scripts._Game.DOTS.Systems.People
                 {
                     continue;
                 }           
+                
+                // var findPathJob = new FindPathJob
+                // {
+                //     StartPosition = pathfindingParams.ValueRO.StartPosition,
+                //     EndPosition = pathfindingParams.ValueRO.EndPosition,,
+                // }
+                
                 
                 posBuffer[^1] = new Waypoint { Position = pathfindingParams.ValueRO.StartPosition };
                 posBuffer[0] = new Waypoint { Position = pathfindingParams.ValueRO.EndPosition };

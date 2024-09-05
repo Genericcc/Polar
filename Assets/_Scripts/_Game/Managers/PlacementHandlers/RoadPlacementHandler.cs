@@ -97,26 +97,25 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                     continue;
                 }
                 
-                var startNode = anchorNodes.First().PolarGridPosition;
-                var endNode = anchorNodes.Last().PolarGridPosition;
+                var startNode = anchorNodes.First();
+                var endNode = anchorNodes.Last();
 
-                var path = _pathfinder.FindPath(startNode, endNode);
-
-                //TODO refactor to build road BETWEEN TWO nodes, not on each
-                for (var i = 0; i < anchorNodes.Count - 1; i++)
+                var path = _pathfinder.FindPath(startNode, endNode).ToArray();
+                
+                for (var i = 0; i < path.Length - 1; i++)
                 {
-                    var connectedNodes = new List<PolarNode> { anchorNodes[i], anchorNodes[i + 1] };
-
+                    var connectedNodes = new List<PolarNode> { path[i], path[i + 1] };
+                
                     var newTransform = GetBuildTransform(connectedNodes, structureData);
-
+                
                     _signalBus.Fire(
                         new RequestStructurePlacementSignal(
-                            new List<PolarNode> { anchorNodes[i] },
+                            new List<PolarNode> { path[i] },
                             structureData,
                             newTransform));
                 }
 
-                var lastAnchor = anchorNodes[^1];
+                var lastAnchor = path[^1];
                 anchorNodes.Clear();
                 anchorNodes.Add(lastAnchor);
             }

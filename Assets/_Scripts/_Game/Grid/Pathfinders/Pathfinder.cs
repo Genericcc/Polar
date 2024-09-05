@@ -4,6 +4,7 @@ using _Scripts._Game.Managers;
 
 using Unity.Burst;
 using Unity.Collections;
+using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
@@ -23,9 +24,56 @@ namespace _Scripts._Game.Grid.Pathfinders
             _polarGrid = polarGrid;
         }
         
-        public List<PolarNode> FindPath(PolarGridPosition startPosition, PolarGridPosition endPosition)
+        public List<PolarNode> FindPath(PolarNode startNode, PolarNode endNode)
         {
-            return new List<PolarNode>();
+            var result = new List<PolarNode>();
+            var startPos = CalculateEntityNodePosition(startNode, startNode.ParentRing.RingSettings.fi);
+            var endPos = CalculateEntityNodePosition(endNode, startNode.ParentRing.RingSettings.fi);
+            var gridSize = new int2(
+                startNode.ParentRing.RingSettings.depth, 
+                360 / startNode.ParentRing.RingSettings.fi);
+            var pathPositionBuffer = new NativeList<int2>(Allocator.TempJob);
+
+            var findPathJob = new FindPathJob
+            {
+                StartPosition = startPos,
+                EndPosition = endPos,
+                GridSize = gridSize,
+                PathPositionIndexList = pathPositionBuffer,
+            };
+
+            // var jobHandle = findPathJob.Schedule();
+            // jobHandle.Complete();
+            
+            findPathJob.Run();
+
+            foreach (var pathPosition in pathPositionBuffer)
+            {
+                var polarNode = CalculatePolarNode(pathPosition, startNode.ParentRing);
+                result.Add(polarNode);
+            }
+
+            pathPositionBuffer.Dispose();
+            return result;
+        }
+
+        private int2 CalculateEntityNodePosition(PolarNode startNode, int segmentFi)
+        {
+            var x = startNode.PolarGridPosition.D;
+            var y = startNode.PolarGridPosition.Fi / segmentFi;
+            
+            return new int2(x, y);
+        }
+
+        private PolarNode CalculatePolarNode(int2 position, Ring parentRing)
+        {
+            var polarGridPosition = new PolarGridPosition(
+                parentRing.RingIndex,
+                position.x,
+                position.y * parentRing.RingSettings.fi,
+                parentRing.RingSettings.height);
+
+            return _polarGrid.GetPolarNode(polarGridPosition);
         }
 
         public void FindPath(int2 startPosition, int2 endPosition, int2 gridSize, int ringFi)
@@ -49,8 +97,8 @@ namespace _Scripts._Game.Grid.Pathfinders
                 {
                     var pathNode = new PathNode();
 
-                    pathNode.R = r;
-                    pathNode.Fi = fi;
+                    pathNode.Depth = r;
+                    pathNode.FiSegment = fi;
                     pathNode.Index = CalculateIndex(r, fi, gridSize.x);
 
                     pathNode.GCost = int.MaxValue;
@@ -100,8 +148,8 @@ namespace _Scripts._Game.Grid.Pathfinders
                 {
                     var neighbourOffset = neighbourOffsetArray[i];
                     var neighbourPosition = new int2(
-                        currentFrontierNode.R + neighbourOffset.x,
-                        currentFrontierNode.Fi + neighbourOffset.y);
+                        currentFrontierNode.Depth + neighbourOffset.x,
+                        currentFrontierNode.FiSegment + neighbourOffset.y);
 
                     if (!IsPositionInsideGrid(gridSize, neighbourPosition))
                     {
@@ -122,7 +170,7 @@ namespace _Scripts._Game.Grid.Pathfinders
                         continue;
                     }
 
-                    var frontierNodePosition = new int2(currentFrontierNode.R, currentFrontierNode.Fi);
+                    var frontierNodePosition = new int2(currentFrontierNode.Depth, currentFrontierNode.FiSegment);
                     var tentativeGCost = currentFrontierNode.GCost +
                                          CalculateDistanceCost(frontierNodePosition, neighbourPosition);
 
@@ -177,14 +225,14 @@ namespace _Scripts._Game.Grid.Pathfinders
             else
             {
                 var path = new NativeList<int2>(Allocator.Temp);
-                path.Add(new int2(endNode.R, endNode.Fi));
+                path.Add(new int2(endNode.Depth, endNode.FiSegment));
             
                 var currentNode = endNode;
 
                 while (currentNode.CameFromNodeIndex != -1)
                 {
                     var cameFromNode = pathNodeArray[currentNode.CameFromNodeIndex];
-                    path.Add(new int2(cameFromNode.R, cameFromNode.Fi));
+                    path.Add(new int2(cameFromNode.Depth, cameFromNode.FiSegment));
                     currentNode = cameFromNode;
                 }
                 
@@ -235,8 +283,8 @@ namespace _Scripts._Game.Grid.Pathfinders
 
     public struct PathNode
     {
-        public int R;
-        public int Fi;
+        public int Depth;
+        public int FiSegment;
 
         public int Index;
 

@@ -1,5 +1,8 @@
-﻿using Unity.Burst;
+﻿using _Scripts._Game.DOTS.Components.Buffers;
+
+using Unity.Burst;
 using Unity.Collections;
+using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
@@ -7,7 +10,7 @@ using UnityEngine;
 
 namespace _Scripts._Game.Grid.Pathfinders
 {
-    [BurstCompile]
+    //[BurstCompile]
     public struct FindPathJob : IJob
     {
         private const int MoveStraightCost = 10;
@@ -16,30 +19,35 @@ namespace _Scripts._Game.Grid.Pathfinders
         public int2 StartPosition;
         public int2 EndPosition;
         public int2 GridSize;
+        
+        //public DynamicBuffer<Waypoint> PathPositionBuffer;
+        public NativeList<int2> PathPositionIndexList;
 
         public void Execute()
         {
             var pathNodeArray = new NativeArray<PathNode>(GridSize.x * GridSize.y, Allocator.Temp);
             var frontierList = new NativeList<int>(Allocator.Temp);
             var closedList = new NativeList<int>(Allocator.Temp);
+            
             var neighbourOffsetArray = new NativeArray<int2>(4, Allocator.Temp);
             neighbourOffsetArray[0] = new int2(-1, 0);
-            neighbourOffsetArray[0] = new int2(+1, 0);
-            neighbourOffsetArray[0] = new int2(0, +1);
-            neighbourOffsetArray[0] = new int2(0, -1);
-
-            for (var r = 0; r < GridSize.x; r++)
+            neighbourOffsetArray[1] = new int2(+1, 0);
+            neighbourOffsetArray[2] = new int2(0, +1);
+            neighbourOffsetArray[3] = new int2(0, -1);            
+            
+            for (var x = 0; x < GridSize.x; x++)
             {
-                for (var fi = 0; fi < GridSize.y; fi++)
+                for (var y = 0; y < GridSize.y; y++)
                 {
                     var pathNode = new PathNode();
 
-                    pathNode.R = r;
-                    pathNode.Fi = fi;
-                    pathNode.Index = CalculateIndex(r, fi, GridSize.x);
+                    pathNode.Depth = x;
+                    pathNode.FiSegment = y;
+                    
+                    pathNode.Index = CalculateIndex(x, y, GridSize.x);
 
                     pathNode.GCost = int.MaxValue;
-                    pathNode.HCost = CalculateDistanceCost(new int2(r, fi), EndPosition);
+                    pathNode.HCost = CalculateDistanceCost(new int2(x, y), EndPosition, GridSize);
                     pathNode.CalculateFCost();
 
                     pathNode.IsWalkable = true;
@@ -50,7 +58,7 @@ namespace _Scripts._Game.Grid.Pathfinders
             }
 
             var endNodeIndex = CalculateIndex(EndPosition.x, EndPosition.y, GridSize.x);
-
+            
             var startNode = pathNodeArray[CalculateIndex(StartPosition.x, StartPosition.y, GridSize.x)];
             startNode.GCost = 0;
             startNode.CalculateFCost();
@@ -86,10 +94,10 @@ namespace _Scripts._Game.Grid.Pathfinders
                 {
                     var neighbourOffset = neighbourOffsetArray[i];
                     var neighbourPosition = new int2(
-                        currentFrontierNode.R + neighbourOffset.x,
-                        currentFrontierNode.Fi + neighbourOffset.y);
+                        currentFrontierNode.Depth + neighbourOffset.x,
+                        currentFrontierNode.FiSegment + neighbourOffset.y);
 
-                    if (!IsPositionInsideGrid(GridSize, neighbourPosition))
+                    if (!IsPositionInsideGrid(neighbourPosition, GridSize))
                     {
                         continue;
                     }
@@ -108,9 +116,13 @@ namespace _Scripts._Game.Grid.Pathfinders
                         continue;
                     }
 
-                    var frontierNodePosition = new int2(currentFrontierNode.R, currentFrontierNode.Fi);
-                    var tentativeGCost = currentFrontierNode.GCost +
-                                         CalculateDistanceCost(frontierNodePosition, neighbourPosition);
+                    var frontierNodePosition = new int2(currentFrontierNode.Depth, currentFrontierNode.FiSegment);
+                    var distanceCost = CalculateDistanceCost(
+                        frontierNodePosition, 
+                        neighbourPosition, 
+                        GridSize.x);
+
+                    var tentativeGCost = currentFrontierNode.GCost + distanceCost;
 
                     if (tentativeGCost >= neighbourNode.GCost)
                     {
@@ -129,23 +141,20 @@ namespace _Scripts._Game.Grid.Pathfinders
                 }
             }
 
+            //PathPositionBuffer.Clear();
+            //PathPositionBuffer.Clear();
             var endNode = pathNodeArray[endNodeIndex];
 
             if (endNode.CameFromNodeIndex == -1)
             {
-                //Debug.Log("Failed to find path");
+                Debug.Log("Failed to find path");
             }
             else
             {
-                var path = CalculatePath(pathNodeArray, endNode);
-                
-                //reverse path using for a for loop
-                for (var i = 0; i < path.Length / 2; i++)
-                {
-                    (path[i], path[path.Length - 1 - i]) = (path[path.Length - 1 - i], path[i]);
-                }
-                
-                path.Dispose();
+                //CalculatePath(pathNodeArray, endNode, PathPositionBuffer);
+
+                Debug.Log("Found path");
+                CalculatePath(pathNodeArray, endNode, PathPositionIndexList);
             }
 
             pathNodeArray.Dispose();
@@ -153,7 +162,47 @@ namespace _Scripts._Game.Grid.Pathfinders
             closedList.Dispose();
             neighbourOffsetArray.Dispose();
         }
+        
+        // private void CalculatePath(NativeArray<PathNode> pathNodeArray, PathNode endNode, DynamicBuffer<Waypoint> pathPositionBuffer)
+        // {
+        //     if (endNode.CameFromNodeIndex == -1)
+        //     {
+        //     }
+        //     else
+        //     {
+        //         //TODO tu jest najebane na pewno 
+        //         pathPositionBuffer.Add(new Waypoint { Position = new float3(endNode.Depth, endNode.FiSegment, 0) });
+        //
+        //         var currentNode = endNode;
+        //
+        //         while (currentNode.CameFromNodeIndex != -1)
+        //         {
+        //             var cameFromNode = pathNodeArray[currentNode.CameFromNodeIndex];
+        //             pathPositionBuffer.Add(new Waypoint { Position = new float3(cameFromNode.Depth, cameFromNode.FiSegment, 0) });
+        //             currentNode = cameFromNode;
+        //         }
+        //     }
+        // }
 
+        private void CalculatePath(NativeArray<PathNode> pathNodeArray, PathNode endNode, NativeList<int2> pathPositionBuffer)
+        {
+            if (endNode.CameFromNodeIndex == -1)
+            {
+            }
+            else
+            {
+                pathPositionBuffer.Add(new int2(endNode.Depth, endNode.FiSegment));
+
+                var currentNode = endNode;
+
+                while (currentNode.CameFromNodeIndex != -1)
+                {
+                    var cameFromNode = pathNodeArray[currentNode.CameFromNodeIndex];
+                    pathPositionBuffer.Add(new int2(cameFromNode.Depth, cameFromNode.FiSegment));
+                    currentNode = cameFromNode;
+                }
+            }
+        }
 
         private NativeList<int2> CalculatePath(NativeArray<PathNode> pathNodeArray, PathNode endNode)
         {
@@ -164,14 +213,14 @@ namespace _Scripts._Game.Grid.Pathfinders
             else
             {
                 var path = new NativeList<int2>(Allocator.Temp);
-                path.Add(new int2(endNode.R, endNode.Fi));
+                path.Add(new int2(endNode.Depth, endNode.FiSegment));
 
                 var currentNode = endNode;
 
                 while (currentNode.CameFromNodeIndex != -1)
                 {
                     var cameFromNode = pathNodeArray[currentNode.CameFromNodeIndex];
-                    path.Add(new int2(cameFromNode.R, cameFromNode.Fi));
+                    path.Add(new int2(cameFromNode.Depth, cameFromNode.FiSegment));
                     currentNode = cameFromNode;
                 }
 
@@ -179,7 +228,7 @@ namespace _Scripts._Game.Grid.Pathfinders
             }
         }
 
-        private static bool IsPositionInsideGrid(int2 gridSize, int2 neighbourNodePosition)
+        private static bool IsPositionInsideGrid(int2 neighbourNodePosition, int2 gridSize)
         {
             return neighbourNodePosition.x >= 0 &&
                    neighbourNodePosition.x < gridSize.x &&
@@ -204,13 +253,30 @@ namespace _Scripts._Game.Grid.Pathfinders
             return currentLowestFCostNode.Index;
         }
 
-        private int CalculateDistanceCost(int2 aPosition, int2 bPosition)
+        private int CalculateDistanceCost(int2 aPosition, int2 bPosition, int2 gridSize)
         {
-            var rDistance = math.abs(aPosition.x - bPosition.x);
-            var fiDistance = math.abs(aPosition.y - bPosition.y);
-            var remaining = math.abs(rDistance - fiDistance);
+            var depthDistance = math.abs(aPosition.x - bPosition.x);
+            
+            var dy = math.abs(aPosition.y - bPosition.y);
+            var fiSegmentDistance = math.min(dy, gridSize.y - dy);
 
-            return MoveStraightCost * remaining; //dodać ewentualnie + MoveDiagonalCost * math.min(rDistance, fiDistance);
+            var remaining = math.abs(depthDistance - fiSegmentDistance);
+            return MoveStraightCost * remaining; 
+        }
+        
+        public static int2 SubtractWithWrapAround(int2 value, int2 subtractValue, int2 maxValue)
+        {
+            var result = value - subtractValue;
+            if (result.x < 0)
+            {
+                result.x += maxValue.x;
+            }
+            if (result.y < 0)
+            {
+                result.y += maxValue.y;
+            }
+
+            return result;
         }
 
         private int CalculateIndex(int r, int fi, int gridSize)
