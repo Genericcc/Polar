@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace _Scripts._Game.Grid.Pathfinders
 {
-    //[BurstCompile]
+    [BurstCompile]
     public struct FindPathJob : IJob
     {
         private const int MoveStraightCost = 10;

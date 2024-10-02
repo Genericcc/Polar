@@ -17,5 +17,5 @@ MonoBehaviour:
   structurePrefab: {fileID: -444254655743458548, guid: 64564e3ae48f5b6439fcb7bbb75e64dd,
     type: 3}
   structureSizeType: 0
-  inhabitants: 1
+  inhabitants: 0
   resourceCost: []

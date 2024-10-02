@@ -17,7 +17,7 @@ MonoBehaviour:
   structurePrefab: {fileID: 44744930449161189, guid: 812123a1782e7f14db4600a353f2da49,
     type: 3}
   structureSizeType: 3
-  inhabitants: 10
+  inhabitants: 15
   resourceCost: []
   workersAmount:
     resourceType: 0
