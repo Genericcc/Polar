@@ -1,0 +1,47 @@
+
+#pragma kernel CSMain
+
+struct Node
+{
+    float3 position;
+    float4 color;
+    float radius;
+};
+
+RWStructuredBuffer<Node> nodeBuffer;
+RWTexture2D<float4> Result;
+uint width;
+uint height;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // Check if we're within texture bounds
+    if (id.x >= width || id.y >= height)
+        return;
+
+    // Set default color to black
+    Result[id.xy] = float4(0, 0, 0, 1);
+
+    // Get number of nodes
+    uint numNodes;
+    uint stride;
+    nodeBuffer.GetDimensions(numNodes, stride);
+
+    // Check each node
+    for (uint i = 0; i < numNodes; i++)
+    {
+        Node node = nodeBuffer[i];
+        
+        // Calculate distance from current pixel to node position
+        float2 pixelPos = float2(id.x, id.y);
+        float2 nodePos = node.position.xy;
+        float distance = length(pixelPos - nodePos);
+
+        // If within radius, set to white
+        if (distance <= node.radius)
+        {
+            Result[id.xy] = node.color;
+        }
+    }
+}
