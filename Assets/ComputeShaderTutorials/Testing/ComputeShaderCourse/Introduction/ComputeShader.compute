@@ -1,0 +1,68 @@
+
+#pragma kernel red
+#pragma kernel yellow
+#pragma kernel splitIn4
+#pragma kernel circle
+#pragma kernel square
+
+RWTexture2D<float4> result;
+
+uint width;
+uint height;
+uint radius;
+
+float in_circle(float2 id_point, float radius)
+{
+    return length(id_point) < radius ? 1 : 0;
+}
+
+float in_square(float2 id_point, float sideDistance)
+{
+    return id_point.x < sideDistance && -id_point.x < sideDistance
+            && id_point.y < sideDistance && -id_point.y < sideDistance
+    ? 1 : 0;
+}
+
+[numthreads(8,8,1)]
+void red (uint3 id : SV_DispatchThreadID)
+{
+    result[id.xy] = float4(1, 0, 0, 0);
+}
+
+[numthreads(8,8,1)]
+void yellow (uint3 id : SV_DispatchThreadID)
+{
+    result[id.xy] = float4(1, 1, 0, 0);
+}
+
+[numthreads(8,8,1)]
+void splitIn4 (uint3 id : SV_DispatchThreadID)
+{
+    // >> 1 means shifting by one bit to the right making '1000' a '0100', which is dividing by 2
+    int x_value = id.x < (width >> 1) ? 0 : 1;
+    int y_value = id.y < (height >> 1) ? 0 : 1;
+    
+    result[id.xy] = float4(x_value, y_value, 0, 0);
+}
+
+[numthreads(8,8,1)]
+void circle (uint3 id : SV_DispatchThreadID)
+{
+    float2 circle_centre_vector = float2(width / 2 - radius, height / 2 - radius);
+    float2 current_vector = id.xy - circle_centre_vector;
+
+    bool isColored = in_circle(current_vector, radius);
+    
+    result[id.xy] = float4(0, isColored, 0, 0);
+}
+
+[numthreads(8,8,1)]
+void square (uint3 id : SV_DispatchThreadID)
+{
+    float2 centre_vector = float2(width >> 1, height >> 1);
+    float2 current_vector = id.xy - centre_vector;
+    
+    bool isColored = in_square(current_vector, radius);
+    
+    result[id.xy] = float4(0, 0, isColored, 0);
+}
