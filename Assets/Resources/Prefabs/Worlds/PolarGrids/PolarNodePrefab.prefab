@@ -47,12 +47,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMeshPro: {fileID: 3852925682130365827}
-  meshRenderer: {fileID: 1200824141587544276}
+  meshRenderer: {fileID: 6225093912599156211}
   defaultMaterial:
-  - {fileID: 2100000, guid: d12b5024bcccdf841987e421949bd0b8, type: 2}
+  - {fileID: 2100000, guid: f1e0f9a6281325041870a04a1c68333d, type: 2}
   highlightMaterials:
-  - {fileID: 2100000, guid: d12b5024bcccdf841987e421949bd0b8, type: 2}
-  - {fileID: 2100000, guid: e124a2a935fdd594ba8e0a4fa1a97b6e, type: 2}
+  - {fileID: 2100000, guid: be51b00d4c611fd4787075ab34eae13a, type: 2}
 --- !u!1 &6193815021839173402
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,6 +106,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -195,15 +197,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -316,6 +320,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -374,6 +381,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Anchor
+      objectReference: {fileID: 0}
+    - target: {fileID: 160861262097193753, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
         type: 3}
@@ -445,6 +457,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6179669023579594320, guid: b65f05c9d95768841830513f1a6e6a0d,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f1e0f9a6281325041870a04a1c68333d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -453,6 +470,12 @@ PrefabInstance:
 --- !u!4 &1417983711302656901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1156529543883073574, guid: b65f05c9d95768841830513f1a6e6a0d,
+    type: 3}
+  m_PrefabInstance: {fileID: 261597808641510307}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6225093912599156211 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6179669023579594320, guid: b65f05c9d95768841830513f1a6e6a0d,
     type: 3}
   m_PrefabInstance: {fileID: 261597808641510307}
   m_PrefabAsset: {fileID: 0}

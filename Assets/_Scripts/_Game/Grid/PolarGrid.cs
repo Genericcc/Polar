@@ -86,8 +86,7 @@ namespace _Scripts._Game.Grid
             return fields;
         }
 
-        public bool TryGetNodesForBuilding(
-            PolarNode originNode, (int side, int depth) shift, out List<PolarNode> nodesForBuilding)
+        public bool TryGetNodesForBuilding(PolarNode originNode, (int side, int depth) shift, out List<PolarNode> nodesForBuilding)
         {
             nodesForBuilding = new List<PolarNode>();
             var startingPolarPosition = originNode.PolarGridPosition;

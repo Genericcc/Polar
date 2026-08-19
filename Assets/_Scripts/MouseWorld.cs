@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers;
+using _Scripts._Game.Structures.StructuresData;
 using _Scripts._Game.UIs;
 
 using UnityEngine;
@@ -24,13 +25,16 @@ namespace _Scripts
         private Transform mouseMarker;
 
         private InputReader _inputReader;
+        private PolarGridManager _polarGridManager;
+        private List<PolarNode> _currentNodes;
 
         public Vector3 MousePos { get; private set; }
 
         [Inject]
-        public void Construct(InputReader inputReader)
+        public void Construct(InputReader inputReader, PolarGridManager polarGridManager)
         {
             _inputReader = inputReader;
+            _polarGridManager = polarGridManager;
         }
 
         private void Awake()
@@ -57,6 +61,7 @@ namespace _Scripts
             return false;
         }
 
+        // Old debugging that connected mouseMarker to node under the mouse
         // private void OnDrawGizmos()
         // {
         //     if (MousePos == Vector3.zero || CurrentNode == null)
@@ -77,6 +82,23 @@ namespace _Scripts
             
             MousePos = GetPosition();
             mouseMarker.position = MousePos;
+
+            var node = _polarGridManager.GetPolarNode(MousePos);
+            if (node is null)
+            {
+                _currentNodes.ForEach(x => x.Highlight(false));
+                _currentNodes.Clear();
+                return;
+            }
+            
+            _polarGridManager.TryGetNodesForStructure(node, StructureSizeType.Size2X2, out var buildNodes);
+            if (buildNodes.Count > 0)
+            {
+                _currentNodes.ForEach(x => x.Highlight(false));
+                _currentNodes.Clear();
+                _currentNodes.AddRange(buildNodes);
+                _currentNodes.ForEach(x => x.Highlight(true));
+            }
         }
 
         private Vector3 GetPosition()

@@ -69,12 +69,18 @@ namespace _Scripts._Game.Grid
 
             CentrePosition = worldPos;
 
+            name += "_" + ToString();
             textMeshPro.text = ToString();
         }
 
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(CentrePosition, 0.3f);
+        }
+
+        public void Highlight(bool isHighlighted)
+        {
+            meshRenderer.material = isHighlighted ? highlightMaterials[0] : defaultMaterial[0];
         }
 
         public void SetBuilding(IStructureData structureData)

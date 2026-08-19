@@ -34,8 +34,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _mouseWorld = mouseWorld;
         }
 
-        public IEnumerator _WaitForInput(
-            InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
+        public IEnumerator _WaitForInput(InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
         {
             while (true)
             {
