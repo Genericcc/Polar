@@ -24,9 +24,10 @@ namespace _Scripts
         [SerializeField]
         private Transform mouseMarker;
 
+        private readonly List<PolarNode> _currentNodes = new();
+        
         private InputReader _inputReader;
         private PolarGridManager _polarGridManager;
-        private List<PolarNode> _currentNodes;
 
         public Vector3 MousePos { get; private set; }
 

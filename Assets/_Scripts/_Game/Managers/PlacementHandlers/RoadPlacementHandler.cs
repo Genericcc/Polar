@@ -37,21 +37,20 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _pathfinder = pathfinder;
         }
 
-        public IEnumerator _WaitForInput(
-            InputReader inputReader, IStructureData structureData, IPlacementValidator roadValidator)
+        public IEnumerator _WaitForInput(InputReader inputReader, IStructureData structureData, IPlacementValidator roadValidator)
         {
-            var anchorNodes = new List<PolarNode>();
-
+            //End is useless now, but kept to avoid typing...
+            (PolarNode start, PolarNode end) anchorNodes = new (null, null);
+                
             while (true)
             {
                 yield return 0f;
-
+                
                 if (inputReader.WasCancelPressed)
                 {
-                    if (anchorNodes.Count == 1)
+                    if (anchorNodes.start is not null)
                     {
-                        anchorNodes.Clear();
-
+                        anchorNodes.start = null;
                         continue;
                     }
                     else
@@ -66,79 +65,61 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                 }
 
                 var node = _polarGridManager.GetPolarNode(_mouseWorld.MousePos);
-
-                if (node == null)
+                if (node is null)
                 {
                     continue;
                 }
 
-                if (anchorNodes.Contains(node))
+                if (anchorNodes.start == node)
                 {
                     Debug.Log("Node already selected for road building");
-
-                    continue;
-                }
-
-                // The node is first added to the list as the Validator validates a whole list (check if it's necessary)
-                anchorNodes.Add(node);
-
-                if (!roadValidator.Validate(anchorNodes, structureData))
-                {
-                    //Remove the new node if the list failed to pass validation
-                    anchorNodes.RemoveAt(anchorNodes.Count - 1);
-
-                    continue;
-                }
-
-                if (anchorNodes.Count < 2)
-                {
-                    Debug.Log($"Waiting for inputs... Current count is: startEndNodes.Count");
-
                     continue;
                 }
                 
-                var startNode = anchorNodes.First();
-                var endNode = anchorNodes.Last();
-
-                var path = _pathfinder.FindPath(startNode, endNode).ToArray();
-                
-                for (var i = 0; i < path.Length - 1; i++)
+                if (anchorNodes.start is null)
                 {
-                    var connectedNodes = new List<PolarNode> { path[i], path[i + 1] };
+                    anchorNodes.start = node;
+                    continue;
+                }
                 
-                    var newTransform = GetBuildTransform(connectedNodes, structureData);
+                //If we got here, the node is the end node
+                var path = _pathfinder.FindPath(anchorNodes.start, node);
+                if (!roadValidator.Validate(path, structureData))
+                {
+                    Debug.Log($"Path not valid");
+                    continue;
+                }
                 
-                    _signalBus.Fire(
-                        new RequestStructurePlacementSignal(
-                            new List<PolarNode> { path[i] },
-                            structureData,
-                            newTransform));
+                for (var i = 0; i < path.Count - 1; i++)
+                {
+                    var newTransform = GetRoadTransform(path[i], path[i + 1], structureData);
+                    _signalBus.Fire(new RequestStructurePlacementSignal(new List<PolarNode> { path[i] }, structureData, newTransform));
                 }
 
-                var lastAnchor = path[^1];
-                anchorNodes.Clear();
-                anchorNodes.Add(lastAnchor);
+                //Continue at the road end
+                anchorNodes.start = node;
             }
         }
 
-        public LocalTransform GetBuildTransform(List<PolarNode> polarNodes, IStructureData structureData)
+        public LocalTransform GetRoadTransform(PolarNode backNode, PolarNode frontNode, IStructureData structureData)
         {
-            var newPos = new Vector3();
-
-            foreach (var polarNode in polarNodes)
+            var newPos = new Vector3
             {
-                newPos.x += polarNode.WorldPosition.x;
-                newPos.z += polarNode.WorldPosition.z;
+                x = backNode.WorldPosition.x + frontNode.WorldPosition.x,
+                y = backNode.CentrePosition.y + frontNode.CentrePosition.y,
+                z = backNode.WorldPosition.z + frontNode.WorldPosition.z
+            };
+            newPos *= 0.5f;
+
+            var rotation = Quaternion.LookRotation(newPos - new Vector3(0, newPos.y, 0));
+            if (backNode.PolarGridPosition.D != frontNode.PolarGridPosition.D)
+            {
+                rotation *= Quaternion.AngleAxis(90, Vector3.up);
             }
-
-            //newPos = new Vector3(newPos.x / polarNodes.Count, newPos.y / polarNodes.Count, newPos.z / polarNodes.Count);
-            newPos *= 1f / polarNodes.Count;
-
-            newPos.y = polarNodes[0].CentrePosition.y;
 
             var buildTransform = LocalTransform.FromPositionRotationScale(
                 math.float3(newPos),
-                Quaternion.LookRotation(newPos - new Vector3(0, newPos.y, 0)),
+                rotation,
                 structureData.Scale);
 
             return buildTransform;

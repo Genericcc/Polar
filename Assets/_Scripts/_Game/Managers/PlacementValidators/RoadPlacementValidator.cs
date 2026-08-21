@@ -15,18 +15,12 @@ namespace _Scripts._Game.Managers.PlacementValidators
         
         public bool Validate(List<PolarNode> nodes, IStructureData structureData)
         {
-            return CanBuildOnNodes(nodes);
+            return CanConnectNodes(nodes);
         }
 
-        private bool CanBuildOnNodes(IEnumerable<PolarNode> nodes)
+        private bool CanConnectNodes(IEnumerable<PolarNode> nodes)
         {
-            //Check if any node repeats (groups by nodes and checks their count)
-            if (nodes.GroupBy(x => x).All(g => g.Count() <= 1))
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
     }
 }

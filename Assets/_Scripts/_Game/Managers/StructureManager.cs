@@ -77,15 +77,10 @@ namespace _Scripts._Game.Managers
 
         public void OnRequestBuildingPlacementSignal(RequestStructurePlacementSignal requestStructurePlacementSignal)
         {
-            ConstructBuilding(
-                requestStructurePlacementSignal.Nodes, 
-                requestStructurePlacementSignal.StructureData,
-                requestStructurePlacementSignal.LocalTransform
-                );
+            ConstructBuilding(requestStructurePlacementSignal.Nodes, requestStructurePlacementSignal.StructureData, requestStructurePlacementSignal.LocalTransform);
         }
 
-        private void ConstructBuilding(
-            List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
+        private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
         {
             if (structureData.StructureType != StructureType.Road)
             {
