@@ -1,8 +1,4 @@
-﻿using System;
-
-using _Scripts.Zenject.Installers;
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 

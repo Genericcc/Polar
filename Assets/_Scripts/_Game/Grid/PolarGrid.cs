@@ -28,31 +28,31 @@ namespace _Scripts._Game.Grid
         public void PopulateGrid(PolarNodeFactory polarNodeFactory, RingFactory ringFactory)
         {
             var endDistanceToWorldOrigin = 0f;
+            var segmentsInPlay = Math.Min(_polarGridRingsSettings.ringSettingsList.Count, _polarGridRingsSettings.segmentsInGame);
 
-            for (var ringIndex = 0; ringIndex < _polarGridRingsSettings.ringSettingsList.Count; ringIndex++)
+            for (var ringIndex = 0; ringIndex < segmentsInPlay; ringIndex++)
             {
-                var ring = ringFactory.Create(ringIndex);
-                
+                var ring = ringFactory.Create(ringIndex, _polarGridRingsSettings.ringSettingsList[ringIndex]);
+
                 var startDistanceToWorldOrigin = endDistanceToWorldOrigin;
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
-                
                 ring.SetBounds((startDistanceToWorldOrigin, endDistanceToWorldOrigin));
-                ring.CreateMesh(50, ring.RingSettings.material);
-                ring.PopulateWithNodes(polarNodeFactory);
                 
-                GridNodes.AddRange(ring.Nodes);
+                ring.CreateMesh(50, ring.RingSettings.material);
                 
                 Rings.Add(ring);
+                ring.PopulateWithNodes(polarNodeFactory);
+                GridNodes.AddRange(ring.Nodes);
             }
         }
 
         public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition)
         {
-            var previousFieldsCount = GetSumOfPreviousFields(polarGridPosition.ParentRingIndex);
-            
-            var x = (polarGridPosition.D + previousFieldsCount) * _columnHeight * Mathf.Cos(-polarGridPosition.Fi * Mathf.Deg2Rad);
+            var radius = Rings[polarGridPosition.ParentRingIndex].Bounds.min + polarGridPosition.D * _columnHeight;
+
+            var x = radius * Mathf.Cos(-polarGridPosition.Fi * Mathf.Deg2Rad);
             var y = polarGridPosition.H;
-            var z = (polarGridPosition.D + previousFieldsCount) * _columnHeight * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
+            var z = radius * Mathf.Sin(-polarGridPosition.Fi * Mathf.Deg2Rad);
 
             return new Vector3(x, y, z);
         }
@@ -64,26 +64,6 @@ namespace _Scripts._Game.Grid
             var z = purePolar.Radius * Mathf.Sin(-purePolar.Fi * Mathf.Deg2Rad);
 
             return new Vector3(x, y, z);
-        }
-
-        private int GetSumOfPreviousFields(int ringIndex)
-        {
-            var fields = 0;
-
-            if (ringIndex == 0)
-            {
-                return 0;
-            }
-            
-            for (var r = 1; r < _polarGridRingsSettings.ringSettingsList.Count; r++)
-            {
-                if (r <= ringIndex)
-                {
-                    fields += _polarGridRingsSettings.ringSettingsList[r - 1].depth;
-                }
-            }
-            
-            return fields;
         }
 
         public bool TryGetNodesForBuilding(PolarNode originNode, (int side, int depth) shift, out List<PolarNode> nodesForBuilding)

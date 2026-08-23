@@ -26,7 +26,7 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
             
-            Container.BindFactory<int, Ring, RingFactory>()
+            Container.BindFactory<int, RingSettings, Ring, RingFactory>()
                      .FromFactory<CustomRingFactory>();
             Container.Bind<Ring>()
                      .FromResource("Prefabs/Worlds/PolarGrids/RingPlanePrefab")
