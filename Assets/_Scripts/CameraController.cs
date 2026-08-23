@@ -1,6 +1,6 @@
 using _Scripts._Game.Managers;
 
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 using Zenject;
@@ -28,11 +28,11 @@ namespace _Scripts
         private float zoomSpeed = 5f;
 
         [SerializeField] 
-        private CinemachineVirtualCamera cinemachineVirtualCamera;
-        
+        private CinemachineCamera cinemachineCamera;
+
         private InputReader _inputReader;
 
-        private CinemachineTransposer _cinemachineTransposer;
+        private CinemachineFollow _cinemachineFollow;
         private Vector3 _targetFollowOffset;
 
         [Inject]
@@ -43,8 +43,8 @@ namespace _Scripts
 
         private void Start()
         {
-            _cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-            _targetFollowOffset = _cinemachineTransposer.m_FollowOffset;
+            _cinemachineFollow = cinemachineCamera.GetComponent<CinemachineFollow>();
+            _targetFollowOffset = _cinemachineFollow.FollowOffset;
             
             _inputReader.EnablePlayerActions();
         }
@@ -93,8 +93,8 @@ namespace _Scripts
 
             _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y, minFollowYOffset, maxFollowYOffset);
 
-            _cinemachineTransposer.m_FollowOffset =
-                Vector3.Lerp(_cinemachineTransposer.m_FollowOffset, _targetFollowOffset, Time.deltaTime * zoomSpeed);
+            _cinemachineFollow.FollowOffset =
+                Vector3.Lerp(_cinemachineFollow.FollowOffset, _targetFollowOffset, Time.deltaTime * zoomSpeed);
         }
 
     }

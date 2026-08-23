@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Unity **6000.0.25f1** (URP) city-builder prototype built on a **polar (ring/segment) grid** instead of a square grid. Hybrid architecture: MonoBehaviour + Zenject for input/grid/placement logic, Unity DOTS (Entities 1.3.2) for spawning, rendering and agent movement.
+Unity **6000.3.21f1** (URP) city-builder prototype built on a **polar (ring/segment) grid** instead of a square grid. Hybrid architecture: MonoBehaviour + Zenject for input/grid/placement logic, Unity DOTS (Entities 1.4.8) for spawning, rendering and agent movement.
 
 All first-party code lives in `Assets/_Scripts`. Everything under `Assets/Plugins`, `Assets/ThirdParties`, `Assets/Samples`, `Assets/ComputeShaderTutorials` is vendored third-party or scratch material — don't refactor it.
 
@@ -15,10 +15,10 @@ There is no test suite, lint config, or CI in this repo. Development happens in 
 Headless compile check (only works when the Editor does **not** have the project open — it holds a lock on the project):
 
 ```powershell
-& "C:\Program Files\Unity\Hub\Editor\6000.0.25f1\Editor\Unity.exe" -quit -batchmode -nographics -projectPath . -logFile -
+& "C:\Program Files\Unity\Hub\Editor\6000.3.21f1\Editor\Unity.exe" -quit -batchmode -nographics -projectPath . -logFile -
 ```
 
-Note that three Editor versions are installed side by side; always pin `6000.0.25f1`. Generated `.csproj`/`.sln` files at the repo root are gitignored artifacts — never hand-edit them.
+Note that three Editor versions are installed side by side; always pin `6000.3.21f1`. Generated `.csproj`/`.sln` files at the repo root are gitignored artifacts — never hand-edit them.
 
 `Assets/Scenes/GameScene.unity` is the only scene in build settings. `Assets/Scenes/GameScene/EntitiesSubScene.unity` (baked entity prefabs and configs) and `Singletons.unity` are loaded as sub-scenes from it.
 
