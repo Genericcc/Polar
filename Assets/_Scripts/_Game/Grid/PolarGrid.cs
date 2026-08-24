@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using _Scripts._Game.Grid.PolarGridUnmanageds;
 using _Scripts.Extensions;
-
+using Unity.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace _Scripts._Game.Grid
@@ -13,26 +14,30 @@ namespace _Scripts._Game.Grid
         public readonly List<PolarNode> GridNodes;
         public readonly List<Ring> Rings;
 
-        private readonly PolarGridRingsSettings _polarGridRingsSettings;
+        public TheGrid TheGrid;
+        //public PolarGridPosition[] GridNodesArray;
+
+        private readonly PolarGridRingsSettings _gridSettings;
         private readonly float _columnHeight;
 
-        public PolarGrid(PolarGridRingsSettings polarGridRingsSettings, float columnHeight)
+        public PolarGrid(PolarGridRingsSettings gridSettings, float columnHeight)
         {
             GridNodes = new List <PolarNode>();
             Rings = new List<Ring>();
             
-            _polarGridRingsSettings = polarGridRingsSettings;
+            _gridSettings = gridSettings;
             _columnHeight = columnHeight;
         }
 
         public void PopulateGrid(PolarNodeFactory polarNodeFactory, RingFactory ringFactory)
         {
             var endDistanceToWorldOrigin = 0f;
-            var segmentsInPlay = Math.Min(_polarGridRingsSettings.ringSettingsList.Count, _polarGridRingsSettings.segmentsInGame);
+            var segmentsInPlay = Math.Min(_gridSettings.ringSettingsList.Count, _gridSettings.segmentsInGame);
+            var rings = new NativeList<RingData>(Allocator.Persistent);
 
             for (var ringIndex = 0; ringIndex < segmentsInPlay; ringIndex++)
             {
-                var ring = ringFactory.Create(ringIndex, _polarGridRingsSettings.ringSettingsList[ringIndex]);
+                var ring = ringFactory.Create(ringIndex, _gridSettings.ringSettingsList[ringIndex]);
 
                 var startDistanceToWorldOrigin = endDistanceToWorldOrigin;
                 endDistanceToWorldOrigin += ring.RingSettings.depth * _columnHeight;
@@ -43,7 +48,37 @@ namespace _Scripts._Game.Grid
                 Rings.Add(ring);
                 ring.PopulateWithNodes(polarNodeFactory);
                 GridNodes.AddRange(ring.Nodes);
+                
+                
+                //Create Model for Nodes
+                var nodes = new NativeList<PolarNodeData>(Allocator.Persistent);
+                foreach (var node in ring.Nodes)
+                {
+                    nodes.Add(new PolarNodeData
+                    {
+                        Index = -1,
+                        Coords = node.PolarGridPosition
+                    });
+                }
+
+                //Create Model for Rings, passing on Nodes
+                var ringSettings = _gridSettings.ringSettingsList[ringIndex];
+                rings.Add(new RingData
+                {
+                    Fi = ringSettings.fi,
+                    Depth = ringSettings.depth,
+                    GridSize = ringSettings.depth * 360/ringSettings.fi,
+                    Bounds = new float2(startDistanceToWorldOrigin, endDistanceToWorldOrigin),
+                    Index = ringIndex,
+                    Nodes = nodes
+                });
             }
+
+            TheGrid = new TheGrid
+            {
+                Rings = rings, 
+                GridNodeDepth = _columnHeight
+            };
         }
 
         public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition)
