@@ -21,7 +21,7 @@ namespace _Scripts._Game.Grid.Pathfinders
         public int2 GridSize;
         
         //public DynamicBuffer<Waypoint> PathPositionBuffer;
-        public NativeList<int2> PathPositionIndexList;
+        public NativeList<int2> PathNodes;
 
         public void Execute()
         {
@@ -154,7 +154,7 @@ namespace _Scripts._Game.Grid.Pathfinders
                 //CalculatePath(pathNodeArray, endNode, PathPositionBuffer);
 
                 Debug.Log("Found path");
-                CalculatePath(pathNodeArray, endNode, PathPositionIndexList);
+                CalculatePath(pathNodeArray, endNode, PathNodes);
             }
 
             pathNodeArray.Dispose();
@@ -184,21 +184,21 @@ namespace _Scripts._Game.Grid.Pathfinders
         //     }
         // }
 
-        private void CalculatePath(NativeArray<PathNode> pathNodeArray, PathNode endNode, NativeList<int2> pathPositionBuffer)
+        private void CalculatePath(NativeArray<PathNode> pathNodeArray, PathNode endNode, NativeList<int2> pathNodes)
         {
             if (endNode.CameFromNodeIndex == -1)
             {
             }
             else
             {
-                pathPositionBuffer.Add(new int2(endNode.Depth, endNode.FiSegment));
+                pathNodes.Add(new int2(endNode.Depth, endNode.FiSegment));
 
                 var currentNode = endNode;
 
                 while (currentNode.CameFromNodeIndex != -1)
                 {
                     var cameFromNode = pathNodeArray[currentNode.CameFromNodeIndex];
-                    pathPositionBuffer.Add(new int2(cameFromNode.Depth, cameFromNode.FiSegment));
+                    pathNodes.Add(new int2(cameFromNode.Depth, cameFromNode.FiSegment));
                     currentNode = cameFromNode;
                 }
             }
@@ -258,9 +258,9 @@ namespace _Scripts._Game.Grid.Pathfinders
             var depthDistance = math.abs(aPosition.x - bPosition.x);
             
             var dy = math.abs(aPosition.y - bPosition.y);
-            var fiSegmentDistance = math.min(dy, gridSize.y - dy);
+            //var fiSegmentDistance = math.min(dy, gridSize.y - dy);
 
-            var remaining = math.abs(depthDistance - fiSegmentDistance);
+            var remaining = math.abs(depthDistance + dy);
             return MoveStraightCost * remaining; 
         }
         

@@ -1,4 +1,7 @@
+
+
 using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 
 namespace _Scripts._Game.Grid.PolarGridUnmanageds
@@ -37,5 +40,8 @@ namespace _Scripts._Game.Grid.PolarGridUnmanageds
         public PolarGridPosition Coords;
     }
 
-
+    public struct TheGridEntity : IComponentData
+    {
+        public TheGrid Grid;
+    }
 }

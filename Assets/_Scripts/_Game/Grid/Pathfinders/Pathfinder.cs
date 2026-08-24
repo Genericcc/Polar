@@ -17,43 +17,44 @@ namespace _Scripts._Game.Grid.Pathfinders
         private const int MoveStraightCost = 10;
         private const int MoveDiagonalCost = 14;
         
-        private readonly PolarGridManager _polarGrid;
+        private readonly PolarGridManager _gridManager;
         
-        public Pathfinder (PolarGridManager polarGrid)
+        public Pathfinder(PolarGridManager gridManager)
         {
-            _polarGrid = polarGrid;
+            _gridManager = gridManager;
         }
         
         public List<PolarNode> FindPath(PolarNode startNode, PolarNode endNode)
         {
-            var result = new List<PolarNode>();
+            //1.Convert PolarNodes to int2 coordinates to calculate a path on one ring
             var startPos = CalculateEntityNodePosition(startNode, startNode.ParentRing.RingSettings.fi);
             var endPos = CalculateEntityNodePosition(endNode, startNode.ParentRing.RingSettings.fi);
-            var gridSize = new int2(
-                startNode.ParentRing.RingSettings.depth, 
-                360 / startNode.ParentRing.RingSettings.fi);
-            var pathPositionBuffer = new NativeList<int2>(Allocator.TempJob);
-
+            var ringGridSize = new int2(startNode.ParentRing.RingSettings.depth, 360 / startNode.ParentRing.RingSettings.fi);
+            var pathNodes = new NativeList<int2>(Allocator.TempJob);
+            
+            //2.Calculate path 
             var findPathJob = new FindPathJob
             {
                 StartPosition = startPos,
                 EndPosition = endPos,
-                GridSize = gridSize,
-                PathPositionIndexList = pathPositionBuffer,
+                GridSize = ringGridSize,
+                PathNodes = pathNodes,
             };
-
+            
             // var jobHandle = findPathJob.Schedule();
             // jobHandle.Complete();
-            
             findPathJob.Run();
 
-            foreach (var pathPosition in pathPositionBuffer)
+            //3.Convert path positions to PolarNodes
+            var result = new List<PolarNode>();
+            
+            foreach (var pathPosition in pathNodes)
             {
                 var polarNode = CalculatePolarNode(pathPosition, startNode.ParentRing);
                 result.Add(polarNode);
             }
 
-            pathPositionBuffer.Dispose();
+            pathNodes.Dispose();
             return result;
         }
 
@@ -73,7 +74,7 @@ namespace _Scripts._Game.Grid.Pathfinders
                 position.y * parentRing.RingSettings.fi,
                 parentRing.RingSettings.height);
 
-            return _polarGrid.GetPolarNode(polarGridPosition);
+            return _gridManager.GetPolarNode(polarGridPosition);
         }
 
         public void FindPath(int2 startPosition, int2 endPosition, int2 gridSize, int ringFi)

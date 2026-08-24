@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using _Scripts._Game.Grid;
+using Unity.Entities;
 using Unity.Transforms;
 
 namespace _Scripts._Game.DOTS.Components.Buffers
@@ -7,5 +8,6 @@ namespace _Scripts._Game.DOTS.Components.Buffers
     {
         public int PeopleAmount;
         public LocalTransform SpawnTransform;
+        public PolarGridPosition SpawnCoordinates;
     }
 }

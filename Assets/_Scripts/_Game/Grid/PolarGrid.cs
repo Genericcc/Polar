@@ -4,6 +4,7 @@ using System.Linq;
 using _Scripts._Game.Grid.PolarGridUnmanageds;
 using _Scripts.Extensions;
 using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -79,6 +80,10 @@ namespace _Scripts._Game.Grid
                 Rings = rings, 
                 GridNodeDepth = _columnHeight
             };
+            
+            var entity = World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntity();
+            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(entity, new TheGridEntity { Grid = TheGrid } );
+
         }
 
         public Vector3 GetWorldFromPolar(PolarGridPosition polarGridPosition)

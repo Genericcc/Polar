@@ -60,7 +60,8 @@ namespace _Scripts._Game.DOTS.Systems.People
                     
                     ecb.SetComponent(entity, new HomeData
                     {
-                        Position = spawnOrders[i].SpawnTransform.Position
+                        Position = spawnOrders[i].SpawnTransform.Position,
+                        HomeCoordinates = spawnOrders[i].SpawnCoordinates,
                     });
                     
                     //TODO add Tag WorkplaceStructure and then add work from there
@@ -70,10 +71,13 @@ namespace _Scripts._Game.DOTS.Systems.People
                         Position = structureWaypoints[index].Position,
                     });
                     
+                    //Adding PathfindingParams tags this entity for pathfinding, could be placed elsewhere?
                     ecb.SetComponent(entity, new PathfindingParams
                     {
                         StartPosition = spawnOrders[i].SpawnTransform.Position,
                         EndPosition = structureWaypoints[index].Position,
+                        StartCoords = spawnOrders[i].SpawnCoordinates,
+                        EndCoords = structureWaypoints[index].StructureCoordinates,
                     });
                 }
             }

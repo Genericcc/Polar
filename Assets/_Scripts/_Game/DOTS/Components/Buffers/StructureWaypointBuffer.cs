@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using _Scripts._Game.Grid;
+using Unity.Entities;
 using Unity.Mathematics;
 
 namespace _Scripts._Game.DOTS.Components.Buffers
@@ -6,5 +7,6 @@ namespace _Scripts._Game.DOTS.Components.Buffers
     public struct StructureWaypointBuffer : IBufferElementData
     {
         public float3 Position;
+        public PolarGridPosition StructureCoordinates;
     }
 }

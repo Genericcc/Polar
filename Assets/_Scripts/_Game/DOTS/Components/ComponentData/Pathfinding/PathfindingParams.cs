@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using _Scripts._Game.Grid;
+using Unity.Entities;
 using Unity.Mathematics;
 
 namespace _Scripts._Game.DOTS.Components.ComponentData.Pathfinding
@@ -7,5 +8,8 @@ namespace _Scripts._Game.DOTS.Components.ComponentData.Pathfinding
     {
         public float3 StartPosition;
         public float3 EndPosition;
+        
+        public PolarGridPosition StartCoords;
+        public PolarGridPosition EndCoords;
     }
 }
