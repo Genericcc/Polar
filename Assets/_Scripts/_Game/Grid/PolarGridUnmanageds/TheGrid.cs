@@ -9,15 +9,15 @@ namespace _Scripts._Game.Grid.PolarGridUnmanageds
     public struct TheGrid
     {
         public NativeList<RingData> Rings;
-        public float GridNodeDepth;
+        public float SingleGridNodeDepth;
         
         public float3 GetWorldFromPolar(PolarGridPosition polarGridPosition)
         {
-            var radius = Rings[polarGridPosition.ParentRingIndex].Bounds.x + polarGridPosition.D * GridNodeDepth;
+            var radius = Rings[polarGridPosition.ParentRingIndex].Bounds.x + polarGridPosition.D * SingleGridNodeDepth;
             
             math.sincos(math.radians(-polarGridPosition.Fi), out var sin, out var cos);    
             var x = radius * cos;
-            var y = polarGridPosition.H;
+            var y = Rings[polarGridPosition.ParentRingIndex].WorldOrigin.y;
             var z = radius * sin;
 
             return new float3(x, y, z);
@@ -26,12 +26,16 @@ namespace _Scripts._Game.Grid.PolarGridUnmanageds
 
     public struct RingData
     {
-        public NativeList<PolarNodeData> Nodes;
-        public int2 GridSize;
-        public float2 Bounds;
-        public int Fi;
-        public int Depth;
         public int Index;
+        
+        public int FiStep;
+        public int MaxDepth;
+        
+        public int2 GridSize;
+        public float2 Bounds; //World space
+        public float3 WorldOrigin;
+        
+        public NativeList<PolarNodeData> Nodes;
     }
 
     public struct PolarNodeData

@@ -35,7 +35,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             state.RequireForUpdate<StructureManagerTag>();
             //state.RequireForUpdate<SomethingBuiltTag>();
             
-            state.RequireForUpdate<Waypoint>();
+            //state.RequireForUpdate<Waypoint>();
             
             state.RequireForUpdate<TheGridEntity>();
             
@@ -51,19 +51,8 @@ namespace _Scripts._Game.DOTS.Systems.People
             {
                 return;
             }
-
+            
             var gridEntity = SystemAPI.GetSingleton<TheGridEntity>();
-            foreach (var gridRing in gridEntity.Grid.Rings)
-            {
-                foreach (var polarNodeData in gridRing.Nodes)
-                {
-                    Debug.Log(polarNodeData.Coords.ParentRingIndex + ", " + polarNodeData.Coords.D + ", " + polarNodeData.Coords.Fi);
-                }
-            }
-            
-            
-            return;
-            
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
             foreach (var (pathfindingParams, currentPathNodeIndexRW,  waypoints, entity) 
@@ -72,79 +61,55 @@ namespace _Scripts._Game.DOTS.Systems.People
                                  .WithEntityAccess())
             {
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
-                var random = Random.CreateFromIndex(_updateCounter++);
 
-                //If the Person is going somewhere, he doesn't need to find path
-                if (currentTargetPathNodeIndex > 0)
+                //If the Person is going somewhere, he doesn't need to find a new path
+                if (currentTargetPathNodeIndex > -1)
                 {
                     continue;
                 }           
                 
                 //Extract ring data
-                var dFi = -1;
-                int2 gridSize = new(0, 0);
+                var ringFound = false;
+                RingData ringData = default;
                 foreach (var gridRing in gridEntity.Grid.Rings)
                 {
                     if (gridRing.Index == pathfindingParams.ValueRO.StartCoords.ParentRingIndex)
                     {
-                        dFi = gridRing.Fi;
-                        gridSize = gridRing.GridSize;
+                        ringData = gridRing;
+                        ringFound = true;
                     }
                 }
-                if (dFi == -1)
+                if (!ringFound)
                 {
                     continue;
                 }
 
-                var pathNodes = new NativeList<int2>(Allocator.TempJob);
+                var startPosition = CalculateEntityNodePosition(pathfindingParams.ValueRO.StartCoords, ringData.FiStep);
+                var endPosition = CalculateEntityNodePosition(pathfindingParams.ValueRO.EndCoords, ringData.FiStep);
+                
+                var path = new NativeList<int2>(Allocator.TempJob);
                 var findPathJob = new FindPathJob
                 {
-                    StartPosition = CalculateEntityNodePosition(pathfindingParams.ValueRO.StartCoords, dFi),
-                    EndPosition = CalculateEntityNodePosition(pathfindingParams.ValueRO.EndCoords, dFi),
-                    GridSize = gridSize,
-                    PathNodes = pathNodes
+                    StartPosition = startPosition,
+                    EndPosition = endPosition,
+                    GridSize = ringData.GridSize,
+                    PathNodes = path
                 };
                 
-                //TODO verify this CTRL C + V
                 var jobHandle = findPathJob.Schedule();
                 jobHandle.Complete();
                 
-                //copying path nodes from list into waypoints buffer
-                //TODO verify this line
-                currentTargetPathNodeIndex = pathNodes.Length - 1;
+                currentTargetPathNodeIndex = path.Length - 1;
                 
-                foreach (var pathNode in pathNodes)
+                foreach (var pathNode in path)
                 {
-                    //TODO calculate Position from Ring data? 
-                   // waypoints.Add(new Waypoint {Position = pathNode} );
+                    var polarGridPosition = new PolarGridPosition { D = pathNode.x, Fi = pathNode.y, H = ringData.WorldOrigin.y, ParentRingIndex = pathfindingParams.ValueRO.StartCoords.ParentRingIndex};
+                    var nodePosition = gridEntity.Grid.GetWorldFromPolar(polarGridPosition);
+                    waypoints.Add(new Waypoint { Position = nodePosition } );
                 }
                 
-                //Clear pathfinding
+                path.Dispose();
                 //TODO SetDisabled instead of modifying the Entity by Removal
-                ecb.RemoveComponent<PathfindingParams>(entity);
-
-                
-                //----------                
-                //Old approach
-                var posBuffer = new NativeArray<Waypoint>(40, Allocator.Temp);
-                
-                posBuffer[^1] = new Waypoint { Position = pathfindingParams.ValueRO.StartPosition };
-                posBuffer[0] = new Waypoint { Position = pathfindingParams.ValueRO.EndPosition };
-
-                for (var i = posBuffer.Length - 2; i >= 1; i--)
-                {
-                    var randomIndex = random.NextInt(0, structureWaypoints.Length);
-                    var pos = structureWaypoints[randomIndex];
-                    
-                    posBuffer[i] = new Waypoint 
-                    { 
-                        Position = pos.Position
-                    };
-                }
-
-                currentTargetPathNodeIndex = posBuffer.Length - 1;
-                waypoints.AddRange(posBuffer);
-                
                 ecb.RemoveComponent<PathfindingParams>(entity);
             }
         }        

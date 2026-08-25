@@ -5,9 +5,9 @@ namespace _Scripts._Game.Grid
     public struct PolarGridPosition //: IEquatable<PolarGridPosition>
     {
         public int ParentRingIndex;
-        public int D;
-        public int Fi;
-        public float H;
+        public int D; //Depth or radius
+        public int Fi; 
+        public float H; //Height above ground level, assuming some future verticality
 
         public PolarGridPosition(int parentRingIndex, int d, int fi, float h)
         {
@@ -38,7 +38,7 @@ namespace _Scripts._Game.Grid
 
         public override string ToString()
         {
-            return $"R:{ParentRingIndex}; d:{D}; fi:{Fi}; h:{H}";
+            return $"d:{D}, fi:{Fi}";
         }
 
         public static bool operator ==(PolarGridPosition a, PolarGridPosition b)

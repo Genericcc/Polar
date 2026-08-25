@@ -104,6 +104,7 @@ namespace _Scripts._Game.Managers
                   { 
                       PeopleAmount = structureData.Inhabitants,
                       SpawnTransform = localTransform,
+                      SpawnCoordinates = buildingNodes[0].PolarGridPosition,
                   });
             
             _world.EntityManager
@@ -111,6 +112,7 @@ namespace _Scripts._Game.Managers
                   .Add(new StructureWaypointBuffer 
                   { 
                       Position = localTransform.Position,
+                      StructureCoordinates = buildingNodes[0].PolarGridPosition,
                   });
         }
     }

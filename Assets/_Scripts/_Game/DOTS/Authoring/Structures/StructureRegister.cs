@@ -23,7 +23,9 @@ namespace _Scripts._Game.DOTS.Authoring.Structures
                 var structureBuffer = AddBuffer<AvailableStructure>(registerEntity);
                 
                 foreach(var structure in authoring.structures)
-                {
+                { 
+                    DependsOn(structure);
+                    
                     structureBuffer.Add(new AvailableStructure
                     {
                         Prefab = GetEntity(structure.Prefab, TransformUsageFlags.Dynamic),

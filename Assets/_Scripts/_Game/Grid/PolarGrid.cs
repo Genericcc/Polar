@@ -66,10 +66,11 @@ namespace _Scripts._Game.Grid
                 var ringSettings = _gridSettings.ringSettingsList[ringIndex];
                 rings.Add(new RingData
                 {
-                    Fi = ringSettings.fi,
-                    Depth = ringSettings.depth,
+                    FiStep = ringSettings.fi,
+                    MaxDepth = ringSettings.depth,
                     GridSize = ringSettings.depth * 360/ringSettings.fi,
                     Bounds = new float2(startDistanceToWorldOrigin, endDistanceToWorldOrigin),
+                    WorldOrigin = new float3(0, ringSettings.height, 0),
                     Index = ringIndex,
                     Nodes = nodes
                 });
@@ -78,11 +79,12 @@ namespace _Scripts._Game.Grid
             TheGrid = new TheGrid
             {
                 Rings = rings, 
-                GridNodeDepth = _columnHeight
+                SingleGridNodeDepth = _columnHeight
             };
             
-            var entity = World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntity();
-            World.DefaultGameObjectInjectionWorld.EntityManager.AddComponentData(entity, new TheGridEntity { Grid = TheGrid } );
+            var entity = World.DefaultGameObjectInjectionWorld.EntityManager.CreateEntity(typeof(TheGridEntity));
+            World.DefaultGameObjectInjectionWorld.EntityManager.SetComponentData(entity, new TheGridEntity { Grid = TheGrid } );
+            World.DefaultGameObjectInjectionWorld.EntityManager.SetName(entity, "PolarGridEntity");
 
         }
 
@@ -189,7 +191,7 @@ namespace _Scripts._Game.Grid
             return GridNodes.GetRandom();
         }
     }
-
+    
     public struct PurePolarCoords
     {
         public float Radius;

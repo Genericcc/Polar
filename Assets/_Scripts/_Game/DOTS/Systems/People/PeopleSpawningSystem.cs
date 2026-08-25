@@ -71,11 +71,8 @@ namespace _Scripts._Game.DOTS.Systems.People
                         Position = structureWaypoints[index].Position,
                     });
                     
-                    //Adding PathfindingParams tags this entity for pathfinding, could be placed elsewhere?
                     ecb.SetComponent(entity, new PathfindingParams
                     {
-                        StartPosition = spawnOrders[i].SpawnTransform.Position,
-                        EndPosition = structureWaypoints[index].Position,
                         StartCoords = spawnOrders[i].SpawnCoordinates,
                         EndCoords = structureWaypoints[index].StructureCoordinates,
                     });
