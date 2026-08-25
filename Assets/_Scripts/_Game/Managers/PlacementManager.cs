@@ -7,6 +7,7 @@ using _Scripts._Game.Grid;
 using _Scripts._Game.Managers.PlacementHandlers;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
+using _Scripts.Data.Dictionaries;
 using _Scripts.Zenject.Installers;
 using _Scripts.Zenject.Signals;
 
@@ -24,6 +25,7 @@ namespace _Scripts._Game.Managers
     {
         private InputReader _input;
         private SignalBus _signalBus;
+        private StructureDictionary _structureDictionary;
 
         private IPlacementHandler _placementHandler;
         private IPlacementValidator _placementValidator;
@@ -41,10 +43,12 @@ namespace _Scripts._Game.Managers
         [Inject]
         public void Construct(
             SignalBus signalBus,
-            InputReader inputReader)
+            InputReader inputReader,
+            StructureDictionary structureDictionary)
         {
             _signalBus = signalBus;
             _input = inputReader;
+            _structureDictionary = structureDictionary;
         }
 
         //TODO inject factories 
@@ -68,18 +72,18 @@ namespace _Scripts._Game.Managers
 
         public void OnStructureSelectedSignal(StructureSelectedSignal structureSelectedSignal)
         {
-            if (structureSelectedSignal.StructureData == null)
+            var structureData = _structureDictionary.Get(structureSelectedSignal.StructureId);
+            if (structureData == null)
             {
-                throw new Exception("No structureData when tried to select");
+                Debug.LogError($"No structure with id {structureSelectedSignal.StructureId} in the StructureDictionary");
+                return;
             }
 
             if (_coroutine != null)
             {
                 StopCoroutine(_coroutine);
             }
-            
-            var structureData = structureSelectedSignal.StructureData;
-            
+
             var handler = GetPlacementHandler(structureData);
             var validator = GetPlacementValidator(structureData);
             

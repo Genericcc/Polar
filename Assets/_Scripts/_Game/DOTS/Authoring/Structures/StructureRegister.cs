@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-
-using _Scripts._Game.Structures.StructuresData;
-
-using Sirenix.OdinInspector;
+using _Scripts.Data.Dictionaries;
 
 using Unity.Entities;
 
@@ -13,7 +9,7 @@ namespace _Scripts._Game.DOTS.Authoring.Structures
     public class StructureRegister : MonoBehaviour
     {
         [SerializeField]
-        private List<BaseStructureData> structures;
+        private StructureDictionary dictionary;
 
         class Baker : Baker<StructureRegister>
         {
@@ -21,11 +17,31 @@ namespace _Scripts._Game.DOTS.Authoring.Structures
             {
                 var registerEntity = GetEntity(TransformUsageFlags.Dynamic);
                 var structureBuffer = AddBuffer<AvailableStructure>(registerEntity);
-                
-                foreach(var structure in authoring.structures)
-                { 
+
+                if (authoring.dictionary == null)
+                {
+                    return;
+                }
+
+                // Baking only tracks the authoring component's own fields, so every read that
+                // reaches through a reference has to be declared - otherwise the buffer goes stale
+                DependsOn(authoring.dictionary);
+
+                foreach (var structure in authoring.dictionary.structures)
+                {
+                    if (structure == null)
+                    {
+                        continue;
+                    }
+
                     DependsOn(structure);
-                    
+
+                    if (structure.Prefab == null)
+                    {
+                        Debug.LogWarning($"{structure.name} has no prefab assigned, skipping it in the register");
+                        continue;
+                    }
+
                     structureBuffer.Add(new AvailableStructure
                     {
                         Prefab = GetEntity(structure.Prefab, TransformUsageFlags.Dynamic),

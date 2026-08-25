@@ -1,6 +1,6 @@
-﻿using _Scripts._Game.Managers;
-using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Zenject.Installers;
+
+using TMPro;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,9 +12,8 @@ namespace _Scripts._Game.UIs.HUDs.Structures
     [RequireComponent(typeof(Button))]
     public class StructureSelectionButton : BaseView
     {
-        [SerializeField]
-        public BaseStructureData _structureData;
-        
+        private int StructureId { get; set; } = -1;
+
         private Button _button;
         private SignalBus _signalBus;
 
@@ -31,17 +30,32 @@ namespace _Scripts._Game.UIs.HUDs.Structures
                 _button = GetComponent<Button>();
             }
 
-            if (_structureData == null)
+            _button.onClick.AddListener(SelectBuildingData);
+        }
+
+        // Called by StructureSelectionMenu, which owns the StructureDictionary the ids come from
+        public void Initialise(int structureId, string displayName)
+        {
+            StructureId = structureId;
+
+            var label = GetComponentInChildren<TMP_Text>(true);
+            if (label != null)
             {
-                Debug.Log($"Button: {name}, has no building data");
+                label.text = displayName;
             }
 
-            _button.onClick.AddListener(SelectBuildingData);
+            name = $"StructureButton_{displayName}";
         }
 
         private void SelectBuildingData()
         {
-            _signalBus.Fire(new StructureSelectedSignal(_structureData));
+            if (StructureId < 0)
+            {
+                Debug.LogWarning($"Button: {name}, was never initialised with a structure id");
+                return;
+            }
+
+            _signalBus.Fire(new StructureSelectedSignal(StructureId));
         }
     }
 }

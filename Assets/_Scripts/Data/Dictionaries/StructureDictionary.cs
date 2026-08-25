@@ -17,5 +17,10 @@ namespace _Scripts.Data.Dictionaries
         {
             return structures.FirstOrDefault(x => x.StructureType == structureType);
         }
+
+        public BaseStructureData Get(int id)
+        {
+            return structures.FirstOrDefault(x => x != null && x.ID == id);
+        }
     }
 }

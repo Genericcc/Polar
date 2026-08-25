@@ -15,13 +15,13 @@ namespace _Scripts._Game.Structures.StructuresData
     {
         public int id;
         public int ID => id;
-        
+
         [SerializeField]
         private string pathToPrefab;
         
         [SerializeField]
         private Structure structurePrefab;
-        public GameObject Prefab => structurePrefab.gameObject;
+        public GameObject Prefab => structurePrefab != null ? structurePrefab.gameObject : null;
         
         [SerializeField]
         private StructureSizeType structureSizeType;

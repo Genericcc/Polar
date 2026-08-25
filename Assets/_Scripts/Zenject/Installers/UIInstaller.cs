@@ -2,6 +2,8 @@
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts._Game.UIs.HUDs.Structures;
 
+using UnityEngine;
+
 using Zenject;
 
 namespace _Scripts.Zenject.Installers
@@ -14,7 +16,13 @@ namespace _Scripts.Zenject.Installers
                      .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
-            
+
+            Container.BindFactory<BaseStructureData, Transform, StructureSelectionButton, StructureButtonFactory>()
+                     .FromFactory<CustomStructureButtonFactory>();
+            Container.Bind<StructureSelectionButton>()
+                     .FromResource("Prefabs/UIs/StructureButton")
+                     .WhenInjectedInto<CustomStructureButtonFactory>();
+
             Container.DeclareSignal<StructureSelectedSignal>().OptionalSubscriber();
             Container.BindSignal<StructureSelectedSignal>()
                      .ToMethod<PlacementManager>(x => x.OnStructureSelectedSignal)
@@ -29,11 +37,11 @@ namespace _Scripts.Zenject.Installers
 
     public class StructureSelectedSignal
     {
-        public IStructureData StructureData;
+        public int StructureId;
 
-        public StructureSelectedSignal(IStructureData structureData)
+        public StructureSelectedSignal(int structureId)
         {
-            StructureData = structureData;
+            StructureId = structureId;
         }
     }
 
