@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace _Scripts._Game.Grid
 {
-    [CreateAssetMenu(menuName = "Create PolarGridRingsSettings", fileName = "PolarGridRingsSettings", order = 0)]
+    [CreateAssetMenu(
+        menuName = PolarAssetMenu.Root + "Grid/" + nameof(PolarGridRingsSettings),
+        fileName = nameof(PolarGridRingsSettings),
+        order = PolarAssetMenu.Order)]
     [Serializable]
     public class PolarGridRingsSettings : ScriptableObject
     {

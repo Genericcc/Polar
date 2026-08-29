@@ -69,6 +69,7 @@ namespace _Scripts._Game.Structures.StructuresData
         Structure,
         Road,
         Wall,
+        Work
     }
 
     [Serializable]

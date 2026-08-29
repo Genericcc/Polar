@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace _Scripts._Game.Structures.StructuresData
 {
-    [CreateAssetMenu(fileName = "HouseStructureData", menuName = "Structures/StructureData/HouseBuildingData", order = 1)]
+    [CreateAssetMenu(
+        fileName = nameof(HouseStructureData),
+        menuName = PolarAssetMenu.Root + "Structures/StructureData/" + nameof(HouseStructureData),
+        order = PolarAssetMenu.Order)]
     public class HouseStructureData : BaseStructureData
     {
         public override StructureType StructureType => StructureType.Structure;

@@ -24,11 +24,7 @@ namespace _Scripts._Game.UIs.HUDs.Structures
         public StructureSelectionButton Create(BaseStructureData structureData, Transform parent)
         {
             var button = _container.InstantiatePrefabForComponent<StructureSelectionButton>(_prefab);
-
-            // SetParent(parent, false), not the Instantiate(parent) overload - that one keeps the
-            // world position and breaks RectTransform scale/offset under a layout group
             button.transform.SetParent(parent, false);
-
             button.Initialise(structureData.ID, structureData.name);
             return button;
         }

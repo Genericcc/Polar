@@ -7,7 +7,10 @@ using UnityEngine;
 
 namespace _Scripts.Data.Dictionaries
 {
-    [CreateAssetMenu(menuName = "Data/Dictionaries/StructureDictionary", fileName = "StructureDictionary", order = 0)]
+    [CreateAssetMenu(
+        menuName = PolarAssetMenu.Root + "Data/" + nameof(StructureDictionary),
+        fileName = nameof(StructureDictionary),
+        order = PolarAssetMenu.Order)]
     public class StructureDictionary : ScriptableObject
     {
         [SerializeField]
