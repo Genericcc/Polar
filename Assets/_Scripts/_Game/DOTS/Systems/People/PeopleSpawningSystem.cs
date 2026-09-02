@@ -40,8 +40,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             
             var spawnerConfig = SystemAPI.GetSingleton<PeopleSpawnerConfig>();
             var structureWaypoints = SystemAPI.GetSingletonBuffer<StructureWaypointBuffer>();
-            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
-                               .CreateCommandBuffer(state.WorldUnmanaged);
+            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
             var random = Random.CreateFromIndex(_updateCounter++);
 
@@ -58,15 +57,15 @@ namespace _Scripts._Game.DOTS.Systems.People
                         Value = random.NextFloat(spawnerConfig.MinSpeed, spawnerConfig.MaxSpeed)
                     });
                     
-                    ecb.SetComponent(entity, new HomeData
+                    ecb.SetComponent(entity, new HomeLocationData
                     {
                         Position = spawnOrders[i].SpawnTransform.Position,
-                        HomeCoordinates = spawnOrders[i].SpawnCoordinates,
+                        HomeCoords = spawnOrders[i].SpawnCoordinates,
                     });
                     
                     //TODO add Tag WorkplaceStructure and then add work from there
                     var index = random.NextInt(0, structureWaypoints.Length);
-                    ecb.SetComponent(entity, new WorkData
+                    ecb.SetComponent(entity, new JobData
                     {
                         Position = structureWaypoints[index].Position,
                     });

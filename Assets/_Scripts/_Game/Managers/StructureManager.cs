@@ -96,6 +96,8 @@ namespace _Scripts._Game.Managers
                   { 
                       StructureId = structureData.ID,
                       NewTransform = localTransform,
+                      Coords = buildingNodes[0].PolarGridPosition, //TODO change that from 0th element to something wiser
+                      IsWorkplace = structureData.IsWorkplace
                   });
 
             _world.EntityManager
@@ -104,7 +106,7 @@ namespace _Scripts._Game.Managers
                   { 
                       PeopleAmount = structureData.Inhabitants,
                       SpawnTransform = localTransform,
-                      SpawnCoordinates = buildingNodes[0].PolarGridPosition,
+                      SpawnCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
                   });
             
             _world.EntityManager
@@ -112,7 +114,7 @@ namespace _Scripts._Game.Managers
                   .Add(new StructureWaypointBuffer 
                   { 
                       Position = localTransform.Position,
-                      StructureCoordinates = buildingNodes[0].PolarGridPosition,
+                      StructureCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
                   });
         }
     }

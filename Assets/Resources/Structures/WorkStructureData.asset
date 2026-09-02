@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee86cb8265f346be90d05c570bfacfa6, type: 3}
   m_Name: WorkStructureData
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts._Game.Structures.StructuresData.WorkStructureData
-  id: 0
+  id: 10
   pathToPrefab: 
   structurePrefab: {fileID: 0}
   structureSizeType: 0

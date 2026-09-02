@@ -2,6 +2,7 @@
 
 using _Scripts._Game.DOTS.Authoring.Structures;
 using _Scripts._Game.DOTS.Components.Buffers;
+using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.Tags;
 using _Scripts._Game.Managers;
 using _Scripts._Game.Structures;
@@ -33,33 +34,28 @@ namespace _Scripts._Game.DOTS.Systems.Structures
              }
             
             var availableStructures = SystemAPI.GetSingletonBuffer<AvailableStructure>();
-            var ecb = SystemAPI
-                         .GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
-                         .CreateCommandBuffer(state.WorldUnmanaged);
-
-            // foreach (var (availableStructures, placementOrders) 
-            //          in SystemAPI.Query<DynamicBuffer<AvailableStructure>, DynamicBuffer<StructurePlacementOrder>>())
-            // {
-            //     if (placementOrders.Length <= 0)
-            //     {
-            //         return;
-            //     }
-            //     
-            //     var e = ecbBSG.Instantiate(availableStructures[])
-            // }
+            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
 
             for (var i = 0; i < buildOrders.Length; i++)
             {
                 if (TryGetStructure(availableStructures, buildOrders[i].StructureId, out var structure))
                 {
-                    var e = ecb.Instantiate(structure.Prefab);
-                    ecb.SetComponent(e, buildOrders[i].NewTransform);
+                    var entity = ecb.Instantiate(structure.Prefab);
+                    ecb.SetComponent(entity, buildOrders[i].NewTransform);
+                   
+                    if (buildOrders[i].IsWorkplace)
+                    {
+                        ecb.AddComponent(entity, new WorkplaceData
+                        {
+                            Position = buildOrders[i].NewTransform.Position,
+                            ShiftDuration = 10f, //TODO rethink this, or just pass work data from IStructureData?
+                            WorkCoords = buildOrders[i].Coords
+                        });
+                    }
                 }
             }
             
             buildOrders.Clear();
-            
-            //ecb.Playback();
         }
 
         private static bool TryGetStructure(DynamicBuffer<AvailableStructure> availableStructures, 

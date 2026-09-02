@@ -37,6 +37,10 @@ namespace _Scripts._Game.Structures.StructuresData
         private List<ResourceAmount> resourceCost;
         public List<ResourceAmount> Cost => resourceCost;
         
+        [SerializeField]
+        private bool _isWorkplace;
+        public bool IsWorkplace => _isWorkplace;
+        
         public abstract StructureType StructureType { get; }
         
         [OnInspectorInit]
@@ -62,6 +66,7 @@ namespace _Scripts._Game.Structures.StructuresData
         StructureType StructureType { get; }
         StructureSizeType StructureSizeType { get; }
         float Scale { get; }
+        bool IsWorkplace { get; }
     }
 
     public enum StructureType

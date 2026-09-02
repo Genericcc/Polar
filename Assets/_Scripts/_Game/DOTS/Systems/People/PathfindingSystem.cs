@@ -58,6 +58,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             foreach (var (pathfindingParams, currentPathNodeIndexRW,  waypoints, entity) 
                      in SystemAPI.Query<RefRO<PathfindingParams>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>>()
                                  .WithAll<Person>()
+                                 .WithDisabled<IsAtWork>()
                                  .WithEntityAccess())
             {
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
@@ -109,7 +110,6 @@ namespace _Scripts._Game.DOTS.Systems.People
                 }
                 
                 path.Dispose();
-                //TODO SetDisabled instead of modifying the Entity by Removal
                 ecb.RemoveComponent<PathfindingParams>(entity);
             }
         }        

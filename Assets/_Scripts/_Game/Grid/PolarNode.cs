@@ -15,12 +15,10 @@ namespace _Scripts._Game.Grid
     public class PolarNode : MonoBehaviour
     {
         public PolarGridPosition PolarGridPosition { get; private set; }
-
-        public Ring ParentRing { get; set; }
-        
+        public PolarNodeType PolarNodeType { get; private set; }
+        public Ring ParentRing { get; private set; }
         public Vector3 WorldPosition { get; private set; }
-        public Vector3 CentrePosition { get; set; }
-
+        public Vector3 CentrePosition { get; private set; }
         public IStructureData StructureData { get; private set; }
 
         [SerializeField]
@@ -97,5 +95,12 @@ namespace _Scripts._Game.Grid
         {
             return PolarGridPosition.ToString();
         }
+    }
+
+    [Flags]
+    public enum PolarNodeType : byte
+    {
+        Clear,
+        Resource,
     }
 }

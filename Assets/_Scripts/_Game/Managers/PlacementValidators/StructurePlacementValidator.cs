@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using _Scripts._Game.Grid;
@@ -12,20 +13,31 @@ namespace _Scripts._Game.Managers.PlacementValidators
     {
         [Inject]
         private PolarGridManager _polarGridManager;
-        
+
         public bool Validate(List<PolarNode> nodes, IStructureData structureData)
         {
-            return CanBuildOnNodes(nodes);
+            return CanBuildOnNodes(nodes, structureData);
         }
 
-        private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes)
+        private bool CanBuildOnNodes(IEnumerable<PolarNode> buildingNodes, IStructureData structureData)
         {
-            if (buildingNodes.All(x => x.IsFree))
+            if (!buildingNodes.All(x => x.IsFree && IsStructureTypeAllowed(x.PolarNodeType, structureData.StructureType)))
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
+
+        private bool IsStructureTypeAllowed(PolarNodeType polarNodeType, StructureType structureType)
+        {
+            return polarNodeType switch
+            {
+                PolarNodeType.Clear => true,
+                PolarNodeType.Resource when structureType == StructureType.Work => true,
+                _ => false
+            };
+        }
+
     }
 }
