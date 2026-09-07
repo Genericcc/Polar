@@ -17,6 +17,14 @@ namespace _Scripts._Game.Structures.StructuresData
         public int ID => id;
 
         [SerializeField]
+        private string displayName;
+        public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? name : displayName;
+
+        [SerializeField]
+        private Sprite icon;
+        public Sprite Icon => icon;
+
+        [SerializeField]
         private string pathToPrefab;
         
         [SerializeField]
@@ -60,6 +68,8 @@ namespace _Scripts._Game.Structures.StructuresData
     public interface IStructureData
     {
         int ID { get; }
+        string DisplayName { get; }
+        Sprite Icon { get; }
         GameObject Prefab { get; }
         int Inhabitants { get; }
         List<ResourceAmount> Cost { get; }

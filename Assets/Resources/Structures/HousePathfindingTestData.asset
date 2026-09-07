@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: HousePathfindingTestData
   m_EditorClassIdentifier: 
   id: 1
+  displayName: House (Test)
+  icon: {fileID: 0}
   pathToPrefab: Assets/Resources/Prefabs/Worlds/Structures/HouseStructurePrefab.prefab
   structurePrefab: {fileID: 44744930449161189, guid: 812123a1782e7f14db4600a353f2da49,
     type: 3}

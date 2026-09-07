@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="cost-row" class="cost-row">
+        <ui:Label name="cost-row-label" text="" class="cost-row__label" />
+        <ui:Label name="cost-row-value" text="0" class="cost-row__value" />
+    </ui:VisualElement>
+</ui:UXML>

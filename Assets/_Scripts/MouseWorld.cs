@@ -7,7 +7,6 @@ using _Scripts._Game.Structures.StructuresData;
 using _Scripts._Game.UIs;
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 using Zenject;
 
@@ -28,14 +27,16 @@ namespace _Scripts
         
         private InputReader _inputReader;
         private PolarGridManager _polarGridManager;
+        private IPointerOverUiProbe _pointerOverUiProbe;
 
         public Vector3 MousePos { get; private set; }
 
         [Inject]
-        public void Construct(InputReader inputReader, PolarGridManager polarGridManager)
+        public void Construct(InputReader inputReader, PolarGridManager polarGridManager, IPointerOverUiProbe pointerOverUiProbe)
         {
             _inputReader = inputReader;
             _polarGridManager = polarGridManager;
+            _pointerOverUiProbe = pointerOverUiProbe;
         }
 
         private void Awake()
@@ -45,21 +46,7 @@ namespace _Scripts
 
         public bool IsMouseOverUI()
         {
-            var pointerEventData = new PointerEventData(EventSystem.current);
-            pointerEventData.position = Input.mousePosition;
-
-            List<RaycastResult> results = new();
-            EventSystem.current.RaycastAll(pointerEventData, results);
-
-            foreach (var rayResult in results)
-            {
-                if (rayResult.gameObject.GetComponent<UIMarker>() is not null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return _pointerOverUiProbe.IsPointerOverUI(_inputReader.PointerPosition);
         }
 
         // Old debugging that connected mouseMarker to node under the mouse

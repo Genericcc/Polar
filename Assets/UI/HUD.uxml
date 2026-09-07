@@ -1,0 +1,36 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="Styles/Tokens.uss" />
+    <Style src="Styles/HUD.uss" />
+    <Style src="Styles/Components.uss" />
+
+    <ui:VisualElement name="hud-root" class="hud-root">
+
+        <ui:VisualElement name="top-bar" class="top-bar">
+            <ui:VisualElement name="resource-bar" class="resource-bar" />
+            <ui:VisualElement name="population-chip" class="chip">
+                <ui:Label text="Population" class="chip__label" />
+                <ui:Label name="population-value" text="0" class="chip__value" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="placement-status" class="placement-status is-hidden">
+            <ui:Label name="placement-label" text="" class="placement-status__label" />
+            <ui:Button name="placement-cancel" text="Cancel" class="placement-status__cancel" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="structure-info" class="structure-info is-hidden">
+            <ui:VisualElement class="structure-info__header">
+                <ui:Image name="info-icon" class="structure-info__icon" />
+                <ui:Label name="info-name" text="" class="structure-info__name" />
+            </ui:VisualElement>
+            <ui:Label name="info-size" text="" class="structure-info__row" />
+            <ui:Label name="info-inhabitants" text="" class="structure-info__row" />
+            <ui:VisualElement name="info-cost" class="structure-info__cost" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="build-bar" class="build-bar">
+            <ui:VisualElement name="build-bar-items" class="build-bar__items" />
+        </ui:VisualElement>
+
+    </ui:VisualElement>
+</ui:UXML>

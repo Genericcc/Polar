@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:Button name="structure-button" class="structure-button">
+        <ui:Image name="structure-button-icon" class="structure-button__icon" />
+        <ui:Label name="structure-button-label" text="" class="structure-button__label" />
+    </ui:Button>
+</ui:UXML>

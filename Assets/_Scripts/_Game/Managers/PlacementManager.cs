@@ -1,21 +1,13 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
-using _Scripts._Game.DOTS.Components.Buffers;
-using _Scripts._Game.Grid;
 using _Scripts._Game.Managers.PlacementHandlers;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
 using _Scripts.Data.Dictionaries;
 using _Scripts.Zenject.Installers;
-using _Scripts.Zenject.Signals;
-
-using Unity.Entities;
-using Unity.Physics;
 
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 using Zenject;
 
@@ -33,12 +25,15 @@ namespace _Scripts._Game.Managers
         //TODO change into ValidatorFactory
         private StructurePlacementValidator _structurePlacementValidator;
         private RoadPlacementValidator _roadPlacementValidator;
-        
+
         //TODO change into HandlerFactory
         private RoadPlacementHandler _roadPlacementHandler;
         private StructurePlacementHandler _structurePlacementHandler;
-        
+
         private Coroutine _coroutine;
+
+        public event Action<IStructureData> PlacementStarted;
+        public event Action PlacementEnded;
 
         [Inject]
         public void Construct(
@@ -51,7 +46,7 @@ namespace _Scripts._Game.Managers
             _structureDictionary = structureDictionary;
         }
 
-        //TODO inject factories 
+        //TODO inject factories
         [Inject]
         public void InjectInterfaces(
             StructurePlacementHandler structurePlacementHandler,
@@ -79,16 +74,39 @@ namespace _Scripts._Game.Managers
                 return;
             }
 
-            if (_coroutine != null)
-            {
-                StopCoroutine(_coroutine);
-            }
+            CancelPlacement();
 
             var handler = GetPlacementHandler(structureData);
             var validator = GetPlacementValidator(structureData);
-            
-            //TODO Inject _input and validator into handler? 
-            _coroutine = StartCoroutine(handler._WaitForInput(_input, structureData, validator));
+
+            PlacementStarted?.Invoke(structureData);
+
+            //TODO Inject _input and validator into handler?
+            _coroutine = StartCoroutine(RunPlacement(handler, structureData, validator));
+        }
+
+        private IEnumerator RunPlacement(
+            IPlacementHandler handler,
+            IStructureData structureData,
+            IPlacementValidator validator)
+        {
+            yield return handler.TryPlace(_input, structureData, validator);
+
+            _coroutine = null;
+            PlacementEnded?.Invoke();
+        }
+
+        public void CancelPlacement()
+        {
+            if (_coroutine == null)
+            {
+                return;
+            }
+
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+
+            PlacementEnded?.Invoke();
         }
 
         private IPlacementHandler GetPlacementHandler(IStructureData structureData)
@@ -98,7 +116,7 @@ namespace _Scripts._Game.Managers
                 StructureType.Structure => _structurePlacementHandler,
                 StructureType.Wall => _roadPlacementHandler,
                 StructureType.Road => _roadPlacementHandler,
-                
+
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -110,13 +128,14 @@ namespace _Scripts._Game.Managers
                 StructureType.Structure => _structurePlacementValidator,
                 StructureType.Wall => _roadPlacementValidator,
                 StructureType.Road => _roadPlacementValidator,
-                
+
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
 
         private void OnDisable()
         {
+            CancelPlacement();
             _input.DisablePlayerActions();
         }
     }

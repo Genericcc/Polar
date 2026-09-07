@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: WorkStructureData
   m_EditorClassIdentifier: Assembly-CSharp::_Scripts._Game.Structures.StructuresData.WorkStructureData
   id: 10
-  pathToPrefab: 
+  displayName: Workplace
+  icon: {fileID: 0}
+  pathToPrefab:
   structurePrefab: {fileID: 0}
   structureSizeType: 0
   inhabitants: 0

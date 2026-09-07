@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: RoadStructureData
   m_EditorClassIdentifier: 
   id: 200
+  displayName: Road
+  icon: {fileID: 0}
   pathToPrefab: Assets/Resources/Prefabs/Worlds/Structures/StoneRoadPrefab.prefab
   structurePrefab: {fileID: -444254655743458548, guid: 64564e3ae48f5b6439fcb7bbb75e64dd,
     type: 3}

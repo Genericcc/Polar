@@ -1,8 +1,6 @@
-﻿using _Scripts._Game.Managers;
-using _Scripts._Game.Structures.StructuresData;
-using _Scripts._Game.UIs.HUDs.Structures;
-
-using UnityEngine;
+using _Scripts._Game.Managers;
+using _Scripts._Game.UIs;
+using _Scripts._Game.UIs.Controllers;
 
 using Zenject;
 
@@ -12,26 +10,29 @@ namespace _Scripts.Zenject.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<StructureSelectionMenu>()
+            Container.BindInterfacesAndSelfTo<UIRoot>()
                      .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();
 
-            Container.BindFactory<BaseStructureData, Transform, StructureSelectionButton, StructureButtonFactory>()
-                     .FromFactory<CustomStructureButtonFactory>();
-            Container.Bind<StructureSelectionButton>()
-                     .FromResource("Prefabs/UIs/StructureButton")
-                     .WhenInjectedInto<CustomStructureButtonFactory>();
+            Container.Bind<GameStatsProvider>()
+                     .FromComponentInHierarchy()
+                     .AsSingle()
+                     .NonLazy();
+
+            Container.Bind<StructureButtonFactory>()
+                     .AsSingle();
+
+            Container.BindInterfacesAndSelfTo<BuildBarController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<StructureInfoController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<ResourceBarController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PopulationController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlacementStatusController>().AsSingle();
 
             Container.DeclareSignal<StructureSelectedSignal>().OptionalSubscriber();
             Container.BindSignal<StructureSelectedSignal>()
                      .ToMethod<PlacementManager>(x => x.OnStructureSelectedSignal)
                      .FromResolveAll();
-            
-            // Container.DeclareSignal<ToggleStructureMenuSignal>().OptionalSubscriber();
-            // Container.BindSignal<ToggleStructureMenuSignal>()
-            //          .ToMethod<StructureSelectionMenu>(x => x.OnToggleStructureMenuSignal)
-            //          .FromResolveAll();
         }
     }
 
@@ -44,6 +45,4 @@ namespace _Scripts.Zenject.Installers
             StructureId = structureId;
         }
     }
-
-    public struct ToggleStructureMenuSignal { }
 }

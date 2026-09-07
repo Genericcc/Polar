@@ -1,18 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures.StructuresData;
-using _Scripts._Game.UIs;
 using _Scripts.Zenject.Signals;
 
 using Unity.Mathematics;
 using Unity.Transforms;
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 using Zenject;
 
@@ -34,7 +32,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _mouseWorld = mouseWorld;
         }
 
-        public IEnumerator _WaitForInput(InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
+        public IEnumerator TryPlace(InputReader inputReader, IStructureData structureData, IPlacementValidator placementValidator)
         {
             while (true)
             {
@@ -48,7 +46,7 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                     yield return 0f;
                     continue;
                 }
-                
+
                 var node = _polarGridManager.GetPolarNode(_mouseWorld.MousePos);
                 if (node == null)
                 {
@@ -69,8 +67,10 @@ namespace _Scripts._Game.Managers.PlacementHandlers
                 }
 
                 var newTransform = GetBuildTransform(nodesToBuildOn, structureData);
-            
+
                 _signalBus.Fire(new RequestStructurePlacementSignal(nodesToBuildOn, structureData, newTransform));
+
+                yield return 0f;
             }
         }
 

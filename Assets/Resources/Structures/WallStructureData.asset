@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: WallStructureData
   m_EditorClassIdentifier: 
   id: 300
+  displayName: Wall
+  icon: {fileID: 0}
   pathToPrefab: Assets/Resources/Prefabs/Worlds/Structures/WallStructurePrefab.prefab
   structurePrefab: {fileID: -4484196973490902592, guid: ff38ab02b2ad8db4894a0bdab94e97c6,
     type: 3}

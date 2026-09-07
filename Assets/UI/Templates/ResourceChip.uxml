@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="resource-chip" class="chip">
+        <ui:Label name="resource-chip-label" text="" class="chip__label" />
+        <ui:Label name="resource-chip-value" text="0" class="chip__value" />
+    </ui:VisualElement>
+</ui:UXML>

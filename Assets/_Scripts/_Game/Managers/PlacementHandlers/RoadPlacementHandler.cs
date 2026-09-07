@@ -37,15 +37,18 @@ namespace _Scripts._Game.Managers.PlacementHandlers
             _pathfinder = pathfinder;
         }
 
-        public IEnumerator _WaitForInput(InputReader inputReader, IStructureData structureData, IPlacementValidator roadValidator)
+        public IEnumerator TryPlace(
+            InputReader inputReader,
+            IStructureData structureData,
+            IPlacementValidator roadValidator)
         {
             //End is useless now, but kept to avoid typing...
             (PolarNode start, PolarNode end) anchorNodes = new (null, null);
-                
+
             while (true)
             {
                 yield return 0f;
-                
+
                 if (inputReader.WasCancelPressed)
                 {
                     if (anchorNodes.start is not null)
