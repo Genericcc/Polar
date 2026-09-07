@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using _Scripts._Game.GameResources;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Grid.Pathfinders;
 using _Scripts._Game.Managers;
@@ -93,6 +94,19 @@ namespace _Scripts.Zenject.Installers
 
             Container.Bind<StructureDictionary>()
                      .FromNewScriptableObjectResource("Dictionaries/StructureDictionary")
+                     .AsSingle()
+                     .NonLazy();
+
+            #endregion
+
+            #region Resources
+
+            Container.Bind<ResourceSettings>()
+                     .FromNewScriptableObjectResource("Settings/ResourceSettings")
+                     .AsSingle()
+                     .NonLazy();
+
+            Container.Bind<ResourceStore>()
                      .AsSingle()
                      .NonLazy();
 

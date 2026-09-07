@@ -3,6 +3,7 @@ using System.Linq;
 
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.Tags;
+using _Scripts._Game.GameResources;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Managers.PlacementValidators;
 using _Scripts._Game.Structures;
@@ -39,13 +40,15 @@ namespace _Scripts._Game.Managers
         
         private IPlacementValidator _placementValidator;
         private PolarGridManager _polarGridManager;
+        private ResourceStore _resourceStore;
 
         [Inject]
-        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager)
+        public void Construct(SignalBus signalBus, PolarGridManager polarGridManager, ResourceStore resourceStore)
         {
             _signalBus = signalBus;
             _polarGridManager = polarGridManager;
-            
+            _resourceStore = resourceStore;
+
             _world = World.DefaultGameObjectInjectionWorld;
             
             if(_world.IsCreated && !_world.EntityManager.Exists(_entity))
@@ -82,6 +85,12 @@ namespace _Scripts._Game.Managers
 
         private void ConstructBuilding(List<PolarNode> buildingNodes, IStructureData structureData, LocalTransform localTransform)
         {
+            if (!_resourceStore.TrySpend(structureData.Cost))
+            {
+                Debug.Log($"Cannot afford {structureData.DisplayName}");
+                return;
+            }
+
             if (structureData.StructureType != StructureType.Road)
             {
                 foreach (var polarNode in buildingNodes)
