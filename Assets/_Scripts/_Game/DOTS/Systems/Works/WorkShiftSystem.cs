@@ -4,7 +4,7 @@ using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using Unity.Burst;
 using Unity.Entities;
 
-namespace _Scripts._Game.DOTS.Systems.People
+namespace _Scripts._Game.DOTS.Systems.Works
 {
     public partial struct WorkShiftSystem : ISystem
     {

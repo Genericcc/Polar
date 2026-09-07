@@ -5,7 +5,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace _Scripts._Game.DOTS.Systems.People
+namespace _Scripts._Game.DOTS.Systems.Works
 {
     public partial struct ArriveAtWorkSystem : ISystem
     {
