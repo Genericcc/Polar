@@ -15,7 +15,7 @@ namespace _Scripts.Zenject.Installers
                      .AsSingle()
                      .NonLazy();
 
-            Container.Bind<GameStatsProvider>()
+            Container.Bind<DataQueryManager>()
                      .FromComponentInHierarchy()
                      .AsSingle()
                      .NonLazy();

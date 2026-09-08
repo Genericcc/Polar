@@ -1,16 +1,12 @@
 using System;
-
 using _Scripts._Game.DOTS.Components.Tags;
-
 using Unity.Entities;
-
 using UnityEngine;
-
 using Zenject;
 
 namespace _Scripts._Game.Managers
 {
-    public class GameStatsProvider : MonoBehaviour
+    public class DataQueryManager : MonoBehaviour
     {
         private const float PollIntervalSeconds = 0.25f;
 

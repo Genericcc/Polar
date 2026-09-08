@@ -141,8 +141,6 @@ namespace _Scripts._Game.Grid.Pathfinders
                 }
             }
 
-            //PathPositionBuffer.Clear();
-            //PathPositionBuffer.Clear();
             var endNode = pathNodeArray[endNodeIndex];
 
             if (endNode.CameFromNodeIndex == -1)
@@ -151,8 +149,6 @@ namespace _Scripts._Game.Grid.Pathfinders
             }
             else
             {
-                //CalculatePath(pathNodeArray, endNode, PathPositionBuffer);
-
                 Debug.Log("Found path");
                 CalculatePath(pathNodeArray, endNode, PathNodes);
             }

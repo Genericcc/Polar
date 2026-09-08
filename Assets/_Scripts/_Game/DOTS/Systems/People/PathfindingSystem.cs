@@ -64,7 +64,7 @@ namespace _Scripts._Game.DOTS.Systems.People
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
 
                 //If the Person is going somewhere, he doesn't need to find a new path
-                if (currentTargetPathNodeIndex > -1)
+                if (currentTargetPathNodeIndex != -1)
                 {
                     continue;
                 }           
@@ -100,14 +100,20 @@ namespace _Scripts._Game.DOTS.Systems.People
                 var jobHandle = findPathJob.Schedule();
                 jobHandle.Complete();
                 
-                currentTargetPathNodeIndex = path.Length - 1;
-                
                 foreach (var pathNode in path)
                 {
-                    var polarGridPosition = new PolarGridPosition { D = pathNode.x, Fi = pathNode.y, H = ringData.WorldOrigin.y, ParentRingIndex = pathfindingParams.ValueRO.StartCoords.ParentRingIndex};
+                    var polarGridPosition = new PolarGridPosition
+                    {
+                        D = pathNode.x,
+                        Fi = pathNode.y * ringData.FiStep,
+                        H = ringData.WorldOrigin.y, 
+                        ParentRingIndex = pathfindingParams.ValueRO.StartCoords.ParentRingIndex
+                    };
                     var nodePosition = gridEntity.Grid.GetWorldFromPolar(polarGridPosition);
                     waypoints.Add(new Waypoint { Position = nodePosition } );
                 }
+                
+                currentTargetPathNodeIndex = path.Length - 1;
                 
                 path.Dispose();
                 ecb.RemoveComponent<PathfindingParams>(entity);

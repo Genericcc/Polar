@@ -68,7 +68,7 @@ namespace _Scripts._Game.Grid
                 {
                     FiStep = ringSettings.fi,
                     MaxDepth = ringSettings.depth,
-                    GridSize = ringSettings.depth * 360/ringSettings.fi,
+                    GridSize = new int2(ringSettings.depth, 360 / ringSettings.fi),
                     Bounds = new float2(startDistanceToWorldOrigin, endDistanceToWorldOrigin),
                     WorldOrigin = new float3(0, ringSettings.height, 0),
                     Index = ringIndex,
@@ -130,8 +130,6 @@ namespace _Scripts._Game.Grid
 
                     if (neighbour == null)
                     {
-                        Debug.Log("No next node found, cannot build here");
-
                         nodesForBuilding = new List<PolarNode>();
                         return false;
                     }

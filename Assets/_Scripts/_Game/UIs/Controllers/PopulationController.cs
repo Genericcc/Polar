@@ -6,11 +6,11 @@ namespace _Scripts._Game.UIs.Controllers
 {
     public class PopulationController : IHudController
     {
-        private readonly GameStatsProvider _statsProvider;
+        private readonly DataQueryManager _statsProvider;
 
         private Label _valueLabel;
 
-        public PopulationController(GameStatsProvider statsProvider)
+        public PopulationController(DataQueryManager statsProvider)
         {
             _statsProvider = statsProvider;
         }
