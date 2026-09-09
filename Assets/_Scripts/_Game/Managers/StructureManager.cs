@@ -117,7 +117,7 @@ namespace _Scripts._Game.Managers
                       SpawnCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
                   });
 
-            if (structureData.IsWorkplace)
+            if (structureData is WorkStructureData workStructureData)
             {
                 _world.EntityManager
                     .GetBuffer<WorkplaceLocation>(_entity)
@@ -125,7 +125,7 @@ namespace _Scripts._Game.Managers
                     { 
                         Position = localTransform.Position,
                         StructureCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
-                        ShiftDuration = 10f //TODO wartość z structureData
+                        ShiftDuration = workStructureData.ShiftDuration
                     });
             }
         }

@@ -1,4 +1,5 @@
 using System;
+using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using Unity.Burst;
@@ -6,6 +7,7 @@ using Unity.Entities;
 
 namespace _Scripts._Game.DOTS.Systems.Works
 {
+    [UpdateAfter(typeof(ArriveAtWorkSystem))]
     public partial struct WorkShiftSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -18,28 +20,34 @@ namespace _Scripts._Game.DOTS.Systems.Works
         {            
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
-            foreach (var (shiftData, personWork, personHouse, entity) 
-                     in SystemAPI.Query<RefRW<ShiftData>, RefRO<PersonWork>, RefRO<PersonHouse>>()
-                         .WithAll<IsAtWork>() // <-- the equivalent of WithEnabled
+            foreach (var (shiftData, personWork, personHouse, person, entity) 
+                     in SystemAPI.Query<RefRW<ShiftData>, RefRO<PersonWork>, RefRO<PersonHouse>, RefRW<Person>>()
                          .WithEntityAccess())
             {
-                if (shiftData.ValueRO.ShiftFinishedForTheDay)
+                if (shiftData.ValueRO.ShiftFinishedForTheDay || person.ValueRW.PersonState != PersonState.Working)
                 {
-                    throw new Exception($"{nameof(IsAtWork)} was supposed to be Disabled but Query still processed it");
+                    continue;
                 }
+                
+                //Is working
                 
                 shiftData.ValueRW.CurrentShiftTime += SystemAPI.Time.DeltaTime;
                 if (shiftData.ValueRO.CurrentShiftTime < shiftData.ValueRO.MaxShiftTime)
                 {
                     continue;
                 }
+                
+                //Finished working
+                
                 shiftData.ValueRW.ShiftFinishedForTheDay = true;
-                SystemAPI.SetComponentEnabled<IsAtWork>(entity, false);
-                ecb.AddComponent(entity, new PathfindingParams
+                person.ValueRW.PersonState = PersonState.Idle;
+                
+                ecb.SetComponent(entity, new PathfindingParams
                 {
                     StartCoords = personWork.ValueRO.WorkCoords,
                     EndCoords = personHouse.ValueRO.HomeCoords,
                 });
+                ecb.SetComponentEnabled<PathfindingParams>(entity, true);
                 
                 //TODO when event system is added, trigger the event
                 // workData.ValueRW.OnWorkFinished.IsTriggered = true;

@@ -1,5 +1,6 @@
 using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.ComponentData;
+using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -16,13 +17,11 @@ namespace _Scripts._Game.DOTS.Systems.Works
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (localTransform, shiftData, personWork, entity) 
-                     in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShiftData>, RefRO<PersonWork>>()
-                         .WithAll<Person>()
-                         .WithDisabled<IsAtWork>()
+            foreach (var (localTransform, shiftData, personWork, person, entity) 
+                     in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShiftData>, RefRO<PersonWork>, RefRW<Person>>()
                          .WithEntityAccess())
             {
-                if (shiftData.ValueRO.ShiftFinishedForTheDay)
+                if (shiftData.ValueRO.ShiftFinishedForTheDay || person.ValueRW.PersonState == PersonState.Working)
                 {
                     continue;
                 }
@@ -35,7 +34,8 @@ namespace _Scripts._Game.DOTS.Systems.Works
 
                 shiftData.ValueRW.CurrentShiftTime = 0f;
                 shiftData.ValueRW.MaxShiftTime = personWork.ValueRO.ShiftDuration;
-                SystemAPI.SetComponentEnabled<IsAtWork>(entity, true);
+                
+                person.ValueRW.PersonState = PersonState.Working;
             }
         }
     }

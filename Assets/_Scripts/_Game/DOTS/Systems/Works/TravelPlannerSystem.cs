@@ -15,7 +15,6 @@ namespace _Scripts._Game.DOTS.Systems.Works
             foreach (var (personWork, personHouse, pathfindingParams, entity) 
                      in SystemAPI.Query<RefRO<PersonWork>, RefRO<PersonHouse>, RefRW<PathfindingParams>>()
                          .WithDisabled<PathfindingParams>()
-                         .WithDisabled<IsAtWork>()
                          .WithEntityAccess())
             {
                 pathfindingParams.ValueRW.StartCoords = personHouse.ValueRO.HomeCoords;

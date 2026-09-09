@@ -17,5 +17,10 @@ namespace _Scripts._Game.Structures.StructuresData
 
         [SerializeField]
         public float ProductionInterval;
+
+        [SerializeField]
+        public float ShiftDuration;
+        
+        
     }
 }

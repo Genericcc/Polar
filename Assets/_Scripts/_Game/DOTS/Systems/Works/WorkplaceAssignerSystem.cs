@@ -19,7 +19,6 @@ namespace _Scripts._Game.DOTS.Systems.Works
             foreach (var (personWork, entity) 
                      in SystemAPI.Query<RefRW<PersonWork>>()
                          .WithDisabled<PersonWork>()
-                         .WithDisabled<IsAtWork>()
                          .WithEntityAccess())
             {
                 //Idle, no work and not at work

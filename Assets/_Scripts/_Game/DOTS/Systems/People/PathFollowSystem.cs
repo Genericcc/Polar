@@ -17,10 +17,15 @@ namespace _Scripts._Game.DOTS.Systems.People
         
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (speedRO, transformRW, currentPathNodeIndexRW, waypoints) 
-                     in SystemAPI.Query<RefRO<Speed>, RefRW<LocalTransform>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>>()
-                                 .WithAll<Person>())
+            foreach (var (speedRO, transformRW, currentPathNodeIndexRW, waypoints, person) 
+                     in SystemAPI.Query<RefRO<Speed>, RefRW<LocalTransform>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>, RefRO<Person>>())
             {
+                //TODO change this placeholder Working state or change the entire check
+                if (person.ValueRO.PersonState == PersonState.Working)
+                {
+                    continue;
+                }
+                
                 ref readonly var speed = ref speedRO.ValueRO.Value;
                 ref LocalTransform transform = ref transformRW.ValueRW;
                 ref var currentPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;

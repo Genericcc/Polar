@@ -21,11 +21,10 @@ namespace _Scripts._Game.DOTS.Authoring.People
                     PersonState = PersonState.Idle
                 });
                 AddComponent<PersonHouse>(entity);
+                AddComponent<ShiftData>(entity);
                 
                 AddComponent<PersonWork>(entity);
                 SetComponentEnabled<PersonWork>(entity, false);
-                AddComponent<IsAtWork>(entity);
-                SetComponentEnabled<IsAtWork>(entity, false);
                 AddComponent<PathfindingParams>(entity);
                 SetComponentEnabled<PathfindingParams>(entity, false);
             }

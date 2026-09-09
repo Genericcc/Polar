@@ -23,6 +23,4 @@ namespace _Scripts._Game.DOTS.Components.ComponentData
         public float MaxShiftTime;
         public bool ShiftFinishedForTheDay;
     }
-
-    public struct IsAtWork : IComponentData, IEnableableComponent { }
 }

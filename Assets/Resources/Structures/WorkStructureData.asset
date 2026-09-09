@@ -21,8 +21,8 @@ MonoBehaviour:
   structureSizeType: 0
   inhabitants: 0
   resourceCost: []
-  _isWorkplace: 1
   ResourceAmount:
     ResourceType: 0
     Amount: 0
   ProductionInterval: 0
+  ShiftDuration: 3
