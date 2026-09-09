@@ -16,13 +16,33 @@ namespace _Scripts._Game.DOTS.Authoring.People
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
 
-                AddComponent<Person>(entity);
-                AddComponent<HomeLocationData>(entity);
-                AddComponent<JobData>(entity);
+                AddComponent(entity, new Person
+                {
+                    PersonState = PersonState.Idle
+                });
+                AddComponent<PersonHouse>(entity);
+                AddComponent<PersonWork>(entity);
+                
+                AddComponent<HasWork>(entity);
+                SetComponentEnabled<HasWork>(entity, false);
                 AddComponent<IsAtWork>(entity);
                 SetComponentEnabled<IsAtWork>(entity, false);
+                
                 AddComponent<PathfindingParams>(entity);
             }
         }
+    }
+    
+    public struct Person : IComponentData
+    {
+        public PersonState PersonState;
+    }    
+    
+    public enum PersonState : byte
+    {
+        Idle,
+        Walking,
+        Working,
+        Resting,
     }
 }

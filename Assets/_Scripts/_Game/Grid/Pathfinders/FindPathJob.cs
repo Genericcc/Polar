@@ -95,7 +95,7 @@ namespace _Scripts._Game.Grid.Pathfinders
                     var neighbourOffset = neighbourOffsetArray[i];
                     var neighbourPosition = new int2(
                         currentFrontierNode.Depth + neighbourOffset.x,
-                        currentFrontierNode.FiSegment + neighbourOffset.y);
+                        WrapFiSegment(currentFrontierNode.FiSegment + neighbourOffset.y, GridSize.y));
 
                     if (!IsPositionInsideGrid(neighbourPosition, GridSize))
                     {
@@ -116,13 +116,8 @@ namespace _Scripts._Game.Grid.Pathfinders
                         continue;
                     }
 
-                    var frontierNodePosition = new int2(currentFrontierNode.Depth, currentFrontierNode.FiSegment);
-                    var distanceCost = CalculateDistanceCost(
-                        frontierNodePosition, 
-                        neighbourPosition, 
-                        GridSize.x);
-
-                    var tentativeGCost = currentFrontierNode.GCost + distanceCost;
+                    //Sąsiad jest zawsze o jeden krok w bok albo w głąb
+                    var tentativeGCost = currentFrontierNode.GCost + MoveStraightCost;
 
                     if (tentativeGCost >= neighbourNode.GCost)
                     {
@@ -145,11 +140,9 @@ namespace _Scripts._Game.Grid.Pathfinders
 
             if (endNode.CameFromNodeIndex == -1)
             {
-                Debug.Log("Failed to find path");
             }
             else
             {
-                Debug.Log("Found path");
                 CalculatePath(pathNodeArray, endNode, PathNodes);
             }
 
@@ -252,27 +245,17 @@ namespace _Scripts._Game.Grid.Pathfinders
         private int CalculateDistanceCost(int2 aPosition, int2 bPosition, int2 gridSize)
         {
             var depthDistance = math.abs(aPosition.x - bPosition.x);
-            
+
             var dy = math.abs(aPosition.y - bPosition.y);
-            //var fiSegmentDistance = math.min(dy, gridSize.y - dy);
+            var fiSegmentDistance = math.min(dy, gridSize.y - dy);
 
-            var remaining = math.abs(depthDistance + dy);
-            return MoveStraightCost * remaining; 
+            return MoveStraightCost * (depthDistance + fiSegmentDistance);
         }
-        
-        public static int2 SubtractWithWrapAround(int2 value, int2 subtractValue, int2 maxValue)
-        {
-            var result = value - subtractValue;
-            if (result.x < 0)
-            {
-                result.x += maxValue.x;
-            }
-            if (result.y < 0)
-            {
-                result.y += maxValue.y;
-            }
 
-            return result;
+        // Fi jest cykliczne: ostatni segment pierścienia sąsiaduje z segmentem 0
+        private static int WrapFiSegment(int fiSegment, int segmentCount)
+        {
+            return (fiSegment + segmentCount) % segmentCount;
         }
 
         private int CalculateIndex(int r, int fi, int gridSize)

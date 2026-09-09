@@ -1,5 +1,5 @@
+using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.ComponentData;
-using _Scripts._Game.DOTS.Components.Tags;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -16,25 +16,25 @@ namespace _Scripts._Game.DOTS.Systems.Works
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (localTransform, workData, workLocationData, entity) 
-                     in SystemAPI.Query<RefRW<LocalTransform>, RefRW<WorkData>, RefRO<JobData>>()
+            foreach (var (localTransform, shiftData, workplaceData, entity) 
+                     in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShiftData>, RefRO<PersonWork>>()
                          .WithAll<Person>()
                          .WithDisabled<IsAtWork>()
                          .WithEntityAccess())
             {
-                if (workData.ValueRO.WorkFinishedForTheDay)
+                if (shiftData.ValueRO.ShiftFinishedForTheDay)
                 {
                     continue;
                 }
                 
                 var enterWorkCheckDistance = 1f * 1f; 
-                if (math.distancesq(localTransform.ValueRO.Position, workLocationData.ValueRO.Position) > enterWorkCheckDistance)
+                if (math.distancesq(localTransform.ValueRO.Position, workplaceData.ValueRO.Position) > enterWorkCheckDistance)
                 {
                     continue;
                 }
 
-                workData.ValueRW.CurrentShiftTime = 0f;
-                workData.ValueRW.MaxShiftTime = workLocationData.ValueRO.ShiftDuration;
+                shiftData.ValueRW.CurrentShiftTime = 0f;
+                shiftData.ValueRW.MaxShiftTime = workplaceData.ValueRO.ShiftDuration;
                 SystemAPI.SetComponentEnabled<IsAtWork>(entity, true);
             }
         }

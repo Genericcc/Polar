@@ -57,7 +57,7 @@ namespace _Scripts._Game.Managers
 
                 _world.EntityManager.AddBuffer<StructurePlacementOrder>(_entity);
                 _world.EntityManager.AddBuffer<PeopleSpawnOrder>(_entity);
-                _world.EntityManager.AddBuffer<StructureWaypointBuffer>(_entity);
+                _world.EntityManager.AddBuffer<WorkplaceLocation>(_entity);
             }
 
             //TestPlaceBuildings(testStructuresAmount);
@@ -105,8 +105,7 @@ namespace _Scripts._Game.Managers
                   { 
                       StructureId = structureData.ID,
                       NewTransform = localTransform,
-                      Coords = buildingNodes[0].PolarGridPosition, //TODO change that from 0th element to something wiser
-                      IsWorkplace = structureData.IsWorkplace
+                      Coords = buildingNodes[0].PolarGridPosition, //TODO change that or decide that 0th element is always entrance
                   });
 
             _world.EntityManager
@@ -117,14 +116,18 @@ namespace _Scripts._Game.Managers
                       SpawnTransform = localTransform,
                       SpawnCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
                   });
-            
-            _world.EntityManager
-                  .GetBuffer<StructureWaypointBuffer>(_entity)
-                  .Add(new StructureWaypointBuffer 
-                  { 
-                      Position = localTransform.Position,
-                      StructureCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
-                  });
+
+            if (structureData.IsWorkplace)
+            {
+                _world.EntityManager
+                    .GetBuffer<WorkplaceLocation>(_entity)
+                    .Add(new WorkplaceLocation 
+                    { 
+                        Position = localTransform.Position,
+                        StructureCoordinates = buildingNodes[0].PolarGridPosition, //TODO as above
+                        ShiftDuration = 10f //TODO wartość z structureData
+                    });
+            }
         }
     }
 }

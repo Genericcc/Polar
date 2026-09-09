@@ -9,6 +9,5 @@ namespace _Scripts._Game.DOTS.Components.Buffers
         public LocalTransform NewTransform;
         public PolarGridPosition Coords;
         public int StructureId;
-        public bool IsWorkplace;
     }
 }

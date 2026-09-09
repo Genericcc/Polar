@@ -19,11 +19,11 @@ namespace _Scripts._Game.DOTS.Systems.Works
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
             foreach (var (jobData, workLocationData, homeLocationData, entity) 
-                     in SystemAPI.Query<RefRW<WorkData>, RefRO<JobData>, RefRO<HomeLocationData>>()
+                     in SystemAPI.Query<RefRW<ShiftData>, RefRO<PersonWork>, RefRO<PersonHouse>>()
                          .WithAll<IsAtWork>() // <-- the equivalent of WithEnabled
                          .WithEntityAccess())
             {
-                if (jobData.ValueRO.WorkFinishedForTheDay)
+                if (jobData.ValueRO.ShiftFinishedForTheDay)
                 {
                     throw new Exception($"{nameof(IsAtWork)} was supposed to be Disabled but Query still processed it");
                 }
@@ -33,7 +33,7 @@ namespace _Scripts._Game.DOTS.Systems.Works
                 {
                     continue;
                 }
-                jobData.ValueRW.WorkFinishedForTheDay = true;
+                jobData.ValueRW.ShiftFinishedForTheDay = true;
                 SystemAPI.SetComponentEnabled<IsAtWork>(entity, false);
                 ecb.AddComponent(entity, new PathfindingParams
                 {

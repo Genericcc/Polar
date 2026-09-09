@@ -1,13 +1,10 @@
-﻿using _Scripts._Game.DOTS.Components.Buffers;
+﻿using _Scripts._Game.DOTS.Authoring.People;
+using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
-using _Scripts._Game.DOTS.Components.Tags;
-using _Scripts._Game.Grid;
 
-using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace _Scripts._Game.DOTS.Systems.People
 {
@@ -37,40 +34,12 @@ namespace _Scripts._Game.DOTS.Systems.People
                 
                 var dir2 = math.normalizesafe(targetWaypointPosition - transform.Position);
                 transform.Position += dir2 * SystemAPI.Time.DeltaTime * speed;
-                transform.Rotation = quaternion.LookRotationSafe(dir2, new float3(0f,1f,0f));
+                transform.Rotation = quaternion.LookRotationSafe(dir2, new float3(0f, 1f, 0f));
                 
                 if (math.distance(transform.Position, targetWaypointPosition) < 0.1f)
                 {
                     currentPathNodeIndex--;
                 }
-                
-                //
-                // if (waypoints.Length == 0)
-                // {
-                //     continue;
-                // }
-                //
-                //
-                // if (currentPathNodeIndex > waypoints.Length - 1)
-                // {
-                //     continue;
-                // }
-                //
-                // if (math.distance(transform.Position, waypoints[currentPathNodeIndex].Position) < 0.1f)
-                // {
-                //     currentPathNodeIndex += 1;
-                //     continue;
-                // }
-                //
-                // var dir = math.normalize(waypoints[currentPathNodeIndex].Position - transform.Position);
-                // transform.Position += dir * SystemAPI.Time.DeltaTime * speed;
-                // transform.Rotation = quaternion.LookRotationSafe(dir, new float3(0f,1f,0f));
-                //
-                // //Almost the same
-                // // transform.Rotation = TransformHelpers.LookAtRotation(
-                // //     transform.Position,
-                // //     waypoints[nextPathIndex].Position,
-                // //     new float3(0f,1f,0f));
             }
         }
     }

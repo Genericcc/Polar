@@ -4,9 +4,10 @@ using Unity.Mathematics;
 
 namespace _Scripts._Game.DOTS.Components.Buffers
 {
-    public struct StructureWaypointBuffer : IBufferElementData
+    public struct WorkplaceLocation : IBufferElementData
     {
         public float3 Position;
         public PolarGridPosition StructureCoordinates;
-    }
+        public float ShiftDuration;
+    }    
 }

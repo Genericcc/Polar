@@ -1,3 +1,4 @@
+using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
@@ -28,14 +29,10 @@ namespace _Scripts._Game.DOTS.Systems.People
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            
             state.RequireForUpdate<BeginInitializationEntityCommandBufferSystem.Singleton>();
             state.RequireForUpdate<PeopleSpawnerConfig>();
             
             state.RequireForUpdate<StructureManagerTag>();
-            //state.RequireForUpdate<SomethingBuiltTag>();
-            
-            //state.RequireForUpdate<Waypoint>();
             
             state.RequireForUpdate<TheGridEntity>();
             
@@ -45,26 +42,20 @@ namespace _Scripts._Game.DOTS.Systems.People
         //[BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            //for testing before roads
-            var structureWaypoints = SystemAPI.GetSingletonBuffer<StructureWaypointBuffer>();
-            if (structureWaypoints.Length <= 1)
-            {
-                return;
-            }
-            
             var gridEntity = SystemAPI.GetSingleton<TheGridEntity>();
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
             foreach (var (pathfindingParams, currentPathNodeIndexRW,  waypoints, entity) 
                      in SystemAPI.Query<RefRO<PathfindingParams>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>>()
                                  .WithAll<Person>()
+                                 .WithAll<HasWork>()
                                  .WithDisabled<IsAtWork>()
                                  .WithEntityAccess())
             {
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
 
-                //If the Person is going somewhere, he doesn't need to find a new path
-                if (currentTargetPathNodeIndex != -1)
+                //If the Person is going somewhere or doesn't have a target, he doesn't need to find a new path
+                if (currentTargetPathNodeIndex != -1 || !pathfindingParams.ValueRO.IsAssigned)
                 {
                     continue;
                 }           

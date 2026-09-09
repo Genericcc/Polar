@@ -39,7 +39,6 @@ namespace _Scripts._Game.DOTS.Systems.People
             }
             
             var spawnerConfig = SystemAPI.GetSingleton<PeopleSpawnerConfig>();
-            var structureWaypoints = SystemAPI.GetSingletonBuffer<StructureWaypointBuffer>();
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
             var random = Random.CreateFromIndex(_updateCounter++);
@@ -57,24 +56,24 @@ namespace _Scripts._Game.DOTS.Systems.People
                         Value = random.NextFloat(spawnerConfig.MinSpeed, spawnerConfig.MaxSpeed)
                     });
                     
-                    ecb.SetComponent(entity, new HomeLocationData
+                    ecb.SetComponent(entity, new PersonHouse
                     {
                         Position = spawnOrders[i].SpawnTransform.Position,
                         HomeCoords = spawnOrders[i].SpawnCoordinates,
                     });
                     
-                    //TODO add Tag WorkplaceStructure and then add work from there
-                    var index = random.NextInt(0, structureWaypoints.Length);
-                    ecb.SetComponent(entity, new JobData
-                    {
-                        Position = structureWaypoints[index].Position,
-                    });
-                    
-                    ecb.SetComponent(entity, new PathfindingParams
-                    {
-                        StartCoords = spawnOrders[i].SpawnCoordinates,
-                        EndCoords = structureWaypoints[index].StructureCoordinates,
-                    });
+                    // //TODO add Tag WorkplaceStructure and then add work from there
+                    // var index = random.NextInt(0, structureWaypoints.Length);
+                    // ecb.SetComponent(entity, new WorkplaceLocationData
+                    // {
+                    //     Position = structureWaypoints[index].Position,
+                    // });
+                    //
+                    // ecb.SetComponent(entity, new PathfindingParams
+                    // {
+                    //     StartCoords = spawnOrders[i].SpawnCoordinates,
+                    //     EndCoords = structureWaypoints[index].StructureCoordinates,
+                    // });
                 }
             }
                 

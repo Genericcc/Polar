@@ -8,5 +8,6 @@ namespace _Scripts._Game.DOTS.Components.ComponentData.Pathfinding
     {
         public PolarGridPosition StartCoords;
         public PolarGridPosition EndCoords;
+        public bool IsAssigned;
     }
 }

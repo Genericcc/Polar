@@ -27,14 +27,14 @@ namespace _Scripts._Game.DOTS.Systems.Structures
         public void OnUpdate(ref SystemState state)
         {
             var buildOrders = SystemAPI.GetSingletonBuffer<StructurePlacementOrder>();
+            if (buildOrders.Length <= 0)
+            {
+                return;
+            }
 
-             if (buildOrders.Length <= 0)
-             {
-                 return;
-             }
-            
             var availableStructures = SystemAPI.GetSingletonBuffer<AvailableStructure>();
-            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
 
             for (var i = 0; i < buildOrders.Length; i++)
             {
@@ -42,19 +42,9 @@ namespace _Scripts._Game.DOTS.Systems.Structures
                 {
                     var entity = ecb.Instantiate(structure.Prefab);
                     ecb.SetComponent(entity, buildOrders[i].NewTransform);
-                   
-                    if (buildOrders[i].IsWorkplace)
-                    {
-                        ecb.AddComponent(entity, new WorkplaceData
-                        {
-                            Position = buildOrders[i].NewTransform.Position,
-                            ShiftDuration = 10f, //TODO rethink this, or just pass work data from IStructureData?
-                            WorkCoords = buildOrders[i].Coords
-                        });
-                    }
                 }
             }
-            
+
             buildOrders.Clear();
         }
 

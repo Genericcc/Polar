@@ -116,6 +116,7 @@ namespace _Scripts._Game.Managers
                 StructureType.Structure => _structurePlacementHandler,
                 StructureType.Wall => _roadPlacementHandler,
                 StructureType.Road => _roadPlacementHandler,
+                StructureType.Work => _structurePlacementHandler,
 
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -128,6 +129,7 @@ namespace _Scripts._Game.Managers
                 StructureType.Structure => _structurePlacementValidator,
                 StructureType.Wall => _roadPlacementValidator,
                 StructureType.Road => _roadPlacementValidator,
+                StructureType.Work => _structurePlacementValidator,
 
                 _ => throw new ArgumentOutOfRangeException()
             };

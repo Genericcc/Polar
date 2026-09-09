@@ -15,11 +15,13 @@ MonoBehaviour:
   id: 10
   displayName: Workplace
   icon: {fileID: 0}
-  pathToPrefab:
-  structurePrefab: {fileID: 0}
+  pathToPrefab: Assets/Resources/Prefabs/Worlds/Structures/HouseStructurePrefab.prefab
+  structurePrefab: {fileID: 44744930449161189, guid: 812123a1782e7f14db4600a353f2da49,
+    type: 3}
   structureSizeType: 0
   inhabitants: 0
   resourceCost: []
+  _isWorkplace: 1
   ResourceAmount:
     ResourceType: 0
     Amount: 0

@@ -1,5 +1,5 @@
 using System;
-using _Scripts._Game.DOTS.Components.Tags;
+using _Scripts._Game.DOTS.Authoring.People;
 using Unity.Entities;
 using UnityEngine;
 using Zenject;
