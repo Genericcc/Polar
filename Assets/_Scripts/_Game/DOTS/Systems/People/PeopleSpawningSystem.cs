@@ -1,15 +1,10 @@
-using _Scripts._Game.DOTS.Authoring.Structures;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
-using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using _Scripts._Game.DOTS.Components.Configs;
 using _Scripts._Game.DOTS.Components.Tags;
 
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Transforms;
-
 using Random = Unity.Mathematics.Random;
 
 namespace _Scripts._Game.DOTS.Systems.People

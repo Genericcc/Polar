@@ -1,4 +1,3 @@
-using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using _Scripts._Game.DOTS.Systems.People;

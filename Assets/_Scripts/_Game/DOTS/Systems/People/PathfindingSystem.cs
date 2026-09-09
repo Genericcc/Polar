@@ -1,4 +1,3 @@
-using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.Buffers;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
@@ -7,16 +6,11 @@ using _Scripts._Game.DOTS.Components.Tags;
 using _Scripts._Game.Grid;
 using _Scripts._Game.Grid.Pathfinders;
 using _Scripts._Game.Grid.PolarGridUnmanageds;
-using _Scripts._Game.Managers.PlacementHandlers;
-
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
-using Unity.Transforms;
-using UnityEngine;
-using Random = Unity.Mathematics.Random;
 
 namespace _Scripts._Game.DOTS.Systems.People
 {
@@ -51,7 +45,7 @@ namespace _Scripts._Game.DOTS.Systems.People
             {
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
 
-                //If the Person is going somewhere or doesn't have a target, he doesn't need to find a new path
+                //If the Person is going somewhere, he doesn't need to find a new path
                 if (currentTargetPathNodeIndex != -1)
                 {
                     continue;

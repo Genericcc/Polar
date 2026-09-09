@@ -1,15 +1,8 @@
-﻿using System.Linq;
-
-using _Scripts._Game.DOTS.Authoring.Structures;
+﻿using _Scripts._Game.DOTS.Authoring.Structures;
 using _Scripts._Game.DOTS.Components.Buffers;
-using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.Tags;
-using _Scripts._Game.Managers;
-using _Scripts._Game.Structures;
-
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Transforms;
 
 namespace _Scripts._Game.DOTS.Systems.Structures
 {
