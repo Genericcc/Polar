@@ -4,10 +4,9 @@ using Unity.Entities;
 namespace _Scripts._Game.DOTS.Components.ComponentData.Pathfinding
 {
     //TODO Change into IEnableableComponent
-    public struct PathfindingParams : IComponentData
+    public struct PathfindingParams : IComponentData, IEnableableComponent
     {
         public PolarGridPosition StartCoords;
         public PolarGridPosition EndCoords;
-        public bool IsAssigned;
     }
 }

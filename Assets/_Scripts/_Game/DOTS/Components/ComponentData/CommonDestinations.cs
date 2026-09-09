@@ -25,7 +25,5 @@ namespace _Scripts._Game.DOTS.Components.ComponentData
     }
 
     public struct IsAtWork : IComponentData, IEnableableComponent { }
-    public struct HasWork : IComponentData, IEnableableComponent { }
-    public struct IsAtHome : IComponentData, IEnableableComponent { }
-    public struct IsInTransit : IComponentData, IEnableableComponent { }    
+    public struct HasWork : IComponentData, IEnableableComponent { }  
 }

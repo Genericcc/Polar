@@ -29,6 +29,7 @@ namespace _Scripts._Game.DOTS.Authoring.People
                 SetComponentEnabled<IsAtWork>(entity, false);
                 
                 AddComponent<PathfindingParams>(entity);
+                SetComponentEnabled<PathfindingParams>(entity, false);
             }
         }
     }

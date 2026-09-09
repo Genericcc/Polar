@@ -47,15 +47,12 @@ namespace _Scripts._Game.DOTS.Systems.People
             
             foreach (var (pathfindingParams, currentPathNodeIndexRW,  waypoints, entity) 
                      in SystemAPI.Query<RefRO<PathfindingParams>, RefRW<CurrentPathNodeIndex>, DynamicBuffer<Waypoint>>()
-                                 .WithAll<Person>()
-                                 .WithAll<HasWork>()
-                                 .WithDisabled<IsAtWork>()
                                  .WithEntityAccess())
             {
                 ref var currentTargetPathNodeIndex = ref currentPathNodeIndexRW.ValueRW.Index;
 
                 //If the Person is going somewhere or doesn't have a target, he doesn't need to find a new path
-                if (currentTargetPathNodeIndex != -1 || !pathfindingParams.ValueRO.IsAssigned)
+                if (currentTargetPathNodeIndex != -1)
                 {
                     continue;
                 }           
@@ -107,7 +104,7 @@ namespace _Scripts._Game.DOTS.Systems.People
                 currentTargetPathNodeIndex = path.Length - 1;
                 
                 path.Dispose();
-                ecb.RemoveComponent<PathfindingParams>(entity);
+                ecb.SetComponentEnabled<PathfindingParams>(entity, false);
             }
         }        
         
