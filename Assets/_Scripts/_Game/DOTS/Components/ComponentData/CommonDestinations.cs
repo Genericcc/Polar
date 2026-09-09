@@ -10,7 +10,7 @@ namespace _Scripts._Game.DOTS.Components.ComponentData
         public PolarGridPosition HomeCoords;
     }
     
-    public struct PersonWork : IComponentData
+    public struct PersonWork : IComponentData, IEnableableComponent
     {
         public float3 Position;
         public PolarGridPosition WorkCoords;
@@ -25,5 +25,4 @@ namespace _Scripts._Game.DOTS.Components.ComponentData
     }
 
     public struct IsAtWork : IComponentData, IEnableableComponent { }
-    public struct HasWork : IComponentData, IEnableableComponent { }  
 }

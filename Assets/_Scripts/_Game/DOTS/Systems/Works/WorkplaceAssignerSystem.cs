@@ -11,15 +11,15 @@ namespace _Scripts._Game.DOTS.Systems.Works
         public void OnUpdate(ref SystemState state)
         {            
             var workplaceBuffer = SystemAPI.GetSingletonBuffer<WorkplaceLocation>();
-            if (workplaceBuffer.Length <= 1)
+            if (workplaceBuffer.Length <= 0)
             {
                 return;
             }
 
             foreach (var (personWork, entity) 
                      in SystemAPI.Query<RefRW<PersonWork>>()
+                         .WithDisabled<PersonWork>()
                          .WithDisabled<IsAtWork>()
-                         .WithDisabled<HasWork>()
                          .WithEntityAccess())
             {
                 //Idle, no work and not at work
@@ -27,7 +27,7 @@ namespace _Scripts._Game.DOTS.Systems.Works
                 personWork.ValueRW.WorkCoords = workplaceBuffer[0].StructureCoordinates;
                 personWork.ValueRW.ShiftDuration = workplaceBuffer[0].ShiftDuration;
 
-                SystemAPI.SetComponentEnabled<HasWork>(entity, true);
+                SystemAPI.SetComponentEnabled<PersonWork>(entity, true);
             }
         }
     }

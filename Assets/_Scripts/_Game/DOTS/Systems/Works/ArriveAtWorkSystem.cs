@@ -16,7 +16,7 @@ namespace _Scripts._Game.DOTS.Systems.Works
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (localTransform, shiftData, workplaceData, entity) 
+            foreach (var (localTransform, shiftData, personWork, entity) 
                      in SystemAPI.Query<RefRW<LocalTransform>, RefRW<ShiftData>, RefRO<PersonWork>>()
                          .WithAll<Person>()
                          .WithDisabled<IsAtWork>()
@@ -28,13 +28,13 @@ namespace _Scripts._Game.DOTS.Systems.Works
                 }
                 
                 var enterWorkCheckDistance = 1f * 1f; 
-                if (math.distancesq(localTransform.ValueRO.Position, workplaceData.ValueRO.Position) > enterWorkCheckDistance)
+                if (math.distancesq(localTransform.ValueRO.Position, personWork.ValueRO.Position) > enterWorkCheckDistance)
                 {
                     continue;
                 }
 
                 shiftData.ValueRW.CurrentShiftTime = 0f;
-                shiftData.ValueRW.MaxShiftTime = workplaceData.ValueRO.ShiftDuration;
+                shiftData.ValueRW.MaxShiftTime = personWork.ValueRO.ShiftDuration;
                 SystemAPI.SetComponentEnabled<IsAtWork>(entity, true);
             }
         }

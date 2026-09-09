@@ -18,27 +18,27 @@ namespace _Scripts._Game.DOTS.Systems.Works
         {            
             var ecb = SystemAPI.GetSingleton<BeginInitializationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             
-            foreach (var (jobData, workLocationData, homeLocationData, entity) 
+            foreach (var (shiftData, personWork, personHouse, entity) 
                      in SystemAPI.Query<RefRW<ShiftData>, RefRO<PersonWork>, RefRO<PersonHouse>>()
                          .WithAll<IsAtWork>() // <-- the equivalent of WithEnabled
                          .WithEntityAccess())
             {
-                if (jobData.ValueRO.ShiftFinishedForTheDay)
+                if (shiftData.ValueRO.ShiftFinishedForTheDay)
                 {
                     throw new Exception($"{nameof(IsAtWork)} was supposed to be Disabled but Query still processed it");
                 }
                 
-                jobData.ValueRW.CurrentShiftTime += SystemAPI.Time.DeltaTime;
-                if (jobData.ValueRO.CurrentShiftTime < jobData.ValueRO.MaxShiftTime)
+                shiftData.ValueRW.CurrentShiftTime += SystemAPI.Time.DeltaTime;
+                if (shiftData.ValueRO.CurrentShiftTime < shiftData.ValueRO.MaxShiftTime)
                 {
                     continue;
                 }
-                jobData.ValueRW.ShiftFinishedForTheDay = true;
+                shiftData.ValueRW.ShiftFinishedForTheDay = true;
                 SystemAPI.SetComponentEnabled<IsAtWork>(entity, false);
                 ecb.AddComponent(entity, new PathfindingParams
                 {
-                    StartCoords = workLocationData.ValueRO.WorkCoords,
-                    EndCoords = homeLocationData.ValueRO.HomeCoords,
+                    StartCoords = personWork.ValueRO.WorkCoords,
+                    EndCoords = personHouse.ValueRO.HomeCoords,
                 });
                 
                 //TODO when event system is added, trigger the event
