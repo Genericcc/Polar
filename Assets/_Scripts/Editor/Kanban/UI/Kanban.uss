@@ -210,19 +210,24 @@
     align-items: center;
 }
 
-/* Dedicated grab area - the rest of the card row is text fields and buttons, which have to keep
-   their own click behaviour. */
+/* Dedicated grab area - and it has to be a real target, not a hairline. The rest of the card row is
+   text fields and buttons, which keep their own click behaviour, and the title field takes all the
+   remaining width, so this strip is very nearly the only draggable pixel column on the card. It
+   stretches to the row's full height for the same reason. */
 .card__grip {
-    width: 4px;
-    height: 16px;
+    width: 10px;
+    align-self: stretch;
+    min-height: 20px;
     flex-shrink: 0;
     margin-right: var(--kanban-space-1);
     border-radius: 2px;
     background-color: var(--unity-colors-default-border);
+    opacity: 0.7;
     cursor: pan;
 }
 
 .card__grip:hover {
+    opacity: 1;
     background-color: var(--unity-colors-default-text);
 }
 
@@ -279,10 +284,16 @@
     background-color: var(--unity-colors-highlight-background);
 }
 
-/* Cards cannot be hand-reordered while a descriptor drives the order, so the grab handle goes away
-   rather than sitting there inviting a drag that would be ignored. */
+/* While a descriptor drives the order, the grip is dimmed to signal that reordering *within* a column
+   is off - but it stays fully pickable, because dragging a card to a DIFFERENT column still re-homes
+   the task and has to keep working. An earlier version hid it with visibility:hidden, which also makes
+   an element unpickable and so took cross-column dragging away with it. */
 .column--sorted .card__grip {
-    visibility: hidden;
+    opacity: 0.35;
+}
+
+.column--sorted .card__grip:hover {
+    opacity: 0.9;
 }
 
 /* --------------------------------------------------- descriptors on cards */

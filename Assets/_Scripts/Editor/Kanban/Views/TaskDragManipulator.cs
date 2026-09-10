@@ -15,6 +15,14 @@ namespace _Scripts.Editor.Kanban.Views
     /// While a drag is running the original card is detached from the hierarchy and a placeholder holds
     /// its slot. That keeps every element the drag measures against present in layout - a card hidden
     /// with display:none has no world bounds to hit-test.
+    ///
+    /// Because of that detach, the pointer is captured on the DRAG LAYER, not on the card. A visual
+    /// element loses pointer capture the moment it leaves the panel, so capturing on the card made the
+    /// drag cancel itself the instant it began: BeginDrag detaches the card, capture is released,
+    /// PointerCaptureOutEvent fires, and the handler reads that as "something interrupted the drag".
+    /// The drag layer is the window root and never moves, so capture there survives the whole gesture.
+    /// The move/up/capture-out callbacks therefore live on the drag layer too, for the duration of the
+    /// gesture only - captured pointer events are routed to the capturing element, not to the card.
     /// </summary>
     public class TaskDragManipulator : PointerManipulator
     {
@@ -37,6 +45,9 @@ namespace _Scripts.Editor.Kanban.Views
         private ColumnView _sourceColumn;
         private ColumnView _targetColumn;
 
+        /// <summary>The drag layer while a gesture is in flight; null the rest of the time.</summary>
+        private VisualElement _capture;
+
         /// <summary>
         /// Captured once at drag start rather than read per-frame: the whole gesture has to obey one set
         /// of rules, and a sort toggled from the toolbar mid-drag would otherwise change what the drop
@@ -52,18 +63,16 @@ namespace _Scripts.Editor.Kanban.Views
 
         protected override void RegisterCallbacksOnTarget()
         {
+            // Only the press lives on the card. Everything after it is routed through the drag layer.
             target.RegisterCallback<PointerDownEvent>(OnPointerDown);
-            target.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-            target.RegisterCallback<PointerUpEvent>(OnPointerUp);
-            target.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
         }
 
         protected override void UnregisterCallbacksFromTarget()
         {
             target.UnregisterCallback<PointerDownEvent>(OnPointerDown);
-            target.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
-            target.UnregisterCallback<PointerUpEvent>(OnPointerUp);
-            target.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+
+            // A card removed mid-gesture must not leave its handlers behind on the shared drag layer.
+            ReleaseCapture();
         }
 
         private void OnPointerDown(PointerDownEvent evt)
@@ -71,18 +80,28 @@ namespace _Scripts.Editor.Kanban.Views
             if (evt.button != 0) return;
             if (!IsDragHandle(evt.target as VisualElement)) return;
 
+            var layer = _host.DragLayer;
+
+            if (layer == null) return;
+
             _pointerDown = true;
             _pointerId = evt.pointerId;
             _pointerDownPosition = evt.position;
             _grabOffset = _pointerDownPosition - target.worldBound.position;
 
-            target.CapturePointer(_pointerId);
+            _capture = layer;
+            _capture.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+            _capture.RegisterCallback<PointerUpEvent>(OnPointerUp);
+            _capture.RegisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+            _capture.CapturePointer(_pointerId);
+
             evt.StopPropagation();
         }
 
         private void OnPointerMove(PointerMoveEvent evt)
         {
             if (!_pointerDown) return;
+            if (evt.pointerId != _pointerId) return;
 
             Vector2 position = evt.position;
 
@@ -99,6 +118,7 @@ namespace _Scripts.Editor.Kanban.Views
         private void OnPointerUp(PointerUpEvent evt)
         {
             if (!_pointerDown) return;
+            if (evt.pointerId != _pointerId) return;
 
             var wasDragging = _dragging;
 
@@ -107,7 +127,7 @@ namespace _Scripts.Editor.Kanban.Views
             // the capture-out handler from reading the release as a cancellation.
             _finishing = true;
 
-            if (target.HasPointerCapture(_pointerId)) target.ReleasePointer(_pointerId);
+            if (_capture != null && _capture.HasPointerCapture(_pointerId)) _capture.ReleasePointer(_pointerId);
 
             _finishing = false;
 
@@ -122,6 +142,25 @@ namespace _Scripts.Editor.Kanban.Views
             // alt-tab). Only a genuine pointer-up commits; anything else puts the card back.
             if (_finishing) return;
             if (_dragging || _pointerDown) EndDrag(false);
+        }
+
+        /// <summary>Unhooks this gesture's handlers from the shared drag layer. Safe to call twice.</summary>
+        private void ReleaseCapture()
+        {
+            if (_capture == null) return;
+
+            _capture.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+            _capture.UnregisterCallback<PointerUpEvent>(OnPointerUp);
+            _capture.UnregisterCallback<PointerCaptureOutEvent>(OnPointerCaptureOut);
+
+            if (_capture.HasPointerCapture(_pointerId))
+            {
+                _finishing = true;
+                _capture.ReleasePointer(_pointerId);
+                _finishing = false;
+            }
+
+            _capture = null;
         }
 
         /// <summary>
@@ -272,6 +311,10 @@ namespace _Scripts.Editor.Kanban.Views
         private void EndDrag(bool commit)
         {
             _pointerDown = false;
+
+            // Every exit runs through here - a committed drop, a cancellation, or a press that never
+            // passed the threshold - so this is the one place the drag layer has to be cleaned up.
+            ReleaseCapture();
 
             if (!_dragging)
             {
