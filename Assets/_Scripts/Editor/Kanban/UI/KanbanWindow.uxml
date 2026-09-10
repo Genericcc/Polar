@@ -9,6 +9,7 @@
             <uie:ToolbarButton name="add-column" text="+ Column" tooltip="Append a new column" />
             <uie:ToolbarButton name="reload" text="Reload" tooltip="Discard in-memory state and re-read board.json" />
             <uie:ToolbarButton name="reveal" text="Show File" tooltip="Reveal board.json in the file browser" />
+            <uie:ToolbarButton name="font" text="Aa" tooltip="Text size (stored per user, not in the board file)" />
         </uie:Toolbar>
 
         <ui:VisualElement name="conflict-bar" class="conflict-bar">

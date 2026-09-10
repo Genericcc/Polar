@@ -98,12 +98,17 @@ namespace _Scripts.Editor.Kanban.Views
 
         private void BindTitle()
         {
+            var field = Root.Q<TextField>("card-title");
+
             KanbanFieldBinder.BindText(
-                Root.Q<TextField>("card-title"),
+                field,
                 _host,
                 "Rename Task",
                 () => Task.Title,
                 value => Task.Title = value);
+
+            // The field is multiline only so long titles wrap - Enter should still mean "done".
+            KanbanFieldBinder.CommitOnEnter(field);
         }
 
         private void BindDescription()

@@ -15,9 +15,119 @@
     --kanban-radius-sm: 3px;
     --kanban-radius-md: 6px;
 
-    --kanban-column-width: 280px;
+    /* Fallbacks only. KanbanFontScale always puts a .kanban-scale--N class on the window root, and the
+       blocks below redefine every one of these. They are duplicated here so a window that somehow has
+       no scale class still lays out rather than collapsing to zero-size controls. */
+    --kanban-font: 14px;
+    --kanban-font-sm: 12px;
+    --kanban-column-width: 300px;
+    --kanban-glyph-width: 29px;
+    --kanban-control-size: 22px;
+    --kanban-row-height: 20px;
+    --kanban-label-width: 86px;
+}
+
+/*
+ * Text size setting. Each block is one entry in KanbanFontScale.Sizes; the class is swapped on the
+ * window root when the setting changes.
+ *
+ * Text size alone is not enough: chips, icon buttons, the glyph slot and the inline select buttons all
+ * have fixed pixel sizes, and growing only the font would clip their own text. Column width grows too,
+ * because larger text in a fixed-width lane just wraps sooner.
+ *
+ * These come after :root deliberately - same specificity, so source order decides the winner.
+ */
+.kanban-scale--11 {
+    --kanban-font: 11px;
+    --kanban-font-sm: 9px;
+    --kanban-column-width: 250px;
+    --kanban-glyph-width: 24px;
+    --kanban-control-size: 18px;
+    --kanban-row-height: 16px;
+    --kanban-label-width: 70px;
+}
+
+.kanban-scale--12 {
+    --kanban-font: 12px;
+    --kanban-font-sm: 10px;
+    --kanban-column-width: 265px;
     --kanban-glyph-width: 26px;
     --kanban-control-size: 20px;
+    --kanban-row-height: 17px;
+    --kanban-label-width: 76px;
+}
+
+.kanban-scale--13 {
+    --kanban-font: 13px;
+    --kanban-font-sm: 11px;
+    --kanban-column-width: 280px;
+    --kanban-glyph-width: 27px;
+    --kanban-control-size: 21px;
+    --kanban-row-height: 18px;
+    --kanban-label-width: 80px;
+}
+
+.kanban-scale--14 {
+    --kanban-font: 14px;
+    --kanban-font-sm: 12px;
+    --kanban-column-width: 300px;
+    --kanban-glyph-width: 29px;
+    --kanban-control-size: 22px;
+    --kanban-row-height: 20px;
+    --kanban-label-width: 86px;
+}
+
+.kanban-scale--16 {
+    --kanban-font: 16px;
+    --kanban-font-sm: 13px;
+    --kanban-column-width: 330px;
+    --kanban-glyph-width: 32px;
+    --kanban-control-size: 25px;
+    --kanban-row-height: 22px;
+    --kanban-label-width: 96px;
+}
+
+.kanban-scale--18 {
+    --kanban-font: 18px;
+    --kanban-font-sm: 15px;
+    --kanban-column-width: 360px;
+    --kanban-glyph-width: 35px;
+    --kanban-control-size: 28px;
+    --kanban-row-height: 25px;
+    --kanban-label-width: 106px;
+}
+
+.kanban-scale--20 {
+    --kanban-font: 20px;
+    --kanban-font-sm: 16px;
+    --kanban-column-width: 390px;
+    --kanban-glyph-width: 38px;
+    --kanban-control-size: 31px;
+    --kanban-row-height: 27px;
+    --kanban-label-width: 116px;
+}
+
+/* Inherited by everything in the window, the drag ghost included (it is parented to the root, outside
+   .kanban-root). Controls whose own font size Unity's editor stylesheet sets are handled explicitly
+   further down - inheritance alone does not beat a rule that names the element. */
+:root {
+    font-size: var(--kanban-font);
+}
+
+/* Text fields and buttons get it named explicitly rather than by inheritance: Unity's editor theme
+   styles these by class, and a class rule beats an inherited value no matter how far up it was set.
+   Single-class selectors on purpose, so the small-tier rules further down (.chip, .field-row__label,
+   .field-def__kind, ...) still win for the elements that are meant to stay small. */
+.unity-base-text-field__input {
+    font-size: var(--kanban-font);
+}
+
+.kanban-toolbar .unity-toolbar-button {
+    font-size: var(--kanban-font);
+}
+
+.conflict-bar__button {
+    font-size: var(--kanban-font);
 }
 
 /* ---------------------------------------------------------------- window */
@@ -27,9 +137,16 @@
     background-color: var(--unity-colors-window-background);
 }
 
+/* Unity's own Toolbar style sets a fixed ~21px height, which clips its buttons' text at the larger
+   sizes. min-height clamps height in Yoga, so this wins without having to fight the built-in rule. */
 .kanban-toolbar {
     flex-direction: row;
     align-items: center;
+    min-height: var(--kanban-control-size);
+}
+
+.kanban-toolbar .unity-toolbar-button {
+    min-height: var(--kanban-control-size);
 }
 
 .kanban-toolbar__title {
@@ -50,7 +167,7 @@
 .kanban-toolbar__dirty {
     color: var(--unity-colors-default-text);
     opacity: 0.5;
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
     margin-left: var(--kanban-space-2);
 }
 
@@ -153,7 +270,7 @@
 .column__count {
     color: var(--unity-colors-default-text);
     opacity: 0.55;
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
     margin-right: var(--kanban-space-1);
     flex-shrink: 0;
 }
@@ -205,9 +322,12 @@
     border-color: var(--unity-colors-highlight-background);
 }
 
+/* flex-start, not center: once a title wraps to two or three lines, a vertically centred arrow and
+   "..." button drift away from the line they act on. The grip still stretches to the full row height,
+   which makes it a larger drag target on a tall card rather than a smaller one. */
 .card__row {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
 }
 
 /* Dedicated grab area - and it has to be a real target, not a hairline. The rest of the card row is
@@ -217,7 +337,7 @@
 .card__grip {
     width: 10px;
     align-self: stretch;
-    min-height: 20px;
+    min-height: var(--kanban-row-height);
     flex-shrink: 0;
     margin-right: var(--kanban-space-1);
     border-radius: 2px;
@@ -239,20 +359,25 @@
     padding: 0;
     border-width: 0;
     background-color: rgba(0, 0, 0, 0);
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
+/* Titles wrap rather than truncate - a card whose title is cut off is useless at a glance, and there
+   is no tooltip or detail window to recover the rest of it from. The card grows to fit instead.
+   Also applies to the drag ghost's title, which is a Label carrying the same class. */
 .card__title {
     flex-grow: 1;
     flex-shrink: 1;
     margin: 0;
     min-width: 40px;
+    white-space: normal;
 }
 
 .card__title .unity-base-text-field__input {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
     border-radius: var(--kanban-radius-sm);
+    white-space: normal;
 }
 
 .card__desc-holder {
@@ -314,14 +439,14 @@
 .chip {
     flex-direction: row;
     align-items: center;
-    height: 16px;
+    min-height: var(--kanban-row-height);
     margin: 0 var(--kanban-space-1) 0 0;
     padding: 0 6px;
     border-width: 1px;
     border-color: var(--unity-colors-default-border);
     border-radius: 8px;
     background-color: var(--unity-colors-helpbox-background);
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
 .chip:hover {
@@ -346,7 +471,7 @@
 
 .chip__label {
     color: var(--unity-colors-default-text);
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
 .card__fields {
@@ -367,11 +492,11 @@
 }
 
 .field-row__label {
-    width: 76px;
+    width: var(--kanban-label-width);
     flex-shrink: 0;
     color: var(--unity-colors-default-text);
     opacity: 0.65;
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
 .field-row__input {
@@ -381,10 +506,11 @@
 
 .field-row__select {
     flex-grow: 1;
-    height: 18px;
+    min-height: var(--kanban-row-height);
     margin: 0;
     padding: 0 var(--kanban-space-1);
     border-radius: var(--kanban-radius-sm);
+    font-size: var(--kanban-font);
     -unity-text-align: middle-left;
 }
 
@@ -419,11 +545,11 @@
 }
 
 .field-def__kind {
-    width: 64px;
+    min-width: var(--kanban-label-width);
     flex-shrink: 0;
-    height: 18px;
+    min-height: var(--kanban-row-height);
     margin: 0 var(--kanban-space-1);
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
 /* Indented under the header so it reads as belonging to that descriptor rather than as a sibling. */
@@ -434,9 +560,9 @@
 
 .field-def__add-option {
     align-self: flex-start;
-    height: 18px;
+    min-height: var(--kanban-row-height);
     margin: var(--kanban-space-1) 0 0 0;
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
 }
 
 .option-row {
@@ -458,14 +584,16 @@
 
 .fields-window__add {
     align-self: flex-start;
+    min-height: var(--kanban-row-height);
     margin: 0;
+    font-size: var(--kanban-font);
 }
 
 .fields-window__hint {
     margin-top: var(--kanban-space-2);
     color: var(--unity-colors-default-text);
     opacity: 0.55;
-    font-size: 10px;
+    font-size: var(--kanban-font-sm);
     white-space: normal;
 }
 
@@ -492,6 +620,7 @@
     padding: 0;
     border-width: 0;
     background-color: rgba(0, 0, 0, 0);
+    font-size: var(--kanban-font-sm);
     -unity-font-style: bold;
 }
 

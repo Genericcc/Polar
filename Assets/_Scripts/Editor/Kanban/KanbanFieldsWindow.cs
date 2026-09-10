@@ -43,11 +43,28 @@ namespace _Scripts.Editor.Kanban
 
         private KanbanBoard Board => _owner != null ? _owner.Board : null;
 
+        private void OnEnable()
+        {
+            KanbanFontScale.Changed += ApplyFontScale;
+        }
+
+        private void OnDisable()
+        {
+            KanbanFontScale.Changed -= ApplyFontScale;
+        }
+
+        private void ApplyFontScale()
+        {
+            KanbanFontScale.Apply(rootVisualElement);
+        }
+
         private void CreateGUI()
         {
             var styleSheet = KanbanPaths.LoadUiAsset<StyleSheet>(this, "Kanban.uss");
 
             if (styleSheet != null) rootVisualElement.styleSheets.Add(styleSheet);
+
+            KanbanFontScale.Apply(rootVisualElement);
 
             rootVisualElement.AddToClassList("fields-window");
 

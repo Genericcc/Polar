@@ -43,6 +43,7 @@ namespace _Scripts.Editor.Kanban
         private Label _dirtyIndicator;
         private VisualElement _conflictBar;
         private Button _sortButton;
+        private Button _fontButton;
 
         private IVisualElementScheduledItem _saveScheduler;
         private bool _dirty;
@@ -132,11 +133,13 @@ namespace _Scripts.Editor.Kanban
             LoadBoard();
 
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
+            KanbanFontScale.Changed += ApplyFontScale;
         }
 
         private void OnDisable()
         {
             Undo.undoRedoPerformed -= OnUndoRedoPerformed;
+            KanbanFontScale.Changed -= ApplyFontScale;
 
             FlushSave();
 
@@ -166,6 +169,10 @@ namespace _Scripts.Editor.Kanban
             if (windowTemplate == null || _columnTemplate == null || _cardTemplate == null) return;
 
             if (styleSheet != null) rootVisualElement.styleSheets.Add(styleSheet);
+
+            // Before CloneTree so the first layout already has the right sizes - applying it afterwards
+            // would lay the board out at the fallback size and then reflow it.
+            KanbanFontScale.Apply(rootVisualElement);
 
             windowTemplate.CloneTree(rootVisualElement);
 
@@ -204,7 +211,50 @@ namespace _Scripts.Editor.Kanban
             rootVisualElement.Q<Button>("reload").clicked += () => ReloadFromDisk(true);
             rootVisualElement.Q<Button>("reveal").clicked += () => EditorUtility.RevealInFinder(KanbanStore.AbsoluteBoardPath);
 
+            _fontButton = rootVisualElement.Q<Button>("font");
+            _fontButton.clicked += ShowFontMenu;
+
             UpdateSortButton();
+            UpdateFontButton();
+        }
+
+        // ------------------------------------------------------------------ text size
+
+        private void ShowFontMenu()
+        {
+            var menu = new GenericMenu();
+            var current = KanbanFontScale.Current;
+
+            foreach (var size in KanbanFontScale.Sizes)
+            {
+                var captured = size;
+
+                var label = captured == KanbanFontScale.DefaultSize
+                    ? $"{captured} px (default)"
+                    : $"{captured} px";
+
+                menu.AddItem(new GUIContent(label), captured == current, () => KanbanFontScale.Current = captured);
+            }
+
+            menu.ShowAsContext();
+        }
+
+        /// <summary>
+        /// Restyles this window for the current text size. Driven by the shared
+        /// <see cref="KanbanFontScale.Changed"/> event, so changing the size in one window updates any
+        /// other Kanban window that happens to be open.
+        /// </summary>
+        private void ApplyFontScale()
+        {
+            KanbanFontScale.Apply(rootVisualElement);
+            UpdateFontButton();
+        }
+
+        private void UpdateFontButton()
+        {
+            if (_fontButton == null) return;
+
+            _fontButton.text = $"Aa {KanbanFontScale.Current}";
         }
 
         // ------------------------------------------------------------------ sorting

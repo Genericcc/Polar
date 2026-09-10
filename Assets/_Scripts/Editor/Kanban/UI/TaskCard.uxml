@@ -5,7 +5,8 @@
             <ui:Button name="card-toggle" text="&#9656;" class="card__toggle" tooltip="Show / hide the description" />
             <ui:TextField name="card-glyph" class="glyph-field"
                           tooltip="Task glyph - type one, or right-click for a palette" />
-            <ui:TextField name="card-title" class="card__title" />
+            <!-- multiline so a long title wraps instead of scrolling out of sight; the card grows to fit. -->
+            <ui:TextField name="card-title" multiline="true" class="card__title" />
             <ui:Button name="card-menu" text="..." class="icon-button" tooltip="Task options" />
         </ui:VisualElement>
 
