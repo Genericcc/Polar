@@ -70,6 +70,18 @@ namespace _Scripts.Editor.Kanban.Model
         /// <summary>Select only. Order is sort order - see <see cref="KanbanFieldOption"/>.</summary>
         public List<KanbanFieldOption> Options = new();
 
+        /// <summary>
+        /// Value stamped onto every newly created task. Empty means "leave it unset".
+        ///
+        /// A per-descriptor property rather than a rule about one well-known descriptor: the whole point
+        /// of the field system is that adding "Priority" is data, and a default that only worked for a
+        /// key literally spelled "priority" would put a hole in that.
+        ///
+        /// It applies at creation only. Changing the default later deliberately does NOT retro-fit
+        /// existing tasks - that would silently rewrite triage decisions someone already made.
+        /// </summary>
+        public string DefaultValue = string.Empty;
+
         public string Label => string.IsNullOrEmpty(DisplayName) ? Key : DisplayName;
 
         /// <summary>

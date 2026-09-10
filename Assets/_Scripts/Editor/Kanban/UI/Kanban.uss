@@ -21,7 +21,7 @@
     --kanban-font: 14px;
     --kanban-font-sm: 12px;
     --kanban-column-width: 300px;
-    --kanban-glyph-width: 29px;
+    --kanban-glyph-width: 15px;
     --kanban-control-size: 22px;
     --kanban-row-height: 20px;
     --kanban-label-width: 86px;
@@ -41,7 +41,7 @@
     --kanban-font: 11px;
     --kanban-font-sm: 9px;
     --kanban-column-width: 250px;
-    --kanban-glyph-width: 24px;
+    --kanban-glyph-width: 12px;
     --kanban-control-size: 18px;
     --kanban-row-height: 16px;
     --kanban-label-width: 70px;
@@ -51,7 +51,7 @@
     --kanban-font: 12px;
     --kanban-font-sm: 10px;
     --kanban-column-width: 265px;
-    --kanban-glyph-width: 26px;
+    --kanban-glyph-width: 13px;
     --kanban-control-size: 20px;
     --kanban-row-height: 17px;
     --kanban-label-width: 76px;
@@ -61,7 +61,7 @@
     --kanban-font: 13px;
     --kanban-font-sm: 11px;
     --kanban-column-width: 280px;
-    --kanban-glyph-width: 27px;
+    --kanban-glyph-width: 14px;
     --kanban-control-size: 21px;
     --kanban-row-height: 18px;
     --kanban-label-width: 80px;
@@ -71,7 +71,7 @@
     --kanban-font: 14px;
     --kanban-font-sm: 12px;
     --kanban-column-width: 300px;
-    --kanban-glyph-width: 29px;
+    --kanban-glyph-width: 15px;
     --kanban-control-size: 22px;
     --kanban-row-height: 20px;
     --kanban-label-width: 86px;
@@ -81,7 +81,7 @@
     --kanban-font: 16px;
     --kanban-font-sm: 13px;
     --kanban-column-width: 330px;
-    --kanban-glyph-width: 32px;
+    --kanban-glyph-width: 16px;
     --kanban-control-size: 25px;
     --kanban-row-height: 22px;
     --kanban-label-width: 96px;
@@ -91,7 +91,7 @@
     --kanban-font: 18px;
     --kanban-font-sm: 15px;
     --kanban-column-width: 360px;
-    --kanban-glyph-width: 35px;
+    --kanban-glyph-width: 18px;
     --kanban-control-size: 28px;
     --kanban-row-height: 25px;
     --kanban-label-width: 106px;
@@ -101,7 +101,7 @@
     --kanban-font: 20px;
     --kanban-font-sm: 16px;
     --kanban-column-width: 390px;
-    --kanban-glyph-width: 38px;
+    --kanban-glyph-width: 19px;
     --kanban-control-size: 31px;
     --kanban-row-height: 27px;
     --kanban-label-width: 116px;
@@ -599,6 +599,10 @@
 
 /* --------------------------------------------------------------- shared */
 
+/* The slot is deliberately snug - roughly one character wide. It sits between the disclosure arrow and
+   the title, so on a board where glyphs go unused (the common case) every extra pixel here reads as an
+   unexplained gap in front of the title. A wide glyph may touch the edges as a result; widen
+   --kanban-glyph-width if that becomes the more annoying half of the trade. */
 .glyph-field {
     width: var(--kanban-glyph-width);
     flex-shrink: 0;

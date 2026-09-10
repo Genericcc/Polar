@@ -44,8 +44,12 @@ namespace _Scripts.Editor.Kanban.Model
             var priority = board.AddFieldDef("Priority", KanbanFieldKind.Select);
             priority.AddOption("Critical");
             priority.AddOption("High");
-            priority.AddOption("Medium");
+            priority.AddOption("Normal");
             priority.AddOption("Low");
+
+            // New cards start at Normal rather than unset: an unset priority sorts to the bottom, so a
+            // freshly added card would otherwise vanish under the triaged ones on a sorted board.
+            priority.DefaultValue = "Normal";
 
             return board;
         }
@@ -301,6 +305,7 @@ namespace _Scripts.Editor.Kanban.Model
             {
                 def.Options ??= new List<KanbanFieldOption>();
                 def.DisplayName ??= string.Empty;
+                def.DefaultValue ??= string.Empty;
 
                 if (string.IsNullOrEmpty(def.Key)) def.Key = KanbanFieldDef.MakeKey(def.DisplayName);
 
@@ -374,6 +379,10 @@ namespace _Scripts.Editor.Kanban.Model
                 Id = board.AllocateId(),
                 Title = title
             };
+
+            // Stamp each descriptor's default. SetField skips empties, so a descriptor with no default
+            // still costs the new task nothing in the JSON.
+            foreach (var def in board.FieldDefs) task.SetField(def.Key, def.DefaultValue);
 
             Tasks.Add(task);
             return task;

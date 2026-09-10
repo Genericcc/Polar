@@ -121,7 +121,85 @@ namespace _Scripts.Editor.Kanban
 
             if (def.Kind == KanbanFieldKind.Select) card.Add(BuildOptionsBlock(def));
 
+            card.Add(BuildDefaultRow(def));
+
             return card;
+        }
+
+        /// <summary>
+        /// The value new tasks start with. Existing tasks are never touched by a change here - see the
+        /// note on <see cref="KanbanFieldDef.DefaultValue"/>.
+        /// </summary>
+        private VisualElement BuildDefaultRow(KanbanFieldDef def)
+        {
+            var row = new VisualElement();
+            row.AddToClassList("field-row");
+
+            var label = new Label("New tasks") { tooltip = "Value stamped onto newly created tasks" };
+            label.AddToClassList("field-row__label");
+            row.Add(label);
+
+            if (def.Kind == KanbanFieldKind.Select)
+            {
+                var button = new Button
+                {
+                    text = string.IsNullOrEmpty(def.DefaultValue) ? "(unset)" : def.DefaultValue
+                };
+
+                button.AddToClassList("field-row__select");
+                button.clicked += () => ShowDefaultMenu(def);
+                row.Add(button);
+            }
+            else
+            {
+                var field = new TextField();
+                field.AddToClassList("field-row__input");
+
+                KanbanFieldBinder.BindText(
+                    field,
+                    _owner,
+                    "Set Descriptor Default",
+                    () => def.DefaultValue,
+                    value => def.DefaultValue = value);
+
+                row.Add(field);
+            }
+
+            return row;
+        }
+
+        private void ShowDefaultMenu(KanbanFieldDef def)
+        {
+            var menu = new GenericMenu();
+
+            menu.AddItem(
+                new GUIContent("(unset)"),
+                string.IsNullOrEmpty(def.DefaultValue),
+                () => SetDefault(def, string.Empty));
+
+            if (def.Options.Count > 0) menu.AddSeparator(string.Empty);
+
+            foreach (var option in def.Options)
+            {
+                var captured = option.Value;
+
+                menu.AddItem(
+                    new GUIContent(captured.Replace('/', '∕')),
+                    string.Equals(captured, def.DefaultValue, StringComparison.OrdinalIgnoreCase),
+                    () => SetDefault(def, captured));
+            }
+
+            menu.ShowAsContext();
+        }
+
+        private void SetDefault(KanbanFieldDef def, string value)
+        {
+            if (string.Equals(def.DefaultValue, value, StringComparison.Ordinal)) return;
+
+            _owner.RecordUndo("Set Descriptor Default");
+            def.DefaultValue = value;
+
+            Commit();
         }
 
         private VisualElement BuildDefHeader(KanbanBoard board, KanbanFieldDef def)
@@ -330,6 +408,13 @@ namespace _Scripts.Editor.Kanban
         {
             _owner.RecordUndo("Delete Option");
             def.Options.Remove(option);
+
+            // A default pointing at an option that no longer exists would stamp every new task with a
+            // value the picker cannot show and the comparator ranks as unknown.
+            if (string.Equals(def.DefaultValue, option.Value, StringComparison.OrdinalIgnoreCase))
+            {
+                def.DefaultValue = string.Empty;
+            }
 
             // Task values naming this option are deliberately left alone: the value is still meaningful
             // text, it just no longer matches an option, so it sorts as unknown and shows an uncoloured
