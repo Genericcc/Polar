@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="task-card" class="card">
+        <ui:VisualElement name="card-row" class="card__row">
+            <ui:VisualElement name="card-grip" class="card__grip" tooltip="Drag to move this task" />
+            <ui:Button name="card-toggle" text="&#9656;" class="card__toggle" tooltip="Show / hide the description" />
+            <ui:TextField name="card-glyph" class="glyph-field"
+                          tooltip="Task glyph - type one, or right-click for a palette" />
+            <ui:TextField name="card-title" class="card__title" />
+            <ui:Button name="card-menu" text="..." class="icon-button" tooltip="Task options" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="card-description-holder" class="card__desc-holder">
+            <ui:TextField name="card-description" multiline="true" class="card__desc" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

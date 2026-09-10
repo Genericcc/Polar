@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement name="column" class="column">
+        <ui:VisualElement name="column-accent" class="column__accent" />
+
+        <ui:VisualElement name="column-header" class="column__header">
+            <ui:TextField name="column-glyph" class="glyph-field"
+                          tooltip="Column glyph - type one, or right-click for a palette" />
+            <ui:TextField name="column-title" class="column__title" />
+            <ui:Label name="column-count" text="0" class="column__count" />
+            <uie:ColorField name="column-color" class="column__color" tooltip="Column colour" />
+            <ui:Button name="column-add" text="+" class="icon-button" tooltip="Add a task to this column" />
+            <ui:Button name="column-menu" text="..." class="icon-button" tooltip="Column options" />
+        </ui:VisualElement>
+
+        <ui:ScrollView name="column-scroll" class="column__scroll">
+            <ui:VisualElement name="column-tasks" class="column__tasks" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

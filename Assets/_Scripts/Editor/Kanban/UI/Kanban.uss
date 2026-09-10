@@ -1,0 +1,311 @@
+/*
+ * Editor-side styling for the Kanban window.
+ *
+ * Deliberately separate from Assets/UI/Styles/Tokens.uss: that file dresses the runtime HUD panel and
+ * hardcodes a dark palette, whereas this window has to stay legible in both editor skins. Colours here
+ * come from Unity's own editor USS variables; only spacing, radius and sizing are local tokens, named
+ * to match Tokens.uss so the two files read as a set.
+ */
+
+:root {
+    --kanban-space-1: 4px;
+    --kanban-space-2: 8px;
+    --kanban-space-3: 12px;
+
+    --kanban-radius-sm: 3px;
+    --kanban-radius-md: 6px;
+
+    --kanban-column-width: 280px;
+    --kanban-glyph-width: 26px;
+    --kanban-control-size: 20px;
+}
+
+/* ---------------------------------------------------------------- window */
+
+.kanban-root {
+    flex-grow: 1;
+    background-color: var(--unity-colors-window-background);
+}
+
+.kanban-toolbar {
+    flex-direction: row;
+    align-items: center;
+}
+
+.kanban-toolbar__title {
+    width: 200px;
+    margin-left: var(--kanban-space-1);
+}
+
+.kanban-toolbar__title .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    -unity-font-style: bold;
+}
+
+.kanban-toolbar__spacer {
+    flex-grow: 1;
+}
+
+.kanban-toolbar__dirty {
+    color: var(--unity-colors-default-text);
+    opacity: 0.5;
+    font-size: 10px;
+    margin-left: var(--kanban-space-2);
+}
+
+.kanban-toolbar__dirty--hidden {
+    display: none;
+}
+
+/* ------------------------------------------------------- conflict banner */
+
+.conflict-bar {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--kanban-space-1) var(--kanban-space-2);
+    background-color: var(--unity-colors-helpbox-background);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--unity-colors-default-border);
+}
+
+.conflict-bar--visible {
+    display: flex;
+}
+
+.conflict-bar__label {
+    flex-grow: 1;
+    color: var(--unity-colors-default-text);
+    white-space: normal;
+}
+
+.conflict-bar__button {
+    margin-left: var(--kanban-space-1);
+}
+
+/* ---------------------------------------------------------------- board */
+
+.kanban-body {
+    flex-grow: 1;
+}
+
+/* Stretch the scroller's content box to full height so columns run the height of the window
+   instead of shrink-wrapping their cards. */
+.kanban-body #unity-content-viewport {
+    flex-grow: 1;
+}
+
+.kanban-body #unity-content-container {
+    flex-grow: 1;
+    min-height: 100%;
+}
+
+.kanban-columns {
+    flex-direction: row;
+    align-items: stretch;
+    flex-grow: 1;
+    padding: var(--kanban-space-2);
+}
+
+/* --------------------------------------------------------------- column */
+
+.column {
+    width: var(--kanban-column-width);
+    flex-shrink: 0;
+    margin-right: var(--kanban-space-2);
+    border-radius: var(--kanban-radius-md);
+    border-width: 1px;
+    border-color: var(--unity-colors-default-border);
+    background-color: var(--unity-colors-helpbox-background);
+    overflow: hidden;
+}
+
+.column__accent {
+    height: 3px;
+    flex-shrink: 0;
+    /* Actual colour is applied inline from KanbanColumn.ColorHex. */
+    background-color: rgb(120, 120, 120);
+}
+
+.column__header {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--kanban-space-1);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--unity-colors-default-border);
+}
+
+.column__title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+    min-width: 40px;
+}
+
+.column__title .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: var(--kanban-radius-sm);
+    -unity-font-style: bold;
+}
+
+.column__count {
+    color: var(--unity-colors-default-text);
+    opacity: 0.55;
+    font-size: 10px;
+    margin-right: var(--kanban-space-1);
+    flex-shrink: 0;
+}
+
+.column__color {
+    width: 24px;
+    flex-shrink: 0;
+    margin: 0 var(--kanban-space-1) 0 0;
+}
+
+.column__scroll {
+    flex-grow: 1;
+}
+
+.column__tasks {
+    padding: var(--kanban-space-1);
+    min-height: 60px;
+}
+
+/* Highlights the column the pointer is currently hovering during a drag. */
+.column--drop-target {
+    background-color: var(--unity-colors-highlight-background);
+}
+
+/* ----------------------------------------------------------------- card */
+
+.card {
+    margin-bottom: var(--kanban-space-1);
+    padding: var(--kanban-space-1);
+    border-radius: var(--kanban-radius-sm);
+    border-width: 1px;
+    border-color: var(--unity-colors-default-border);
+    background-color: var(--unity-colors-window-background);
+}
+
+.card:hover {
+    border-color: var(--unity-colors-highlight-background);
+}
+
+/* The element that follows the pointer. Absolutely positioned on the window root so it can
+   travel across column boundaries without being clipped by a column's ScrollView. */
+.card--ghost {
+    position: absolute;
+    opacity: 0.85;
+    width: 240px;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--unity-colors-window-background);
+    border-color: var(--unity-colors-highlight-background);
+}
+
+.card__row {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Dedicated grab area - the rest of the card row is text fields and buttons, which have to keep
+   their own click behaviour. */
+.card__grip {
+    width: 4px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: var(--kanban-space-1);
+    border-radius: 2px;
+    background-color: var(--unity-colors-default-border);
+    cursor: pan;
+}
+
+.card__grip:hover {
+    background-color: var(--unity-colors-default-text);
+}
+
+.card__toggle {
+    width: var(--kanban-control-size);
+    height: var(--kanban-control-size);
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 10px;
+}
+
+.card__title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+    min-width: 40px;
+}
+
+.card__title .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: var(--kanban-radius-sm);
+}
+
+.card__desc-holder {
+    display: none;
+    padding-left: var(--kanban-control-size);
+    padding-top: var(--kanban-space-1);
+}
+
+.card__desc-holder--expanded {
+    display: flex;
+}
+
+.card__desc {
+    margin: 0;
+}
+
+.card__desc .unity-base-text-field__input {
+    min-height: 48px;
+    white-space: normal;
+}
+
+/* Insertion marker shown at the index a dragged card would land on. */
+.card-placeholder {
+    margin-bottom: var(--kanban-space-1);
+    border-radius: var(--kanban-radius-sm);
+    border-width: 1px;
+    border-color: var(--unity-colors-default-text);
+    opacity: 0.4;
+    background-color: var(--unity-colors-highlight-background);
+}
+
+/* --------------------------------------------------------------- shared */
+
+.glyph-field {
+    width: var(--kanban-glyph-width);
+    flex-shrink: 0;
+    margin: 0 var(--kanban-space-1) 0 0;
+}
+
+.glyph-field .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    -unity-text-align: middle-center;
+    padding: 0;
+}
+
+.icon-button {
+    width: var(--kanban-control-size);
+    height: var(--kanban-control-size);
+    flex-shrink: 0;
+    margin: 0 0 0 var(--kanban-space-1);
+    padding: 0;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-font-style: bold;
+}
+
+.icon-button:hover {
+    background-color: var(--unity-colors-highlight-background);
+    border-radius: var(--kanban-radius-sm);
+}
