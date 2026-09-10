@@ -9,10 +9,6 @@ namespace _Scripts._Game.DOTS.Systems.People
 {
     public partial struct ArriveAtHomeSystem : ISystem
     {
-        public void OnCreate(ref SystemState state)
-        {
-        }
-
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {

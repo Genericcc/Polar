@@ -1,6 +1,5 @@
 using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.ComponentData;
-using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -10,10 +9,6 @@ namespace _Scripts._Game.DOTS.Systems.Works
 {
     public partial struct ArriveAtWorkSystem : ISystem
     {
-        public void OnCreate(ref SystemState state)
-        {
-        }
-
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {

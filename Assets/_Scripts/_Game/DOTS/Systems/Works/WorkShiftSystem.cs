@@ -1,4 +1,3 @@
-using System;
 using _Scripts._Game.DOTS.Authoring.People;
 using _Scripts._Game.DOTS.Components.ComponentData;
 using _Scripts._Game.DOTS.Components.ComponentData.Pathfinding;
