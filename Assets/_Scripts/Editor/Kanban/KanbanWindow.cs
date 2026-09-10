@@ -25,6 +25,9 @@ namespace _Scripts.Editor.Kanban
         private const string ExpandedStateKey = "Polar.Kanban.ExpandedTasks";
         private const long SaveDebounceMs = 750;
 
+        private const string AscendingArrow = "▲";
+        private const string DescendingArrow = "▼";
+
         /// <summary>Larger than any realistic content size; ScrollView clamps it to the true extent.</summary>
         internal const float ScrollToEnd = 100000f;
 
@@ -39,6 +42,7 @@ namespace _Scripts.Editor.Kanban
         private ScrollView _boardScroll;
         private Label _dirtyIndicator;
         private VisualElement _conflictBar;
+        private Button _sortButton;
 
         private IVisualElementScheduledItem _saveScheduler;
         private bool _dirty;
@@ -192,9 +196,93 @@ namespace _Scripts.Editor.Kanban
                     if (Board != null) Board.Title = value;
                 });
 
+            _sortButton = rootVisualElement.Q<Button>("sort");
+            _sortButton.clicked += ShowSortMenu;
+
+            rootVisualElement.Q<Button>("fields").clicked += () => KanbanFieldsWindow.Open(this);
             rootVisualElement.Q<Button>("add-column").clicked += AddColumn;
             rootVisualElement.Q<Button>("reload").clicked += () => ReloadFromDisk(true);
             rootVisualElement.Q<Button>("reveal").clicked += () => EditorUtility.RevealInFinder(KanbanStore.AbsoluteBoardPath);
+
+            UpdateSortButton();
+        }
+
+        // ------------------------------------------------------------------ sorting
+
+        private void ShowSortMenu()
+        {
+            if (Board == null) return;
+
+            var menu = new GenericMenu();
+
+            menu.AddItem(new GUIContent("Manual order"), !Board.SortActive, () => ApplySort(null, true));
+
+            if (Board.FieldDefs.Count == 0)
+            {
+                // Nothing to sort by yet - say so in the menu rather than leaving it looking broken.
+                menu.AddSeparator(string.Empty);
+                menu.AddDisabledItem(new GUIContent("No descriptors defined - add one under Fields"), false);
+                menu.ShowAsContext();
+                return;
+            }
+
+            menu.AddSeparator(string.Empty);
+
+            foreach (var def in Board.FieldDefs)
+            {
+                var captured = def;
+                var sortedByThis = Board.SortActive && Board.Sort.Key == captured.Key;
+
+                // '/' nests entries in GenericMenu, and here that is exactly what is wanted - one
+                // submenu per descriptor - so only the label itself needs escaping.
+                var label = captured.Label.Replace('/', '∕');
+
+                menu.AddItem(
+                    new GUIContent($"{label}/Ascending"),
+                    sortedByThis && Board.Sort.Ascending,
+                    () => ApplySort(captured, true));
+
+                menu.AddItem(
+                    new GUIContent($"{label}/Descending"),
+                    sortedByThis && !Board.Sort.Ascending,
+                    () => ApplySort(captured, false));
+            }
+
+            menu.ShowAsContext();
+        }
+
+        /// <summary>Passing a null def returns the board to manual order.</summary>
+        private void ApplySort(KanbanFieldDef def, bool ascending)
+        {
+            RecordUndo("Change Sort");
+
+            Board.Sort.Enabled = def != null;
+
+            // Key and direction are both left alone when switching to manual order, so the menu comes
+            // back showing the descriptor and direction the user last chose rather than a reset.
+            if (def != null)
+            {
+                Board.Sort.Key = def.Key;
+                Board.Sort.Ascending = ascending;
+            }
+
+            MarkDirty();
+            UpdateSortButton();
+            RebuildBoard();
+        }
+
+        private void UpdateSortButton()
+        {
+            if (_sortButton == null) return;
+
+            if (Board is not { SortActive: true })
+            {
+                _sortButton.text = "Sort: Manual";
+                return;
+            }
+
+            var def = Board.FindFieldDef(Board.Sort.Key);
+            _sortButton.text = $"Sort: {def.Label} {(Board.Sort.Ascending ? AscendingArrow : DescendingArrow)}";
         }
 
         private void BindConflictBar()
@@ -250,10 +338,22 @@ namespace _Scripts.Editor.Kanban
 
             LoadBoard();
             UpdateDirtyIndicator();
+            UpdateSortButton();
             RebuildBoard();
 
             var titleField = rootVisualElement.Q<TextField>("board-title");
             titleField?.SetValueWithoutNotify(Board?.Title ?? string.Empty);
+        }
+
+        /// <summary>
+        /// Called by <see cref="KanbanFieldsWindow"/> after it edits the descriptor list. Every card
+        /// renders its chips from those definitions, and the sort may have been pointed at a descriptor
+        /// that no longer exists, so both the toolbar and the whole board are refreshed.
+        /// </summary>
+        public void NotifyFieldDefsChanged()
+        {
+            UpdateSortButton();
+            RebuildBoard();
         }
 
         private void AddColumn()
@@ -276,6 +376,7 @@ namespace _Scripts.Editor.Kanban
 
             // Undo restored an older serialized state of the holder, so every view is now bound to stale
             // model objects - rebuild wholesale, then persist the reverted board.
+            UpdateSortButton();
             RebuildBoard();
 
             var titleField = rootVisualElement?.Q<TextField>("board-title");

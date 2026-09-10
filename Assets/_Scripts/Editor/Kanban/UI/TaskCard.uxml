@@ -9,8 +9,13 @@
             <ui:Button name="card-menu" text="..." class="icon-button" tooltip="Task options" />
         </ui:VisualElement>
 
+        <!-- Chips for descriptors this task has a value for. Populated from C# (TaskFieldsView), since
+             which chips exist depends on the board's field definitions. -->
+        <ui:VisualElement name="card-chips" class="card__chips" />
+
         <ui:VisualElement name="card-description-holder" class="card__desc-holder">
             <ui:TextField name="card-description" multiline="true" class="card__desc" />
+            <ui:VisualElement name="card-fields" class="card__fields" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

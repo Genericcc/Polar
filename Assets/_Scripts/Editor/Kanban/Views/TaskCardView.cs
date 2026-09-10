@@ -20,6 +20,7 @@ namespace _Scripts.Editor.Kanban.Views
         private readonly IKanbanHost _host;
         private readonly VisualElement _descriptionHolder;
         private readonly Button _toggle;
+        private readonly TaskFieldsView _fields;
 
         public VisualElement Root { get; }
         public VisualElement Grip { get; }
@@ -40,13 +41,49 @@ namespace _Scripts.Editor.Kanban.Views
             _toggle = Root.Q<Button>("card-toggle");
             _descriptionHolder = Root.Q<VisualElement>("card-description-holder");
 
+            _fields = new TaskFieldsView(
+                host,
+                task,
+                Root.Q<VisualElement>("card-chips"),
+                Root.Q<VisualElement>("card-fields"),
+                ReorderAfterFieldChange,
+                RevealField);
+
             BindGlyph();
             BindTitle();
             BindDescription();
             BindToggle();
             BindMenu();
 
+            _fields.Rebuild();
+
             Root.AddManipulator(new TaskDragManipulator(host, this));
+        }
+
+        /// <summary>
+        /// A descriptor with no inline editor (Text, Number) was clicked on its chip - open the card so
+        /// the real field is reachable.
+        /// </summary>
+        private void RevealField(KanbanFieldDef def)
+        {
+            if (!_host.IsExpanded(Task.Id))
+            {
+                _host.SetExpanded(Task.Id, true);
+                ApplyExpanded(true);
+            }
+
+            _fields.FocusEditor(def);
+        }
+
+        /// <summary>
+        /// The edited value feeds the active sort, so this card may belong somewhere else now. Rebuilding
+        /// destroys this very view, so it waits for the current event to finish dispatching - the same
+        /// reason <see cref="TaskDragManipulator"/> defers its rebuild.
+        /// </summary>
+        private void ReorderAfterFieldChange()
+        {
+            var column = Owner.Column;
+            _host.DragLayer.schedule.Execute(() => _host.RebuildColumn(column));
         }
 
         private void BindGlyph()

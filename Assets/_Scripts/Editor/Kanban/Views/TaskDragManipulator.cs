@@ -37,6 +37,13 @@ namespace _Scripts.Editor.Kanban.Views
         private ColumnView _sourceColumn;
         private ColumnView _targetColumn;
 
+        /// <summary>
+        /// Captured once at drag start rather than read per-frame: the whole gesture has to obey one set
+        /// of rules, and a sort toggled from the toolbar mid-drag would otherwise change what the drop
+        /// means halfway through.
+        /// </summary>
+        private bool _sorted;
+
         public TaskDragManipulator(IKanbanHost host, TaskCardView card)
         {
             _host = host;
@@ -137,6 +144,7 @@ namespace _Scripts.Editor.Kanban.Views
         private void BeginDrag()
         {
             _dragging = true;
+            _sorted = _host.Board is { SortActive: true };
 
             _sourceColumn = _card.Owner;
             _targetColumn = _sourceColumn;
@@ -199,7 +207,13 @@ namespace _Scripts.Editor.Kanban.Views
             if (_targetColumn == null) return;
 
             var container = _targetColumn.TasksContainer;
-            var insertIndex = ResolveInsertIndex(container, position.y);
+
+            // Under a sort the drop position is not the user's to choose - the comparator decides where
+            // the card lands. Parking the placeholder at the end says "it joins this column" without
+            // promising a slot the drop cannot honour.
+            var insertIndex = _sorted
+                ? container.childCount
+                : ResolveInsertIndex(container, position.y);
 
             _placeholder.RemoveFromHierarchy();
             container.Insert(Mathf.Clamp(insertIndex, 0, container.childCount), _placeholder);
@@ -294,6 +308,29 @@ namespace _Scripts.Editor.Kanban.Views
         private void MoveTask(ColumnView source, ColumnView destination, int dropIndex)
         {
             var task = _card.Task;
+
+            if (_sorted)
+            {
+                // Reordering within a column is meaningless while the comparator owns the order, so a
+                // same-column drop is a no-op rather than a silent nothing-happened. Moving a card to a
+                // different column still means something - it re-homes the task - so that stays allowed.
+                if (destination == source)
+                {
+                    ScheduleRebuild(source.Column, null);
+                    return;
+                }
+
+                _host.RecordUndo("Move Task");
+                source.Column.Tasks.Remove(task);
+
+                // Appended, not inserted: the manual order is what the board falls back to when sorting
+                // is switched off, and the end of the list is the honest answer for "arrived just now".
+                destination.Column.Tasks.Add(task);
+
+                _host.MarkDirty();
+                ScheduleRebuild(source.Column, destination.Column);
+                return;
+            }
 
             _host.RecordUndo("Move Task");
 

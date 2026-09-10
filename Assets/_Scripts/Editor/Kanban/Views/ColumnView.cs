@@ -58,7 +58,14 @@ namespace _Scripts.Editor.Kanban.Views
             _cards.Clear();
             TasksContainer.Clear();
 
-            foreach (var task in Column.Tasks)
+            var board = _host.Board;
+
+            // Deferred rebuilds (a drag, a field edit) can land after the window has torn the board down.
+            if (board == null) return;
+
+            // Sorting is a view transform: Column.Tasks keeps the order the user dragged into place, and
+            // OrderTasks hands back either that same list or a sorted copy.
+            foreach (var task in board.OrderTasks(Column.Tasks))
             {
                 var card = new TaskCardView(_host, this, task, _cardTemplate);
                 _cards.Add(card);
@@ -66,6 +73,10 @@ namespace _Scripts.Editor.Kanban.Views
             }
 
             _count.text = Column.Tasks.Count.ToString();
+
+            // Cards cannot be reordered by hand while a sort is driving the order, so the grips go away
+            // rather than staying put and doing nothing.
+            Root.EnableInClassList("column--sorted", board.SortActive);
         }
 
         private void BindGlyph()

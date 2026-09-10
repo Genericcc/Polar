@@ -4,6 +4,8 @@
             <ui:TextField name="board-title" class="kanban-toolbar__title" tooltip="Board title" />
             <ui:Label name="dirty-indicator" text="unsaved" class="kanban-toolbar__dirty" />
             <ui:VisualElement class="kanban-toolbar__spacer" />
+            <uie:ToolbarButton name="sort" text="Sort: Manual" tooltip="Order cards by a task descriptor" />
+            <uie:ToolbarButton name="fields" text="Fields" tooltip="Add or edit task descriptors (priority, status, ...)" />
             <uie:ToolbarButton name="add-column" text="+ Column" tooltip="Append a new column" />
             <uie:ToolbarButton name="reload" text="Reload" tooltip="Discard in-memory state and re-read board.json" />
             <uie:ToolbarButton name="reveal" text="Show File" tooltip="Reveal board.json in the file browser" />
