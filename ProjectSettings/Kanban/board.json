@@ -1,0 +1,222 @@
+{
+    "SchemaVersion": 2,
+    "Title": "Polar Board",
+    "NextId": 26,
+    "Columns": [
+        {
+            "Id": "1",
+            "Title": "Backlog",
+            "ColorHex": "#5B71F9",
+            "Glyph": "",
+            "Tasks": [
+                {
+                    "Id": "13",
+                    "Title": "VATowe animacje jak Timberborn",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Medium"
+                        }
+                    ]
+                },
+                {
+                    "Id": "14",
+                    "Title": "Rozkmina na temat JSONowych Spec'ów zamiast Scriptabli",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Low"
+                        }
+                    ]
+                },
+                {
+                    "Id": "19",
+                    "Title": "(Plan) Elastyczny flow tworzenia mapy, żeby móc dodać resource'y i PoI ",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Medium"
+                        }
+                    ]
+                },
+                {
+                    "Id": "20",
+                    "Title": "Save i Load",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Low"
+                        }
+                    ]
+                },
+                {
+                    "Id": "22",
+                    "Title": "New task",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Low"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "4",
+            "Title": "Do złapania",
+            "ColorHex": "#FFFFFF",
+            "Glyph": "",
+            "Tasks": [
+                {
+                    "Id": "10",
+                    "Title": "Workplace generujące resourcey w interwale",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "High"
+                        }
+                    ]
+                },
+                {
+                    "Id": "21",
+                    "Title": "Spawnowanie resource'ów na Nodach",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "High"
+                        }
+                    ]
+                },
+                {
+                    "Id": "12",
+                    "Title": "System na reset ShiftData żeby wiedzieli kiedy wracać do roboty",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Medium"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "2",
+            "Title": "W toku",
+            "ColorHex": "#FFBE00",
+            "Glyph": "",
+            "Tasks": [
+                {
+                    "Id": "15",
+                    "Title": "Pathfinding z pracy do domu",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "High"
+                        }
+                    ]
+                },
+                {
+                    "Id": "25",
+                    "Title": "GameTime",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Medium"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "8",
+            "Title": " Do odebrania",
+            "ColorHex": "#9270CA",
+            "Glyph": "",
+            "Tasks": [
+                {
+                    "Id": "11",
+                    "Title": "Pathfinding, który wyklucza startową lokalizację",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "High"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "3",
+            "Title": "Done",
+            "ColorHex": "#16B400",
+            "Glyph": "",
+            "Tasks": [
+                {
+                    "Id": "24",
+                    "Title": "Pathfinding do pracy",
+                    "Glyph": "",
+                    "Description": "",
+                    "Fields": [
+                        {
+                            "Key": "priority",
+                            "Value": "Medium"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "FieldDefs": [
+        {
+            "Key": "priority",
+            "DisplayName": "Priority",
+            "Kind": 2,
+            "Options": [
+                {
+                    "Value": "Critical",
+                    "ColorHex": "#E8684A"
+                },
+                {
+                    "Value": "High",
+                    "ColorHex": "#F6BD16"
+                },
+                {
+                    "Value": "Medium",
+                    "ColorHex": "#5B8FF9"
+                },
+                {
+                    "Value": "Low",
+                    "ColorHex": "#61DDAA"
+                }
+            ],
+            "DefaultValue": "Medium"
+        }
+    ],
+    "Sort": {
+        "Enabled": true,
+        "Key": "priority",
+        "Ascending": true
+    }
+}
