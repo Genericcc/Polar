@@ -1,286 +1,385 @@
-# Part 2 — City-builder architecture, cross-referenced with Timberborn
+# Part 2 — City-builder architecture: bootstrap, specs, and composition
 
 A second, independent learning path. **Part 1** (`csharp-learning-path.md`) is about the *language*;
-this is about *how a city builder is put together*. The reference implementation is **Timberborn**,
-whose architecture is publicly documented for modders:
-<https://github.com/mechanistry/timberborn-modding/wiki/Timberborn-architecture>
+this is about *how a city builder is put together*.
 
-10 lessons, ~3–4 h each. Not chapter-driven, so the order is by dependency, not by book.
+Structured as **Lesson 1 standalone plus three tracks**, front-loading the two things that prompted
+it: a single entry point that builds everything through DI, and buildings defined as data specs rather
+than subclasses.
 
----
+**Start at Lesson 1 (game time).** It's unblocked by everything else, it's already half-written in your
+working tree, and `WorkShiftSystem` is waiting on it.
 
-## Why Timberborn is the right reference
+## References, and which one is right for what
 
-It's a shipped, commercially successful city builder **in Unity**, and because it supports modding,
-its internal architecture is documented rather than guessed at. Its DI framework, **Bindito, is
-based on Zenject** — which Polar already uses. So this isn't a foreign paradigm: Timberborn's
-`IConfigurator` is your `GameInstaller`. You're reading a mature version of the architecture you
-already started.
+| Reference | Good for | Caveat |
+|---|---|---|
+| [**Timberborn**](https://github.com/mechanistry/timberborn-modding/wiki/Timberborn-architecture) (Unity, C#) | Blueprint/spec JSON format; DI contexts; `MultiBind`; fragment UI | Only the *modding surface* is documented, not internals. Not DOTS. |
+| [**RimWorld**](https://rimworldwiki.com/wiki/Modding_Tutorials/Def_classes) (Unity, C#) | Name-keyed definition resolution (`DefDatabase<T>.GetNamed`); why composition beats def inheritance | XML not JSON; older codebase; no DOTS |
+| **Composition-root pattern** (Seemann, *DI Principles, Practices & Patterns*) | The entry-point idea in its general form | Not game-specific |
 
-### ⚠️ Read this before Lesson 1: do not copy Timberborn wholesale
+### Verdict on the Timberborn choice: half right, and worth keeping
 
-Timberborn is a **managed OOP component model** — `BaseComponent`, classes, virtual dispatch, a DI
-container resolving object graphs. Polar is **hybrid**: MonoBehaviour + Zenject on the input/grid/
-placement side, Unity DOTS (unmanaged structs, systems, buffers) on the spawning/movement side.
+You said what you like is (a) the entry point everything builds from, and (b) buildings as JSON specs.
+Those two halves deserve different answers:
 
-Unity DOTS is a *different* ECS with incompatible rules. `BaseComponent` and `IPersistentEntity`
-cannot cross into an `IComponentData`. Applying Timberborn patterns to your DOTS systems will fight
-Burst and lose.
+**(b) Specs as JSON — Timberborn is an excellent reference.** Its blueprints are literally what you
+described. A building is a JSON object composed of named specs:
 
-**The rule for this entire path:**
+```json
+{ "BuildingSpec": { }, "BuildingModelSpec": { }, "WorkplaceSpec": { } }
+```
 
-| Polar layer | Apply Timberborn patterns? |
+That shape alone solves a real Polar bug: *presence of `WorkplaceSpec` makes something a workplace*,
+which is precisely what `if (structureData is WorkStructureData)` (`StructureManager.cs:120`) is
+faking with a type check.
+
+**Pair it with RimWorld.** RimWorld's `Def` system is the same idea in the same engine and language,
+and its docs state the principle Timberborn's don't: name-based resolution exists to allow
+"cross-referencing without hardcoded object references." That is *exactly* Polar's worst coupling —
+the hand-assigned `int ID` matched between a ScriptableObject and the baked `StructureRegister`, which
+CLAUDE.md already records as the usual cause of a structure spawning nothing. RimWorld also explicitly
+recommends `CompProperties`/`ThingComp` composition *over* extending Def classes, to avoid the
+"inheritance nightmare" — which is a description of your `BaseStructureData` tree.
+
+**(a) The entry point — Timberborn is the weakest justification.** Bindito is Zenject-based, and you
+already use Zenject: `GameSceneInstaller` → `GameInstaller` + `UIInstaller` *is* a composition root.
+You're not missing the idea; you're missing three refinements (scene contexts, multi-binding, and an
+ordered load phase). So Track A teaches the general pattern and uses Timberborn as one instance of it,
+rather than treating Timberborn as the source of the concept.
+
+### ⚠️ Where the spec idea collides with DOTS — read before Track B
+
+Polar **bakes** entity prefabs at edit time (`StructureRegister`, `EntitiesSubScene.unity`). JSON
+specs load at **runtime**. These cannot fully replace each other, and Timberborn doesn't face this
+problem because it isn't DOTS.
+
+Also note the honest cost: Timberborn's blueprints reference assets **by string path**
+(`"Model": "Buildings/Food/Bakery/Bakery.Folktails.Model"`) — the same runtime-resolved fragility
+this document criticises in Polar's `Resources/` bindings. Specs trade *silently mismatched int IDs*
+for *string keys that must be validated at load*. That's a real improvement, but only if you build the
+validation (Lesson 8). It is not free.
+
+**The realistic target architecture:**
+
+| Owns | Mechanism |
 |---|---|
-| Managed side — installers, placement, structures data, UI | ✅ Yes, directly |
-| The bridge — `StructureManager` buffer appends | ⚠️ Design deliberately; this is where the two models meet |
-| DOTS side — systems, `IComponentData`, jobs | ❌ No. Use DOTS idioms |
+| Numbers and behaviour (cost, inhabitants, shift duration, footprint) | JSON specs, loaded at runtime |
+| Rendering and prefabs (mesh, material, baked entity prefab) | Unity assets, baked as now |
+| The join between them | A **name key**, validated loudly at startup |
 
-Most of Polar's architectural pain is on the managed side, so most of this transfers. But every
-lesson below states which layer it applies to.
+✅ **You already have the serializer.** `com.unity.serialization` 3.1.3 ships as a dependency of
+`com.unity.entities` 1.4.8 (see `Packages/packages-lock.json:227`). `Unity.Serialization.Json`
+handles polymorphic types and dictionaries; Unity's built-in `JsonUtility` handles **neither**, and a
+`{"BuildingSpec": …, "WorkplaceSpec": …}` object is both. Newtonsoft is *not* in the project. No new
+dependency is needed.
 
----
+### Which layer each lesson applies to
 
-## The four architectural weaknesses this path fixes
+Timberborn is a **managed OOP** component model. Polar is hybrid: MonoBehaviour+Zenject on the
+input/grid/placement side, DOTS on spawning/movement. `BaseComponent` cannot become an
+`IComponentData`, and forcing it will fight Burst.
 
-Found by reading the code, not assumed:
-
-1. **Inheritance where composition belongs.** `BaseStructureData` → `HouseStructureData` /
-   `RoadStructureData` / `WallStructureData` / `WorkStructureData`, plus an abstract `Structure`
-   MonoBehaviour. Every new structure *kind* needs a new subclass.
-2. **Type-switching instead of polymorphism.** `PlacementManager.cs:112-136` switches on
-   `StructureType` twice; `StructureManager.cs:120` does `if (structureData is WorkStructureData)`.
-   Adding a structure kind means editing central files — the definition of a closed architecture.
-3. **A god-method at the bridge.** `StructureManager.ConstructBuilding` (`StructureManager.cs:86-131`)
-   checks affordability, mutates grid state, and appends to three different ECS buffers in sequence.
-4. **Construction-time side effects.** `PolarGridManager.Construct` builds the entire grid *during
-   dependency injection*, making startup order-dependent (CLAUDE.md already flags this).
+| Polar layer | Apply these patterns? |
+|---|---|
+| Managed — installers, placement, structure data, UI | ✅ Directly |
+| The bridge — `StructureManager` buffer appends | ⚠️ Deliberately; this is where the models meet |
+| DOTS — systems, `IComponentData`, jobs | ❌ Use DOTS idioms |
 
 ---
 
-## Lesson 1 — Composition over inheritance: the entity-component model
-**Layer: managed.** Timberborn refs: `BaseComponent`, "entities are composed of components".
+## The four weaknesses this path fixes
 
-In Timberborn a beaver or a building is an **entity with a bag of components**. There is no
-`FarmHouse : Building : Entity` chain. Behaviour is added by attaching a component, not by
-subclassing.
+Verified in code, not assumed:
 
-**☐ Exercise (design, no code).** Take Polar's four `*StructureData` subclasses and re-express them
-as components: what is `Inhabitants` (`PeopleSpawnOrder`)? What is `ShiftDuration`
-(`WorkStructureData`)? Which structures would hold which components? Write the component list, then
-find the combination that inheritance *cannot* express — e.g. a building that is both a workplace
-and a home. That impossible case is the argument for the whole path.
+1. **Inheritance where composition belongs** — `BaseStructureData` → `House`/`Road`/`Wall`/`Work`, plus
+   an abstract `Structure` MonoBehaviour. A building that is both a home *and* a workplace is
+   inexpressible.
+2. **Type-switching instead of polymorphism** — `PlacementManager.cs:112-136` (twice) and
+   `StructureManager.cs:120`.
+3. **A god-method at the bridge** — `StructureManager.ConstructBuilding` (`:86-131`) does affordability,
+   grid mutation, and three buffer appends.
+4. **Construction-time side effects** — `PolarGridManager.Construct` builds the whole grid *during
+   injection*, so startup is DI-order dependent.
 
-## Lesson 2 — Specs: immutable, data-driven definitions
-**Layer: managed.** Timberborn refs: `ComponentSpec`, `[Serialize]`, `{ get; init; }`,
-`ImmutableArray`, JSON blueprints with `#append` / `#remove`.
+---
 
-Timberborn Specs are **immutable record types** — stateless definitions, separate from the live
-runtime component that reads them. Polar uses mutable `ScriptableObject`s for the same job.
+# Lesson 1 — Start here (standalone)
 
-> ✅ Good news for the C# 9 ceiling (see Part 1): `record` and `{ get; init; }` are **both C# 9**, so
-> the Spec pattern is reproducible in Polar as-is. `ImmutableArray` is a BCL type, also fine.
+## ☐ Lesson 1 — Simulation loop and game time
+**Layer: DOTS.** Refs: Timberborn `IUpdatableSingleton` — *concept only, this lives on the ECS side.*
 
-**☐ Exercise.** Convert one structure definition to a spec-shaped immutable record, with the
-ScriptableObject reduced to an authoring shell that produces it. Then write down the honest
-trade-off: ScriptableObjects give you Unity's inspector and asset references for free; specs give you
-immutability, testability and mod-ability. Decide which matters for Polar and commit to it.
+First because it depends on nothing else in this document, it's already in progress, and it unblocks
+code you've already written.
 
-**☐ Stretch.** Polar matches structures by a hand-assigned `int ID` between the ScriptableObject and
-the baked `StructureRegister` — CLAUDE.md notes an ID mismatch is the usual cause of a structure
-spawning nothing. That's exactly the fragility specs remove. Design a name/spec-keyed alternative.
+**☐ Exercise.** `GameTimeManager` (`_Game/DOTS/Systems/Times/GameTimeManager.cs`) is a stub: `OnUpdate`
+fetches `GameTimeData` and discards it. `GameTimeAuthoring` bakes a single `InGameHourDuration`. Build
+it out — accumulate in-game time, expose hour/day, drive day/night — then add pause and ×1/×2/×3 speed
+and verify nothing downstream breaks at either extreme.
 
-## Lesson 3 — The composition root and DI contexts
-**Layer: managed.** Timberborn refs: `IConfigurator`, `[Context("Game")]`, `AsSingleton()`,
-`AsTransient()`, `PrefabConfigurator`.
+Wire it to what exists: `WorkShiftSystem` and `WorkStructureData.ShiftDuration` are already written
+against a notion of time. Make them consume game time, not raw `DeltaTime`.
 
-Timberborn splits bindings into many small configurators, each declaring the scene context it
-belongs to, auto-discovered by attribute. Polar has one `GameInstaller` with five `#region` blocks
-and a `UIInstaller`.
+**Key concept:** fixed simulation tick vs. frame-dependent update. Results must be identical at 30 fps
+and 144 fps, and at ×3. Read up on fixed-timestep accumulators before writing this.
 
-**☐ Exercise.** Split `GameInstaller` (`Zenject/Installers/GameInstaller.cs`) along its existing
-region seams — Grid, Structures, Resources, Player — into focused installers. While there, confront
-the `Resources/` string-path bindings (`"Prefabs/Worlds/PolarGrids/PolarNodePrefab"`,
-`"Settings/PolarGridRingsSettings"`, …): renaming an asset breaks DI at *runtime* with no compile
-error. Design a typed alternative (a ScriptableObject reference holder bound once).
+---
 
-## Lesson 4 — MultiBind: architecture that's open for extension
-**Layer: managed.** Timberborn refs: `MultiBind<T>()` → injected as `IEnumerable<T>`.
+# Track A — The entry point and the container
 
-This is the single most transferable idea in Timberborn. Instead of a central switch deciding which
-handler to use, every handler is registered into a collection and **declares what it can handle**.
-Adding a new one touches no existing file.
+## ☐ Lesson 2 — The composition root
+**Layer: managed.** Refs: composition-root pattern; Timberborn `IConfigurator`, `[Context("Game")]`,
+`PrefabConfigurator`, `AsSingleton()` / `AsTransient()`.
 
-**☐ Exercise.** Part 1 Week 4 collapsed `PlacementManager`'s two switches into a lookup. Now do it
-properly: give `IPlacementHandler` / `IPlacementValidator` a `CanHandle(IStructureData)` (or a
-declared `StructureType`), multi-bind all implementations, and have `PlacementManager` select from
-the injected collection. Zenject does this with `BindInterfacesTo<>` + injecting `List<IPlacementHandler>`.
-Verify by adding a throwaway fifth structure type **without editing `PlacementManager`.** If you have
-to edit it, the refactor failed.
+One place builds the object graph; nothing else calls `new` on a service. Timberborn splits this into
+many small attribute-discovered configurators, each declaring its scene context.
 
-## Lesson 5 — Lifecycle: ordered loading vs. side-effecting construction
-**Layer: managed.** Timberborn refs: `ILoadableSingleton.Load()`, `IUpdatableSingleton`.
+**☐ Exercise A — map what you have.** Draw the actual startup graph: `GameSceneInstaller` →
+`SignalBusInstaller` + `GameInstaller` + `UIInstaller` → what gets built, in what order, and what has
+side effects. You cannot improve a composition root you can't draw.
 
-Timberborn separates *being constructed* from *being loaded*. `ILoadableSingleton.Load()` runs in
-dependency order, after the container is built.
+**☐ Exercise B — split it.** `GameInstaller.cs` has five `#region` blocks (Grid, Structures,
+Resources, Player, Signals). Split along those seams into focused installers. Then address the
+string-path bindings (`"Prefabs/Worlds/PolarGrids/PolarNodePrefab"`,
+`"Settings/PolarGridRingsSettings"`, …): renaming an asset breaks DI at runtime with **no compile
+error**. Design a typed alternative — a single ScriptableObject reference holder, bound once.
 
-**☐ Exercise.** `PolarGridManager.Construct` builds the whole grid inside the `[Inject]` method, so
-grid creation is DI-ordering-dependent. Introduce an explicit load phase — an `ILoadable` interface,
-multi-bound, invoked in order by a bootstrapper after the container is ready. Move grid construction
-into it. This also makes the grid rebuildable without rebuilding the container, which you'll need for
-save/load in Lesson 8.
+## ☐ Lesson 3 — Ordered loading vs. side-effecting construction
+**Layer: managed.** Refs: Timberborn `ILoadableSingleton.Load()`.
 
-## Lesson 6 — Entity lifecycle interfaces
-**Layer: managed.** Timberborn refs: `IInitializableEntity`, `IFinishedStateListener`
-(`OnEnterFinishedState` / `OnExitFinishedState`), `IDeletableEntity`, `IAwakableComponent`.
+Timberborn separates *being constructed* from *being loaded*: `Load()` runs in dependency order,
+after the container is built. Construction stays cheap and side-effect-free.
 
-Note what these interfaces buy: a component opts into *only* the lifecycle events it cares about,
-rather than inheriting a base class with a dozen virtual no-ops. `IFinishedStateListener` exists
-because a city-builder building has a **construction phase** distinct from being operational — Polar
-has no such concept; buildings pop into existence complete.
+**☐ Exercise.** `PolarGridManager.Construct` builds the entire grid inside its `[Inject]` method.
+Introduce an explicit load phase: an `ILoadable` interface, multi-bound, invoked in order by a
+bootstrapper once the container is ready. Move grid construction into it. This is a prerequisite for
+both spec loading (Lesson 7) and save/load (Lesson 11) — the grid must be rebuildable without
+rebuilding the container.
 
-**☐ Exercise.** Polar has `Structure.OnBuild()` / `OnDemolish()` as abstract methods, and
-`PolarNode.ClearBuilding()` exists but **nothing calls it** — there is no demolition flow at all.
-Build one, designed as lifecycle interfaces rather than base-class overrides: free the nodes, refund
-or destroy resources, despawn the ECS entity, and notify the UI. Then add a construction-in-progress
-state.
+## ☐ Lesson 4 — MultiBind: open for extension
+**Layer: managed.** Refs: Timberborn `MultiBind<T>()` → injected as `IEnumerable<T>`.
 
-## Lesson 7 — Decorators: composing behaviour at spawn time
-**Layer: managed + the bridge.** Timberborn refs: `AddDecorator<SourceSpec, TargetComponent>()`,
-e.g. `FarmHouseSpec` → `FarmHouse` → `HaulCandidate`.
+The most transferable idea in Timberborn. Handlers register into a collection and **declare what they
+handle**; adding one touches no existing file.
 
-Decoration is how Timberborn attaches cross-cutting behaviour without the spec author knowing about
-it: anything that is a farmhouse *also* becomes a haul candidate, declared in one place.
+**☐ Exercise.** Give `IPlacementHandler` / `IPlacementValidator` a `CanHandle(…)`, multi-bind every
+implementation, and have `PlacementManager` select from an injected `List<IPlacementHandler>` instead
+of switching on `StructureType`. Zenject: `BindInterfacesTo<>` plus collection injection.
 
-**☐ Exercise.** Kill `if (structureData is WorkStructureData workStructureData)`
-(`StructureManager.cs:120`). A structure that is a workplace should contribute its `WorkplaceLocation`
-buffer entry because a *workplace component/decorator* says so, not because the bridge method
-type-checks it. Restructure `ConstructBuilding` so each buffer append is contributed by a registered
-handler. When done, adding a "produces resources over time" structure should require zero edits to
+**Pass condition:** add a throwaway fifth structure type **without editing `PlacementManager`**. If
+you have to edit it, the refactor failed.
+
+---
+
+# Track B — Specs: buildings as data
+
+The heart of this path. Lessons 5–9 build one coherent system; don't split them across long gaps.
+
+## ☐ Lesson 5 — Composition over inheritance
+**Layer: managed.** Refs: Timberborn `BaseComponent`, "entities are composed of components";
+RimWorld `CompProperties` / `ThingComp`.
+
+In both games, a building is a **bag of components**, not a position in a class hierarchy. RimWorld's
+docs are blunt about why: extending Def classes creates conflicts and an inheritance nightmare; write
+a comp instead.
+
+**☐ Exercise (design, no code).** Re-express Polar's four `*StructureData` subclasses as components.
+Where does `Inhabitants` live? `ShiftDuration`? `Cost`? Then find the combination inheritance cannot
+express — a building that is both a home and a workplace. Write that case down; it justifies the rest
+of the track.
+
+## ☐ Lesson 6 — Spec schema design
+**Layer: managed.** Refs: Timberborn `ComponentSpec`, `[Serialize]`, `{ get; init; }`, template
+blueprints; RimWorld `Def`, `defName`, `ParentName` inheritance for templates.
+
+Specs are **immutable, stateless definitions**, separate from the live component that reads them.
+
+> ✅ C# 9 check (see Part 1): `record` and `{ get; init; }` are **both C# 9**, so this pattern is
+> reproducible in Polar as-is. Don't reach for `record struct` (C# 10) or `required` (C# 11).
+> `ImmutableArray` availability in this Unity version is **unverified** — check before relying on it;
+> `IReadOnlyList<T>` over an array works regardless and is what the repo already uses in
+> `IStructureData.Cost`.
+
+**☐ Exercise.** Design the spec set for Polar on paper, then implement two: a `StructureSpec`
+(footprint, cost, display name) and a `WorkplaceSpec` (shift duration). Target the composed shape:
+
+```json
+{ "StructureSpec": { "Cost": [ { "ResourceType": "Wood", "Amount": 10 } ] },
+  "WorkplaceSpec": { "ShiftDuration": 8 } }
+```
+
+Also design **template inheritance** (Timberborn's template blueprints, RimWorld's
+`Name`/`ParentName`) — most buildings differ from a base by two fields, and without templates you get
+massive duplication.
+
+## ☐ Lesson 7 — Loading specs from JSON
+**Layer: managed.** Refs: Timberborn `.blueprint.json`, `#append` / `#remove` / `#delete`.
+**Depends on Part 1 Week 11 (streams & JSON).**
+
+**☐ Exercise.** Load the Lesson 6 specs from disk with **`Unity.Serialization.Json`** (already
+available — see above). Do it in the ordered load phase from Lesson 3.
+
+Concretely confront why `JsonUtility` is not an option here: it supports neither dictionaries nor
+polymorphism, and a blueprint is a **dictionary of polymorphic spec objects keyed by type name**.
+Understanding *why* the built-in tool fails is most of this lesson.
+
+**☐ Stretch.** Implement one merge operator (`#append`) for list fields. This is how Timberborn lets
+a later file add to an earlier one's list without rewriting it. Don't build the full operator set —
+it only earns its complexity with third-party content.
+
+## ☐ Lesson 8 — Name-keyed registry, validated loudly
+**Layer: managed + the bridge.** Refs: RimWorld `DefDatabase<T>.GetNamed("defName")`.
+**This lesson fixes a live bug class.**
+
+Polar joins ScriptableObjects to baked entity prefabs by a hand-assigned `int ID`
+(`StructureDictionary.Get(int id)` → `StructureRegister` → `AvailableStructure`). Nothing checks the
+two agree, so a mismatch produces a structure that silently spawns nothing.
+
+**☐ Exercise.** Replace the int ID with a string spec key, resolved through a registry in the spirit
+of `DefDatabase<T>.GetNamed()`. Then — the part that makes it an *improvement* rather than a lateral
+move — **validate at load and fail loudly**: every spec key must resolve to exactly one baked prefab,
+every prefab must be claimed, and any spec referencing a missing asset aborts startup with a message
+naming the file and key. A silent int mismatch becomes a startup error you cannot miss.
+
+**Pass condition:** deliberately misspell a key and confirm you get a precise error at startup, not a
+building that places but never appears.
+
+## ☐ Lesson 9 — Composition at spawn: decorators
+**Layer: managed + the bridge.** Refs: Timberborn `AddDecorator<SourceSpec, TargetComponent>()`
+(`FarmHouseSpec` → `FarmHouse` → `HaulCandidate`).
+
+Decoration attaches cross-cutting behaviour without the spec author knowing: anything that is a
+farmhouse also becomes a haul candidate, declared once.
+
+**☐ Exercise.** Delete `if (structureData is WorkStructureData workStructureData)`
+(`StructureManager.cs:120`). A structure contributes its `WorkplaceLocation` buffer entry because it
+**has a `WorkplaceSpec`**, not because the bridge type-checks it. Restructure `ConstructBuilding` so
+each buffer append (`StructurePlacementOrder`, `PeopleSpawnOrder`, `WorkplaceLocation`) is contributed
+by a registered, multi-bound handler keyed on spec presence.
+
+**Pass condition:** adding a "produces resources over time" structure requires **zero** edits to
 `StructureManager`.
 
-> This is the hardest lesson, because it's exactly on the managed↔DOTS seam. The decorators live
-> managed; their output is buffer appends. Keep that direction — don't try to push decoration into
-> the ECS side.
+> Hardest lesson in the document, because it sits exactly on the managed↔DOTS seam. Decorators live
+> managed; their output is buffer appends. Keep that direction — don't push decoration into ECS.
 
-## Lesson 8 — Persistence: per-entity save, not a god-serializer
-**Layer: managed + the bridge.** Timberborn refs: `IPersistentEntity` with `Save()` / `Load()`.
-**Depends on Part 1 Week 11 (streams/JSON) and Week 9 (async).**
+---
 
-Each component saves its own state. There is no central `SaveGame` class that knows every type — the
-architecture that would otherwise rot fastest.
+# Track C — The rest of the architecture
 
-**☐ Exercise.** Design (then build) Polar's save format around per-component save. The genuinely hard
-part is specific to Polar and has no Timberborn equivalent: **your state is split across two worlds.**
-Grid occupancy lives in `PolarNode` MonoBehaviours; people, paths and workplaces live in ECS
-components and buffers. Decide what is authoritative, and whether ECS state is saved or *rebuilt*
-from the managed state on load. Write that decision down before coding — it's the single most
-consequential architectural choice in this document.
+## ☐ Lesson 10 — Entity lifecycle interfaces
+**Layer: managed.** Refs: Timberborn `IInitializableEntity`, `IFinishedStateListener`
+(`OnEnterFinishedState`/`OnExitFinishedState`), `IDeletableEntity`, `IAwakableComponent`.
 
-## Lesson 9 — The simulation loop and game time
-**Layer: DOTS.** Timberborn refs: `IUpdatableSingleton.UpdateSingleton()`.
-*Apply the concept, not the interface — this one lives on the ECS side.*
+Note what these buy: a component opts into only the events it cares about, instead of inheriting a
+base class of virtual no-ops. `IFinishedStateListener` exists because a city-builder building has a
+**construction phase** — Polar has no such concept; buildings appear complete.
 
-**☐ Exercise — finish the work already in flight.** `GameTimeManager`
-(`_Game/DOTS/Systems/Times/GameTimeManager.cs`) is currently an empty stub: `OnUpdate` fetches
-`GameTimeData` and does nothing with it. `GameTimeAuthoring` bakes a single `InGameHourDuration`.
-Build it out: accumulate in-game time, expose hour/day, and drive day/night. Then add pause and speed
-multipliers (×1/×2/×3 — every city builder has them) and make sure nothing downstream breaks at ×3 or
-at pause.
+**☐ Exercise.** `Structure.OnBuild()`/`OnDemolish()` are abstract methods, and
+`PolarNode.ClearBuilding()` exists but **nothing calls it** — there is no demolition flow at all.
+Build one as opt-in lifecycle interfaces: free the nodes, refund resources, despawn the ECS entity,
+notify the UI. Then add a construction-in-progress state.
 
-Connect it to what already exists: `WorkShiftSystem` and `WorkStructureData.ShiftDuration` are already
-written against a notion of time. Make them consume game time rather than raw `DeltaTime`.
+## ☐ Lesson 11 — Persistence: per-entity save
+**Layer: managed + the bridge.** Refs: Timberborn `IPersistentEntity` with `Save()` / `Load()`.
+**Depends on Part 1 Week 9 (async) and Week 11 (JSON); reuses Lessons 3, 7, 8.**
 
-**Key concept:** fixed simulation tick vs. frame-rate-dependent update. A city builder must produce
-identical results at 30 fps and 144 fps, and at ×3 speed. Read up on fixed-timestep accumulators
-before writing this.
+Each component saves its own state. No central `SaveGame` class that knows every type.
 
-## Lesson 10 — UI architecture: fragments, not controllers
-**Layer: managed.** Timberborn refs: `IEntityPanelFragment`, `EntityPanelModule`,
-`VisualElementLoader`, `UILayout` (`AddBottomRight()`), `PanelStack`, `DialogBoxShower`, `ITool` +
+**☐ Exercise.** Build the save system on the spec loader from Lesson 7. The hard part is specific to
+Polar and has **no Timberborn equivalent**: your state spans two worlds. Grid occupancy lives in
+`PolarNode` MonoBehaviours; people, paths and workplaces live in ECS components and buffers.
+
+**Decide before coding, and write it down:** is ECS state *saved*, or *rebuilt* from managed state on
+load? This is the most consequential architectural choice in either document, and it is far cheaper to
+decide now than after a save format ships.
+
+## ☐ Lesson 12 — UI architecture: fragments, not controllers
+**Layer: managed.** Refs: Timberborn `IEntityPanelFragment`, `EntityPanelModule`,
+`VisualElementLoader`, `UILayout.AddBottomRight()`, `PanelStack`, `DialogBoxShower`, `ITool` +
 `BottomBarElementsProvider`.
 
-Timberborn's selected-entity panel is **not one class**. It's a set of multi-bound
-`IEntityPanelFragment`s, each rendering one aspect — `WorkplaceFragment` draws workplace controls and
-nothing else. Select a building, and the panel is assembled from whichever fragments apply.
+Timberborn's selected-entity panel is not one class. It's multi-bound `IEntityPanelFragment`s, each
+rendering one aspect — `WorkplaceFragment` draws workplace controls and nothing else.
 
-Polar is already closer here than anywhere else: you have UIToolkit + DI-bound controllers
-(`StructureInfoController`, `ResourceBarController`, `BuildBarController`, `PlacementStatusController`)
-with clean event subscribe/unsubscribe. The gap is that they're **hand-wired singletons**, not a
-composable multi-bound set.
+Polar is already closest here: UIToolkit plus DI-bound controllers (`StructureInfoController`,
+`ResourceBarController`, `BuildBarController`, `PlacementStatusController`) with clean event
+subscribe/unsubscribe. The gap is that they're hand-wired singletons, not a composable set.
 
-**☐ Exercise.** Convert `StructureInfoController` into a fragment-composed entity panel: one fragment
-per structure component, multi-bound (Lesson 4), each deciding whether it applies to the selected
-structure. Then add a fragment for a component that didn't exist when you wrote the panel — that's
-the test.
+**☐ Exercise.** Convert `StructureInfoController` into a fragment-composed panel: one fragment per
+spec (Lesson 6), multi-bound (Lesson 4), each deciding whether it applies to the selection. Then add a
+fragment for a spec that didn't exist when you wrote the panel.
 
 ---
 
-## The capstone: the mod test
+## ★ Capstone: the mod test
 
-Timberborn's architecture looks the way it does **because it must be extensible by people who cannot
-edit its source.** That constraint is what forces `MultiBind`, specs, decorators and per-entity
-persistence. Polar has no mods, so nothing forces the discipline — which is exactly why it drifted
-toward central switches.
+Timberborn and RimWorld look the way they do **because they must be extensible by people who cannot
+edit the source.** That constraint is what forces specs, name keys, multi-binding and decorators.
+Polar has no mods, so nothing forces the discipline — which is why it drifted toward central switches.
 
-**☐ Final exercise.** Add a new structure kind — say a warehouse that stores resources and employs
-workers — and count how many existing files you had to edit. At the start of this path the answer is
-roughly: `StructureType` enum, `PlacementManager` ×2 switches, `StructureManager.ConstructBuilding`,
-`StructureDictionary`, `StructureRegister`, plus a new `*Data` subclass. **The path succeeded if the
-answer becomes: one new spec, one new prefab, one registration.**
+**☐ Final exercise.** Add a warehouse that stores resources and employs workers. Count the existing
+files you had to edit.
 
----
+- **Today:** `StructureType` enum, `PlacementManager` ×2 switches, `StructureManager.ConstructBuilding`,
+  `StructureDictionary`, `StructureRegister`, a new `*Data` subclass — roughly six.
+- **Target:** one new spec JSON, one prefab, one registration.
 
-## Where Timberborn's answer does *not* fit Polar
-
-Worth knowing so you don't over-apply this:
-
-- **Timberborn is not DOTS.** Its component model is managed OOP. Polar's simulation is ECS by
-  choice, for throughput. Lessons 1, 2, 6, 7 stop at the bridge.
-- **Timberborn's grid is square; Polar's is polar.** Nothing in its spatial code transfers. Your
-  footprint/rotation/wrapping problems (`Fi >= 360 → 0`, the clockwise/counter-clockwise sign
-  convention) are yours alone.
-- **Harmony/Cecil patching and `IModStarter`** are mod-loading infrastructure. Irrelevant unless you
-  actually want mods — read once, don't build.
-- **Blueprint JSON with `#append`/`#remove`** is a data-merging system that only earns its complexity
-  with third-party content. Understand the idea; don't implement it yet.
+> Files edited: ______
 
 ---
 
-## Suggested sequencing with Part 1
+## What does *not* transfer
 
-They're independent, but three lessons here have prerequisites:
+- **Neither reference is DOTS.** Timberborn's and RimWorld's component models are managed OOP. Polar's
+  simulation is ECS by choice, for throughput. Tracks A and B stop at the bridge.
+- **Both grids are square; Polar's is polar.** No spatial code transfers. The `Fi >= 360 → 0` wrap and
+  the clockwise/counter-clockwise sign convention are yours alone.
+- **Harmony/Cecil patching, `IModStarter`** — mod-loading infrastructure. Read once; don't build unless
+  you actually want mods.
+- **The full `#append`/`#remove`/`#delete` operator set** — a data-merging system that only pays off
+  with third-party content. Implement one operator in Lesson 6 to learn the idea; stop there.
+- **RimWorld's XML** — the format is incidental; `defName` resolution is the transferable part.
 
-| This lesson | Needs from Part 1 |
+---
+
+## Sequencing with Part 1
+
+Independent paths, but four lessons have prerequisites:
+
+| Lesson | Needs from Part 1 |
 |---|---|
-| 2 (Specs) | Week 2 — records, `init`, immutability |
-| 4 (MultiBind) | Week 6/7 — collections and LINQ over injected sets |
-| 8 (Persistence) | Week 9 (async) **and** Week 11 (streams/JSON) |
+| 1 (Game time) | **Nothing** — start here |
+| 4 (MultiBind) | Weeks 6–7 — collections and LINQ over injected sets |
+| 6 (Spec schema) | Week 2 — records, `init`, immutability |
+| 7 (JSON loading) | Week 11 — streams & JSON |
+| 11 (Persistence) | Week 9 (async) **and** Week 11 |
 
-Easiest schedule: run Part 1 weeks 1–8 first, then alternate — one Part 1 week, one Part 2 lesson.
-Lesson 9 (game time) is the exception: it's unblocked, it's already half-written in your working
-tree, and it's the most immediately useful thing in this document. **Consider doing it first.**
+**Recommended order:** Lesson 1, then Part 1 weeks 1–8, then Track A (2–4), then Track B (5–9) as a
+continuous block, then Track C (10–12).
 
 ---
 
 ## Progress log
 
-| # | Lesson | Layer | Done | Notes |
-|---|---|---|---|---|
-| 1 | Composition over inheritance | managed | ☐ | |
-| 2 | Specs / immutable definitions | managed | ☐ | |
-| 3 | Composition root & contexts | managed | ☐ | |
-| 4 | MultiBind & open extension | managed | ☐ | |
-| 5 | Ordered loading lifecycle | managed | ☐ | |
-| 6 | Entity lifecycle interfaces | managed | ☐ | |
-| 7 | Decorators | managed + bridge | ☐ | |
-| 8 | Persistence | managed + bridge | ☐ | |
-| 9 | Simulation loop & game time | DOTS | ☐ | |
-| 10 | UI fragments | managed | ☐ | |
-| ★ | The mod test | all | ☐ | files edited: ____ |
+| # | Lesson | Track | Layer | Done | Notes |
+|---|---|---|---|---|---|
+| 1 | **Simulation loop & game time** | — | DOTS | ☐ | ← start here |
+| 2 | Composition root | A | managed | ☐ | |
+| 3 | Ordered loading | A | managed | ☐ | |
+| 4 | MultiBind | A | managed | ☐ | |
+| 5 | Composition over inheritance | B | managed | ☐ | |
+| 6 | Spec schema design | B | managed | ☐ | |
+| 7 | JSON spec loading | B | managed | ☐ | |
+| 8 | Name-keyed registry | B | managed + bridge | ☐ | |
+| 9 | Decorators at spawn | B | managed + bridge | ☐ | |
+| 10 | Entity lifecycle | C | managed | ☐ | |
+| 11 | Persistence | C | managed + bridge | ☐ | |
+| 12 | UI fragments | C | managed | ☐ | |
+| ★ | The mod test | — | all | ☐ | files edited: ____ |
 
 ## Sources
 
-- [Timberborn architecture (official modding wiki)](https://github.com/mechanistry/timberborn-modding/wiki/Timberborn-architecture)
-- [Timberborn user interface (official modding wiki)](https://github.com/mechanistry/timberborn-modding/wiki/User-interface)
-- [Timberborn coding basics (official modding wiki)](https://github.com/mechanistry/timberborn-modding/wiki/Coding-basics)
-- [mechanistry/timberborn-modding overview (DeepWiki)](https://deepwiki.com/mechanistry/timberborn-modding/1-overview)
+- [Timberborn architecture](https://github.com/mechanistry/timberborn-modding/wiki/Timberborn-architecture) · [Blueprints](https://github.com/mechanistry/timberborn-modding/wiki/Blueprints) · [User interface](https://github.com/mechanistry/timberborn-modding/wiki/User-interface) · [Coding basics](https://github.com/mechanistry/timberborn-modding/wiki/Coding-basics) (official modding wiki)
+- [RimWorld: Def classes](https://rimworldwiki.com/wiki/Modding_Tutorials/Def_classes) · [XML Defs](https://rimworldwiki.com/wiki/Modding_Tutorials/XML_Defs) · [ThingDef](https://rimworldwiki.com/wiki/Modding_Tutorials/ThingDef) (RimWorld Wiki)
+- [Abstracts and inheritance](https://spdskatr.github.io/RWModdingResources/abstracts.html) (RimWorld Modding Resources)
